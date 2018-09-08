@@ -1,18 +1,19 @@
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
-#include <QMouseEvent>
+#include <QMessageBox>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    customWeight(10)
 {
     ui->setupUi(this);
     // Populate tile type combo box in the same order as the TileTypes enum
-    ui->cbTileType->addItem("Wall (impassable)", QColor(Qt::black));
-    ui->cbTileType->addItem("Floor (cost 1)", QColor(Qt::white));
-    ui->cbTileType->addItem("Forest (cost 2)", QColor(Qt::green));
-    ui->cbTileType->addItem("Water (cost 5)", QColor(Qt::blue));
+    ui->cbTileType->addItem("Wall", QColor(Qt::black));
+    ui->cbTileType->addItem("Floor", QColor(Qt::white));
+    ui->cbTileType->addItem("Forest", QColor(Qt::green));
+    ui->cbTileType->addItem("Water", QColor(Qt::blue));
     ui->cbTileType->addItem("Custom cost", QColor(Qt::gray));
     // Populate algorithm list
     ui->cbAlgorithm->addItem("A*");
@@ -44,8 +45,17 @@ void MainWindow::updateSelectedTileType()
         weight = WATER_WEIGHT;
         break;
     case Custom:
-        // TODO: Grab weight value from a text input box
+        weight = customWeight;
         break;
+    }
+    // Set weight on line edit text, or infinity if it's wall
+    if (selectedIndex == Wall)
+    {
+        ui->etWeight->setText(QString("Infinity"));
+    }
+    else
+    {
+        ui->etWeight->setText(QString::number(weight));
     }
     // Set selected color and weight on graphics scene
     ui->tilemapView->setSelectedTileType(selectedColor, weight);
@@ -53,6 +63,10 @@ void MainWindow::updateSelectedTileType()
 
 void MainWindow::on_cbTileType_currentIndexChanged()
 {
+    // If custom type is selected, allow editing of weight line edit
+    int selectedIndex = ui->cbTileType->currentIndex();
+    ui->etWeight->setEnabled(selectedIndex == Custom);
+    // Change line edit text for current weight
     updateSelectedTileType();
 }
 
@@ -66,4 +80,29 @@ void MainWindow::on_cbAlgorithm_currentIndexChanged()
 {
     int index = ui->cbAlgorithm->currentIndex();
     ui->tilemapView->setAlgorithm(index);
+}
+
+void MainWindow::on_etWeight_editingFinished()
+{
+    // Grab number from the editText
+    bool ok;
+    double weight = ui->etWeight->text().toDouble(&ok);
+    // If text wasn't a valid number, show error message
+    if (!ok)
+    {
+        showErrorMessage("Invalid number entered.");
+        // Reset number to old record of custom weight
+        ui->etWeight->setText(QString::number(customWeight));
+        return;
+    }
+    // Update weight
+    customWeight = weight;
+    updateSelectedTileType();
+}
+
+void MainWindow::showErrorMessage(std::string msg) const
+{
+    QMessageBox errorMsg;
+    errorMsg.critical(0, "Error", QString::fromStdString(msg));
+    errorMsg.setFixedSize(500, 200);
 }

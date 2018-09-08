@@ -24,9 +24,14 @@ private slots:
     void on_cbTileType_currentIndexChanged();
     void on_btnComputePath_clicked();
     void on_cbAlgorithm_currentIndexChanged();
+    void on_etWeight_editingFinished();
+
+private:
+    void showErrorMessage(std::string msg) const;
 
 private:
     Ui::MainWindow *ui;
+    double customWeight;
 };
 
 #endif // MAINWINDOW_H
