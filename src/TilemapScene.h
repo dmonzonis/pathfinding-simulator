@@ -14,7 +14,7 @@ const QColor PATH_COLOR = QColor(250, 240, 65, 150);
 class TilemapScene : public QGraphicsScene
 {
 public:
-    enum Algorithm{A_STAR, DIJKSTRA, BFS};
+    enum Algorithm{A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
 
 public:
     TilemapScene(QObject *parent, int size);

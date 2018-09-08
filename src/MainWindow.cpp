@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cbAlgorithm->addItem("A*");
     ui->cbAlgorithm->addItem("Dijkstra");
     ui->cbAlgorithm->addItem("BFS");
+    ui->cbAlgorithm->addItem("Greedy Best-first search");
 }
 
 MainWindow::~MainWindow()

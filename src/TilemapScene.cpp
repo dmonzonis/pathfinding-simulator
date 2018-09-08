@@ -128,6 +128,9 @@ void TilemapScene::recomputePath()
     case BFS:
         bfs(graph, startTile, goalTile, previous, costToNode);
         break;
+    case GREEDY_BEST_FIRST:
+        greedyBestFirstSearch(graph, startTile, goalTile, previous, costToNode);
+        break;
     }
     // Only paint the path if a solution exists
     if (previous.find(goalTile) != previous.end())

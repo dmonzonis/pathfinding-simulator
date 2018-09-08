@@ -156,4 +156,47 @@ void aStar(Graph graph,
     }
 }
 
+template <typename Node, typename Graph>
+void greedyBestFirstSearch(Graph graph,
+                           Node start,
+                           Node goal,
+                           std::map<Node, Node> &previous,
+                           std::map<Node, double> &costToNode)
+{
+    typedef std::pair<double, Node> queuePair;
+    std::priority_queue<queuePair, std::vector<queuePair>,
+            std::greater<queuePair>> nodeQueue;
+    nodeQueue.emplace(0, start);
+
+    previous[start] = start;
+
+    while (!nodeQueue.empty())
+    {
+        // Get next node to examine
+        Node current = nodeQueue.top().second;
+        nodeQueue.pop();
+
+        // Early exit condition
+        if (current == goal)
+        {
+            return;
+        }
+
+        // Push unvisited neighbors to queue
+        for (Node next : graph.neighbors(current))
+        {
+            double cost = costToNode[current] + graph.getCost(next);
+            // Also consider visited nodes which would have a lesser cost from this new path
+            if (previous.find(next) == previous.end())
+            {
+                costToNode[next] = cost;
+                // TODO: Allow for use of different heuristics
+                double priority = manhattanDistance(next, goal);
+                previous[next] = current;
+                nodeQueue.emplace(priority, next);
+            }
+        }
+    }
+}
+
 #endif // ALGORITMS_H
