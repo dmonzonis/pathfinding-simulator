@@ -7,10 +7,29 @@
 class TilemapView : public QGraphicsView
 {
 public:
+    /**
+     * @brief Constructs a custom graphics view, which has a TilemapScene as its
+     * graphics scene.
+     */
     TilemapView(QWidget *parent);
     ~TilemapView();
+
+    /**
+     * @brief Sets the selected color and weight on the TilemapScene.
+     * @see TilemapScene
+     */
     void setSelectedTileType(QColor color, double weight);
+
+    /**
+     * @brief Sets the selected algorithm on the TilemapScene.
+     * @see TilemapScene
+     */
     void setAlgorithm(int index);
+
+    /**
+     * @brief Triggers a path recomputation in the TilemapScene.
+     * @see TilemapScene
+     */
     void recomputePath();
 
 protected:

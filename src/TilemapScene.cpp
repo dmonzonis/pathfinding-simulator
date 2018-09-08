@@ -54,7 +54,6 @@ QRect mapTileToRect(Tile tile, int gridSize)
 TilemapScene::TilemapScene(QObject *parent, int size)
     : QGraphicsScene(parent),
       painting(false),
-      selectedColor(QColor(Qt::black)),
       graph(-size / 2, -size / 2, size, size),
       startTile(Tile{0, 0}),
       goalTile(Tile{3, 3}),
@@ -90,12 +89,6 @@ void TilemapScene::setSelectedTileType(QColor color, double weight)
 {
     selectedColor = color;
     selectedWeight = weight;
-}
-
-void TilemapScene::setPixmapOnTile(QGraphicsPixmapItem *item, Tile tile)
-{
-    QRect rect = mapTileToRect(tile, GRID_SIZE);
-    item->setPos(rect.left(), rect.top());
 }
 
 void TilemapScene::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)

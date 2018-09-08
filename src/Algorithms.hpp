@@ -8,6 +8,12 @@
 #include <vector>
 #include "Graph.h"
 
+/**
+ * Reconstructs the path to a vector with nodes going from start to goal.
+ *
+ * The input contains the start and goal nodes, as well as a map which for every
+ * node, contains the node it came from in the path, in case it has any.
+ */
 template <typename Node>
 std::vector<Node> reconstructPath(Node start,
                                   Node goal,
@@ -27,6 +33,9 @@ std::vector<Node> reconstructPath(Node start,
     return path;
 }
 
+/**
+ * Compute the path between two nodes using Breadth-first search with early exit.
+ */
 template <typename Node, typename Graph>
 void bfs(Graph graph,
          Node start,
@@ -65,6 +74,9 @@ void bfs(Graph graph,
     }
 }
 
+/**
+ * Compute the optimal path between two nodes using Dijkstra's algorithm with early exit.
+ */
 template <typename Node, typename Graph>
 void dijkstra(Graph graph,
               Node start,
@@ -107,11 +119,17 @@ void dijkstra(Graph graph,
     }
 }
 
+/**
+ * @brief Compute the Manhattan distance between two tiles.
+ */
 inline double manhattanDistance(Tile a, Tile b)
 {
     return std::abs(a.x - b.x) + std::abs(a.y - b.y);
 }
 
+/**
+ * Compute the optimal path between two nodes using the A* algorithm with early exit.
+ */
 template <typename Node, typename Graph>
 void aStar(Graph graph,
               Node start,
@@ -156,6 +174,9 @@ void aStar(Graph graph,
     }
 }
 
+/**
+ * Compute the path between two nodes using the greedy best-first search algorithm with early exit.
+ */
 template <typename Node, typename Graph>
 void greedyBestFirstSearch(Graph graph,
                            Node start,
