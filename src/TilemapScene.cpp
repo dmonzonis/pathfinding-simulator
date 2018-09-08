@@ -107,6 +107,8 @@ void TilemapScene::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)
 void TilemapScene::setAlgorithm(int index)
 {
     selectedAlgorithm = static_cast<Algorithm>(index);
+    // Trigger recompute path
+    recomputePath();
 }
 
 void TilemapScene::recomputePath()
