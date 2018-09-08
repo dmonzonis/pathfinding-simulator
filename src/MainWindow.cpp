@@ -70,12 +70,6 @@ void MainWindow::on_cbTileType_currentIndexChanged()
     updateSelectedTileType();
 }
 
-void MainWindow::on_btnComputePath_clicked()
-{
-    ui->tilemapView->recomputePath();
-}
-
-
 void MainWindow::on_cbAlgorithm_currentIndexChanged()
 {
     int index = ui->cbAlgorithm->currentIndex();

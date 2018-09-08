@@ -58,7 +58,8 @@ TilemapScene::TilemapScene(QObject *parent, int size)
       graph(-size / 2, -size / 2, size, size),
       startTile(Tile{0, 0}),
       goalTile(Tile{3, 3}),
-      grabbedPixmap(nullptr)
+      grabbedPixmap(nullptr),
+      selectedAlgorithm(A_STAR)
 {
     // Add start and goal points
     QPixmap circlePixmap(":/res/circle.png");
@@ -70,7 +71,8 @@ TilemapScene::TilemapScene(QObject *parent, int size)
     // Always on top
     startPixmap->setZValue(1);
     goalPixmap->setZValue(1);
-
+    // Draw initial path
+    recomputePath();
 }
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
@@ -80,6 +82,8 @@ void TilemapScene::paintTile(const Tile &tile, const QColor &color)
     // Paint the visual representation
     QRect rect = mapTileToRect(tile, GRID_SIZE);
     addRect(rect, QPen(color), QBrush(color));
+    // Trigger recompute
+    recomputePath();
 }
 
 void TilemapScene::setSelectedTileType(QColor color, double weight)
@@ -123,16 +127,11 @@ void TilemapScene::recomputePath()
         bfs(graph, startTile, goalTile, previous, costToNode);
         break;
     }
+    // Only paint the path if a solution exists
     if (previous.find(goalTile) != previous.end())
     {
-        // If a solution is found, paint the path
         std::vector<Tile> path = reconstructPath(startTile, goalTile, previous);
         paintPath(path);
-    }
-    else
-    {
-        // If a solution doesn't exist, don't paint any path
-        clearPath();
     }
 }
 
@@ -196,6 +195,8 @@ void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
                 goalTile = tileUnderCursor;
             }
             grabbedPixmap = nullptr;
+            // Trigger recompute path
+            recomputePath();
         }
     }
 }
@@ -205,6 +206,7 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     QGraphicsScene::mouseMoveEvent(ev);
     if (painting)
     {
+        // TODO: Only paint if the tile has different weight than the selected one
         QPoint pos = ev->scenePos().toPoint();
         Tile tile = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
         paintTile(tile, selectedColor);

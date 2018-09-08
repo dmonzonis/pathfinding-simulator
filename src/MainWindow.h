@@ -22,7 +22,6 @@ public:
 
 private slots:
     void on_cbTileType_currentIndexChanged();
-    void on_btnComputePath_clicked();
     void on_cbAlgorithm_currentIndexChanged();
     void on_etWeight_editingFinished();
 
