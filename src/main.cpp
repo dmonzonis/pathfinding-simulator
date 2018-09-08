@@ -1,9 +1,5 @@
 #include <QApplication>
 #include "MainWindow.h"
-#include "Graph.h"
-#include "Algorithms.hpp"
-#include <QtDebug>
-#include <iostream>
 
 using namespace std;
 

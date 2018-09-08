@@ -6,7 +6,7 @@
 #include "Graph.h"
 
 const int GRID_SIZE = 30;
-const QColor GRID_COLOR = QColor(200, 200, 255, 125);
+const QColor GRID_COLOR = QColor(200, 200, 255, 255);
 const double FOREST_WEIGHT = 2;
 const double WATER_WEIGHT = 5;
 const QColor PATH_COLOR = QColor(250, 240, 65, 100);
