@@ -123,8 +123,17 @@ void TilemapScene::recomputePath()
         bfs(graph, startTile, goalTile, previous, costToNode);
         break;
     }
-    std::vector<Tile> path = reconstructPath(startTile, goalTile, previous);
-    paintPath(path);
+    if (previous.find(goalTile) != previous.end())
+    {
+        // If a solution is found, paint the path
+        std::vector<Tile> path = reconstructPath(startTile, goalTile, previous);
+        paintPath(path);
+    }
+    else
+    {
+        // If a solution doesn't exist, don't paint any path
+        clearPath();
+    }
 }
 
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
