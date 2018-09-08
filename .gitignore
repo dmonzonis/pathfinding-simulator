@@ -3,3 +3,4 @@ build/
 .qmake.stash
 *.pro.user
 Makefile
+qrc_resources.cpp
