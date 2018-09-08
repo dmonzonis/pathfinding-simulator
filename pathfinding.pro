@@ -13,14 +13,16 @@ UI_DIR = build
 INCLUDEPATH += src
 
 FORMS += \
-    ui/mainwindow.ui
+    ui/mainwindow.ui \
+    ui/helpdialog.ui
 
 HEADERS += \
     src/Graph.h \
     src/TilemapView.h \
     src/MainWindow.h \
     src/Algorithms.hpp \
-    src/TilemapScene.h
+    src/TilemapScene.h \
+    src/HelpDialog.h
 
 
 SOURCES += \
@@ -28,7 +30,8 @@ SOURCES += \
     src/Graph.cpp \
     src/TilemapView.cpp \
     src/MainWindow.cpp \
-    src/TilemapScene.cpp
+    src/TilemapScene.cpp \
+    src/HelpDialog.cpp
 
 RESOURCES += \
     resources.qrc

@@ -129,7 +129,19 @@
      <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>He&amp;lp</string>
+    </property>
+    <addaction name="actionControls"/>
+   </widget>
+   <addaction name="menuHelp"/>
   </widget>
+  <action name="actionControls">
+   <property name="text">
+    <string>Controls</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

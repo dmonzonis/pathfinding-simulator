@@ -39,6 +39,7 @@ private slots:
     void on_cbTileType_currentIndexChanged();
     void on_cbAlgorithm_currentIndexChanged();
     void on_etWeight_editingFinished();
+    void on_actionControls_triggered();
 
 private:
     void showErrorMessage(std::string msg) const;

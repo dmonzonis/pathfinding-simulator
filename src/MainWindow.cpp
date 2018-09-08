@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDebug>
+#include "HelpDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -93,6 +94,13 @@ void MainWindow::on_etWeight_editingFinished()
     // Update weight
     customWeight = weight;
     updateSelectedTileType();
+}
+
+void MainWindow::on_actionControls_triggered()
+{
+    HelpDialog *helpDialog = new HelpDialog(this);
+    helpDialog->setAttribute(Qt::WA_DeleteOnClose);
+    helpDialog->show();
 }
 
 void MainWindow::showErrorMessage(std::string msg) const
