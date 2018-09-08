@@ -1,0 +1,5 @@
+bin/
+build/
+.qmake.stash
+*.pro.user
+Makefile
