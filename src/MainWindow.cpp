@@ -87,8 +87,8 @@ void MainWindow::on_etWeight_editingFinished()
     // Grab number from the editText
     bool ok;
     double weight = ui->etWeight->text().toDouble(&ok);
-    // If text wasn't a valid number, show error message
-    if (!ok)
+    // If text wasn't a valid positive number, show error message
+    if (!ok || weight < 0)
     {
         showErrorMessage("Invalid number entered.");
         // Reset number to old record of custom weight
