@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Tilemap.h"
+#include "TilemapScene.h"
 
 namespace Ui {
 class MainWindow;

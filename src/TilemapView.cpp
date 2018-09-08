@@ -6,7 +6,7 @@ const int TILE_COUNT = 500;  // Number of tiles in a row or column
 
 TilemapView::TilemapView(QWidget *parent)
     : QGraphicsView(parent),
-      tilemap(new Tilemap(this, TILE_COUNT)),
+      tilemap(new TilemapScene(this, TILE_COUNT)),
       panning(false),
       panDeltaX(0),
       panDeltaY(0)

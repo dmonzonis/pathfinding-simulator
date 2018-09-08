@@ -1,4 +1,4 @@
-#include "Tilemap.h"
+#include "TilemapScene.h"
 #include <QPainter>
 #include <QDebug>
 #include <QGraphicsPixmapItem>
@@ -51,7 +51,7 @@ QRect mapTileToRect(Tile tile, int gridSize)
     return QRect(left, top, gridSize, gridSize);
 }
 
-Tilemap::Tilemap(QObject *parent, int size)
+TilemapScene::TilemapScene(QObject *parent, int size)
     : QGraphicsScene(parent),
       painting(false),
       selectedColor(QColor(Qt::black)),
@@ -73,7 +73,7 @@ Tilemap::Tilemap(QObject *parent, int size)
 
 }
 
-void Tilemap::paintTile(const Tile &tile, const QColor &color)
+void TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
     // Update the tile's weight
     graph.setCost(tile, selectedWeight);
@@ -82,30 +82,30 @@ void Tilemap::paintTile(const Tile &tile, const QColor &color)
     addRect(rect, QPen(color), QBrush(color));
 }
 
-void Tilemap::setSelectedTileType(QColor color, double weight)
+void TilemapScene::setSelectedTileType(QColor color, double weight)
 {
     selectedColor = color;
     selectedWeight = weight;
 }
 
-void Tilemap::setPixmapOnTile(QGraphicsPixmapItem *item, Tile tile)
+void TilemapScene::setPixmapOnTile(QGraphicsPixmapItem *item, Tile tile)
 {
     QRect rect = mapTileToRect(tile, GRID_SIZE);
     item->setPos(rect.left(), rect.top());
 }
 
-void Tilemap::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)
+void TilemapScene::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)
 {
     QPoint pos = mapTileToRect(tile, GRID_SIZE).topLeft();
     item->setPos(pos);
 }
 
-void Tilemap::setAlgorithm(int index)
+void TilemapScene::setAlgorithm(int index)
 {
     selectedAlgorithm = static_cast<Algorithm>(index);
 }
 
-void Tilemap::recomputePath()
+void TilemapScene::recomputePath()
 {
     clearPath();
     std::map<Tile, Tile> previous;
@@ -127,7 +127,7 @@ void Tilemap::recomputePath()
     paintPath(path);
 }
 
-void Tilemap::mousePressEvent(QGraphicsSceneMouseEvent *ev)
+void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
     if (ev->button() == Qt::LeftButton)
@@ -160,7 +160,7 @@ void Tilemap::mousePressEvent(QGraphicsSceneMouseEvent *ev)
     }
 }
 
-void Tilemap::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
+void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mouseReleaseEvent(ev);
     if (ev->button() == Qt::LeftButton)
@@ -191,7 +191,7 @@ void Tilemap::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
     }
 }
 
-void Tilemap::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
+void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mouseMoveEvent(ev);
     if (painting)
@@ -209,12 +209,12 @@ void Tilemap::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     }
 }
 
-void Tilemap::drawBackground(QPainter *painter, const QRectF &rect)
+void TilemapScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->fillRect(rect, QBrush(QColor(Qt::white)));
 }
 
-void Tilemap::drawForeground(QPainter *painter, const QRectF &rect)
+void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)
 {
     int step = GRID_SIZE;
     painter->setPen(QPen(GRID_COLOR));
@@ -232,7 +232,7 @@ void Tilemap::drawForeground(QPainter *painter, const QRectF &rect)
     }
 }
 
-void Tilemap::paintPath(std::vector<Tile> path)
+void TilemapScene::paintPath(std::vector<Tile> path)
 {
     for (Tile tile : path)
     {
@@ -244,7 +244,7 @@ void Tilemap::paintPath(std::vector<Tile> path)
     }
 }
 
-void Tilemap::clearPath()
+void TilemapScene::clearPath()
 {
     for (auto item : pathRects)
     {

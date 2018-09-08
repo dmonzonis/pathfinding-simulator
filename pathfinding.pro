@@ -19,8 +19,8 @@ HEADERS += \
     src/Graph.h \
     src/TilemapView.h \
     src/MainWindow.h \
-    src/Tilemap.h \
-    src/Algorithms.hpp
+    src/Algorithms.hpp \
+    src/TilemapScene.h
 
 
 SOURCES += \
@@ -28,7 +28,7 @@ SOURCES += \
     src/Graph.cpp \
     src/TilemapView.cpp \
     src/MainWindow.cpp \
-    src/Tilemap.cpp
+    src/TilemapScene.cpp
 
 RESOURCES += \
     resources.qrc

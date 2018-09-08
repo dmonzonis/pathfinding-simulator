@@ -2,7 +2,7 @@
 #define TILEMAPVIEW_H
 
 #include <QGraphicsView>
-#include "Tilemap.h"
+#include "TilemapScene.h"
 
 class TilemapView : public QGraphicsView
 {
@@ -20,7 +20,7 @@ protected:
     void wheelEvent(QWheelEvent *ev);
 
 private:
-    Tilemap *tilemap;
+    TilemapScene *tilemap;
     bool panning;
     int panDeltaX, panDeltaY;
 };

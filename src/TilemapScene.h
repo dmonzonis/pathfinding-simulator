@@ -1,5 +1,5 @@
-#ifndef TILEMAP_H
-#define TILEMAP_H
+#ifndef TILEMAPSCENE_H
+#define TILEMAPSCENE_H
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -11,13 +11,13 @@ const double FOREST_WEIGHT = 2;
 const double WATER_WEIGHT = 5;
 const QColor PATH_COLOR = QColor(250, 240, 65, 100);
 
-class Tilemap : public QGraphicsScene
+class TilemapScene : public QGraphicsScene
 {
 public:
     enum Algorithm{A_STAR, DIJKSTRA, BFS};
 
 public:
-    Tilemap(QObject *parent, int size);
+    TilemapScene(QObject *parent, int size);
     void paintTile(const Tile &tile, const QColor &color);
     void setSelectedTileType(QColor color, double weight);
     void setPixmapOnTile(QGraphicsPixmapItem *item, Tile tile);
@@ -50,4 +50,4 @@ private:
     Algorithm selectedAlgorithm;
 };
 
-#endif // TILEMAP_H
+#endif // TILEMAPSCENE_H
