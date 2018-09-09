@@ -76,6 +76,12 @@ TilemapScene::TilemapScene(QObject *parent, int size)
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
+    // Only paint if the tile has different weight than the selected one
+    double tolerance = 1e-5;
+    if (std::abs(graph.getCost(tile) - selectedWeight) < tolerance)
+    {
+        return;
+    }
     // Update the tile's weight
     graph.setCost(tile, selectedWeight);
     // Paint the visual representation
@@ -224,7 +230,6 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     }
     else if (painting)
     {
-        // TODO: Only paint if the tile has different weight than the selected one
         QPoint pos = ev->scenePos().toPoint();
         Tile tile = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
         paintTile(tile, selectedColor);
