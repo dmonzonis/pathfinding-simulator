@@ -2,6 +2,7 @@
 #define ALGORITHMS_H
 
 #include <algorithm>
+#include <functional>
 #include <map>
 #include <queue>
 #include <utility>
@@ -132,10 +133,12 @@ inline double manhattanDistance(Tile a, Tile b)
  */
 template <typename Node, typename Graph>
 void aStar(Graph graph,
-              Node start,
-              Node goal,
-              std::map<Node, Node> &previous,
-              std::map<Node, double> &costToNode)
+           Node start,
+           Node goal,
+           std::map<Node, Node> &previous,
+           std::map<Node, double> &costToNode,
+           std::function<double(Node a, Node b)> heuristic)
+
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
@@ -165,8 +168,7 @@ void aStar(Graph graph,
                     || cost < costToNode[next])
             {
                 costToNode[next] = cost;
-                // TODO: Allow for use of different heuristics
-                double priority = cost + manhattanDistance(next, goal);
+                double priority = cost + heuristic(next, goal);
                 previous[next] = current;
                 nodeQueue.emplace(priority, next);
             }
@@ -182,7 +184,8 @@ void greedyBestFirstSearch(Graph graph,
                            Node start,
                            Node goal,
                            std::map<Node, Node> &previous,
-                           std::map<Node, double> &costToNode)
+                           std::map<Node, double> &costToNode,
+                           std::function<double(Node a, Node b)> heuristic)
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
@@ -211,8 +214,7 @@ void greedyBestFirstSearch(Graph graph,
             if (previous.find(next) == previous.end())
             {
                 costToNode[next] = cost;
-                // TODO: Allow for use of different heuristics
-                double priority = manhattanDistance(next, goal);
+                double priority = heuristic(next, goal);
                 previous[next] = current;
                 nodeQueue.emplace(priority, next);
             }

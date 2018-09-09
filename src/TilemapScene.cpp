@@ -104,11 +104,14 @@ void TilemapScene::recomputePath()
     std::map<Tile, Tile> previous;
     std::map<Tile, double> costToNode;
 
+    // TODO: Use different heuristics
+    std::function<double(Tile, Tile)> heuristic = manhattanDistance;
+
     // Use pertinent algorithm
     switch (selectedAlgorithm)
     {
     case A_STAR:
-        aStar(graph, startTile, goalTile, previous, costToNode);
+        aStar(graph, startTile, goalTile, previous, costToNode, heuristic);
         break;
     case DIJKSTRA:
         dijkstra(graph, startTile, goalTile, previous, costToNode);
@@ -117,7 +120,7 @@ void TilemapScene::recomputePath()
         bfs(graph, startTile, goalTile, previous, costToNode);
         break;
     case GREEDY_BEST_FIRST:
-        greedyBestFirstSearch(graph, startTile, goalTile, previous, costToNode);
+        greedyBestFirstSearch(graph, startTile, goalTile, previous, costToNode, heuristic);
         break;
     }
 
