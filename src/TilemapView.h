@@ -36,6 +36,12 @@ public:
      */
     void setShowCost(bool state);
 
+    /**
+     * @brief Resets the state of the map.
+     * @see TilemapScene
+     */
+    void reset();
+
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);

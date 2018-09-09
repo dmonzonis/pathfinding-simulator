@@ -106,11 +106,16 @@ void MainWindow::on_actionControls_triggered()
 void MainWindow::showErrorMessage(std::string msg) const
 {
     QMessageBox errorMsg;
-    errorMsg.critical(0, "Error", QString::fromStdString(msg));
+    errorMsg.critical(nullptr, "Error", QString::fromStdString(msg));
     errorMsg.setFixedSize(500, 200);
 }
 
 void MainWindow::on_checkShowCost_stateChanged()
 {
     ui->tilemapView->setShowCost(ui->checkShowCost->isChecked());
+}
+
+void MainWindow::on_actionReset_triggered()
+{
+    ui->tilemapView->reset();
 }

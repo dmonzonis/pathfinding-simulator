@@ -60,6 +60,13 @@ public:
      */
     void setShowCost(bool state);
 
+    /**
+     * @brief Resets the map state to the initial one.
+     *
+     * Effectively removes all weights from the graph and resets the start and goal positions.
+     */
+    void reset();
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
@@ -96,12 +103,42 @@ private:
      */
     void recomputePath();
 
+    /**
+     * @brief Paints a path given as a list of tiles using the color defined by a
+     * constant.
+     *
+     * Keeps track of the painted items in a private variable, so that the drawn path
+     * can be cleared later.
+     */
     void paintPath(std::vector<Tile> path);
+
+    /**
+     * @brief Clears any painted path on the view.
+     */
     void clearPath();
+
+    /**
+     * @brief Given a costs map like the one used in the pathfinding algorithms, paints
+     * the cost to reach each tile on the visual representation with text.
+     *
+     * Keeps track of the painted items in a private variable, so that the cost text can be
+     * cleared later.
+     */
     void paintTileCosts(std::map<Tile, double> &costs);
+
+    /**
+     * @brief Clears any cost text on any tiles in the visual representation.
+     */
     void clearText();
 
+    /**
+     * @brief Initializes the scene with the preset positions for start and goal points
+     * and all tiles as floor.
+     */
+    void init();
+
 private:
+    int size;
     bool painting;
     QColor selectedColor;
     double selectedWeight;

@@ -41,8 +41,13 @@ private slots:
     void on_etWeight_editingFinished();
     void on_actionControls_triggered();
     void on_checkShowCost_stateChanged();
+    void on_actionReset_triggered();
 
 private:
+    /**
+     * @brief Shows a dialog with an error message.
+     * @param msg Text to show in the dialog.
+     */
     void showErrorMessage(std::string msg) const;
 
 private:

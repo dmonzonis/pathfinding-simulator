@@ -53,25 +53,12 @@ QRect mapTileToRect(Tile tile, int gridSize)
 
 TilemapScene::TilemapScene(QObject *parent, int size)
     : QGraphicsScene(parent),
+      size(size),
       painting(false),
       graph(-size / 2, -size / 2, size, size),
-      startTile(Tile{0, 0}),
-      goalTile(Tile{3, 3}),
-      grabbedPixmap(nullptr),
       selectedAlgorithm(A_STAR)
 {
-    // Add start and goal points
-    QPixmap circlePixmap(":/res/circle.png");
-    QPixmap crossPixmap(":/res/cross.png");
-    startPixmap = addPixmap(circlePixmap);
-    goalPixmap = addPixmap(crossPixmap);
-    movePixmapToTile(startPixmap, startTile);
-    movePixmapToTile(goalPixmap, goalTile);
-    // Always on top
-    startPixmap->setZValue(1);
-    goalPixmap->setZValue(1);
-    // Draw initial path
-    recomputePath();
+    init();
 }
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
@@ -307,4 +294,32 @@ void TilemapScene::clearText()
         delete item;
     }
     tileTexts.clear();
+}
+
+void TilemapScene::reset()
+{
+    clearPath();
+    clearText();
+    graph = GridGraph(-size / 2, -size / 2, size, size);
+    clear();
+    init();
+}
+
+void TilemapScene::init()
+{
+    startTile = Tile{0, 0};
+    goalTile = Tile{3, 3};
+    grabbedPixmap = nullptr;
+    // Add start and goal points
+    QPixmap circlePixmap(":/res/circle.png");
+    QPixmap crossPixmap(":/res/cross.png");
+    startPixmap = addPixmap(circlePixmap);
+    goalPixmap = addPixmap(crossPixmap);
+    movePixmapToTile(startPixmap, startTile);
+    movePixmapToTile(goalPixmap, goalTile);
+    // Always on top
+    startPixmap->setZValue(1);
+    goalPixmap->setZValue(1);
+    // Draw initial path
+    recomputePath();
 }

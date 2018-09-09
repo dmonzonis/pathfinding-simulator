@@ -142,11 +142,23 @@
     </property>
     <addaction name="actionControls"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionReset"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionControls">
    <property name="text">
     <string>&amp;Controls</string>
+   </property>
+  </action>
+  <action name="actionReset">
+   <property name="text">
+    <string>&amp;Reset map</string>
    </property>
   </action>
  </widget>
