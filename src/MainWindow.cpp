@@ -146,3 +146,8 @@ void MainWindow::on_actionReset_triggered()
     ui->tilemapView->reset();
     ui->tilemapView->setDiagonal(ui->checkDiagonal->isChecked());
 }
+
+void MainWindow::on_actionGoofyIcons_triggered()
+{
+    ui->tilemapView->setGoofyIcons(ui->actionGoofyIcons->isChecked());
+}

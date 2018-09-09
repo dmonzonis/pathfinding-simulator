@@ -45,6 +45,7 @@ private slots:
     void on_checkDiagonal_stateChanged();
     void on_checkCornerMovement_stateChanged();
     void on_actionReset_triggered();
+    void on_actionGoofyIcons_triggered();
 
 private:
     /**

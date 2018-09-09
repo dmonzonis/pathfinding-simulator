@@ -119,3 +119,8 @@ void TilemapView::setCornerMovement(bool state)
 {
     tilemap->setCornerMovement(state);
 }
+
+void TilemapView::setGoofyIcons(bool state)
+{
+    tilemap->setGoofyIcons(state);
+}

@@ -184,6 +184,30 @@ void TilemapScene::reset()
     init();
 }
 
+void TilemapScene::setGoofyIcons(bool state)
+{
+    // Make sure the pixmaps have been previously initialized
+    if (!startPixmap || !goalPixmap)
+    {
+        return;
+    }
+    // Set corresponding pixmaps
+    QPixmap start, end;
+    if (state)
+    {
+        start = QPixmap(":/res/link.png");
+        end = QPixmap(":/res/treasure.png");
+
+    }
+    else
+    {
+        start = QPixmap(":/res/circle.png");
+        end = QPixmap(":/res/cross.png");
+    }
+    startPixmap->setPixmap(start);
+    goalPixmap->setPixmap(end);
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);

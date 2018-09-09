@@ -202,7 +202,15 @@
     </property>
     <addaction name="actionReset"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionShowGrid"/>
+    <addaction name="actionGoofyIcons"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="actionControls">
@@ -213,6 +221,28 @@
   <action name="actionReset">
    <property name="text">
     <string>&amp;Reset map</string>
+   </property>
+  </action>
+  <action name="actionShowGrid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Show grid</string>
+   </property>
+  </action>
+  <action name="actionGoofyIcons">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Goofy icons</string>
    </property>
   </action>
  </widget>

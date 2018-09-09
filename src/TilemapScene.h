@@ -85,6 +85,11 @@ public:
      */
     void reset();
 
+    /**
+     * @brief Switch between boring and goofy icons.
+     */
+    void setGoofyIcons(bool state);
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);

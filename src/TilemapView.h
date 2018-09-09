@@ -53,6 +53,11 @@ public:
     void setCornerMovement(bool state);
 
     /**
+     * @brief Switch between boring and goofy icons.
+     */
+    void setGoofyIcons(bool state);
+
+    /**
      * @brief Resets the state of the map.
      * @see TilemapScene
      */
