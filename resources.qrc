@@ -2,8 +2,6 @@
     <qresource prefix="/">
         <file>res/circle.png</file>
         <file>res/cross.png</file>
-        <file>res/chest.png</file>
-        <file>res/star.png</file>
         <file>res/link.png</file>
         <file>res/treasure.png</file>
     </qresource>
