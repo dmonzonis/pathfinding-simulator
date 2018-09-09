@@ -277,7 +277,7 @@ void TilemapScene::paintPath(std::vector<Tile> path)
                 nextCenter = mapTileToRect(next, GRID_SIZE).center();
         QPoint offset(1, 1);
         QLine line(currentCenter + offset, nextCenter + offset);
-        auto item = addLine(line, QPen(PATH_COLOR, 5, Qt::SolidLine));
+        auto item = addLine(line, QPen(PATH_COLOR, 5, Qt::SolidLine, Qt::RoundCap));
         pathLines.push_back(item);
         // Set path tile on top of other tiles except start and goal pixmaps
         item->setZValue(0.5);
