@@ -56,7 +56,9 @@ TilemapScene::TilemapScene(QObject *parent, int size)
       size(size),
       painting(false),
       graph(-size / 2, -size / 2, size, size),
-      selectedAlgorithm(A_STAR)
+      selectedAlgorithm(A_STAR),
+      selectedHeuristic(MANHATTAN),
+      showCost(false)
 {
     init();
 }
@@ -93,7 +95,12 @@ void TilemapScene::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)
 void TilemapScene::setAlgorithm(int index)
 {
     selectedAlgorithm = static_cast<Algorithm>(index);
-    // Trigger recompute path
+    recomputePath();
+}
+
+void TilemapScene::setHeuristic(int index)
+{
+    selectedHeuristic = static_cast<Heuristic>(index);
     recomputePath();
 }
 
@@ -104,8 +111,20 @@ void TilemapScene::recomputePath()
     std::map<Tile, Tile> previous;
     std::map<Tile, double> costToNode;
 
-    // TODO: Use different heuristics
-    std::function<double(Tile, Tile)> heuristic = manhattanDistance;
+    // Use pertinent heuristic function
+    std::function<double(Tile, Tile)> heuristic;
+    switch (selectedHeuristic)
+    {
+    case MANHATTAN:
+        heuristic = manhattanDistance;
+        break;
+    case EUCLIDEAN:
+        heuristic = euclideanDistance;
+        break;
+    case CHEBYSHEV:
+        heuristic = chebyshevDistance;
+        break;
+    }
 
     // Use pertinent algorithm
     switch (selectedAlgorithm)

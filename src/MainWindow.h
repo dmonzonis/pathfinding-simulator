@@ -38,6 +38,7 @@ public:
 private slots:
     void on_cbTileType_currentIndexChanged();
     void on_cbAlgorithm_currentIndexChanged();
+    void on_cbHeuristic_currentIndexChanged();
     void on_etWeight_editingFinished();
     void on_actionControls_triggered();
     void on_checkShowCost_stateChanged();

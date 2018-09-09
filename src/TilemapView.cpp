@@ -41,6 +41,11 @@ void TilemapView::setAlgorithm(int index)
     tilemap->setAlgorithm(index);
 }
 
+void TilemapView::setHeuristic(int index)
+{
+    tilemap->setHeuristic(index);
+}
+
 void TilemapView::reset()
 {
     tilemap->reset();

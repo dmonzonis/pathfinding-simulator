@@ -31,6 +31,12 @@ public:
     void setAlgorithm(int index);
 
     /**
+     * @brief Sets the selected heuristic on the TilemapScene.
+     * @see TilemapScene
+     */
+    void setHeuristic(int index);
+
+    /**
      * @brief Sets whether or not the costs of explored tiles should be shown on top of
      * the tiles.
      */

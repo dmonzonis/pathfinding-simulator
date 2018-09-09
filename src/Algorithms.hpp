@@ -2,6 +2,7 @@
 #define ALGORITHMS_H
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <map>
 #include <queue>
@@ -126,6 +127,22 @@ void dijkstra(Graph graph,
 inline double manhattanDistance(Tile a, Tile b)
 {
     return std::abs(a.x - b.x) + std::abs(a.y - b.y);
+}
+
+/**
+ * @brief Compute the Euclidean distance between two tiles.
+ */
+inline double euclideanDistance(Tile a, Tile b)
+{
+    return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+}
+
+/**
+ * @brief Compute the Chebyshev distance between two tiles.
+ */
+inline double chebyshevDistance(Tile a, Tile b)
+{
+    return std::max(std::abs(a.x - b.x), std::abs(a.y - b.y));
 }
 
 /**

@@ -61,6 +61,20 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
+       <widget class="QCheckBox" name="checkShowCost">
+        <property name="text">
+         <string>Show cost to explored tiles</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkDiagonal">
+        <property name="text">
+         <string>Allow diagonal movement</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="textTileType">
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
@@ -104,20 +118,6 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QCheckBox" name="checkShowCost">
-        <property name="text">
-         <string>Show cost to explored tiles</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkDiagonal">
-        <property name="text">
-         <string>Allow diagonal movement</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="textAlgorithm">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -135,6 +135,25 @@
       </item>
       <item>
        <widget class="QComboBox" name="cbAlgorithm"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="etHeurisstic">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Heuristic</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbHeuristic"/>
       </item>
      </layout>
     </item>

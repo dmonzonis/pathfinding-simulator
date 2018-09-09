@@ -18,7 +18,8 @@ const QColor PATH_COLOR = QColor(250, 240, 65, 255);
 class TilemapScene : public QGraphicsScene
 {
 public:
-    enum Algorithm{A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
+    enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
+    enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV};
 
 public:
     /**
@@ -51,6 +52,13 @@ public:
      * an algorithm via the Algorithm enum.
      */
     void setAlgorithm(int index);
+
+    /**
+     * @brief Sets the currently active heuristic, for the algorithms that use one.
+     * @param index Index of the heuristic combo box in the main window, which maps to
+     * an heuristic via the Heuristic enum.
+     */
+    void setHeuristic(int index);
 
     /**
      * @brief Sets whether or not the costs of explored tiles should be shown on top of
@@ -152,6 +160,7 @@ private:
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
     std::vector<QGraphicsLineItem*> pathLines;
     Algorithm selectedAlgorithm;
+    Heuristic selectedHeuristic;
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost;
 };

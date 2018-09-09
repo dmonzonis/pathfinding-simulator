@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cbAlgorithm->addItem("Dijkstra");
     ui->cbAlgorithm->addItem("BFS");
     ui->cbAlgorithm->addItem("Greedy Best-first search");
+    // Populate heuristic list
+    ui->cbHeuristic->addItem("Manhattan distance");
+    ui->cbHeuristic->addItem("Euclidean distance");
+    ui->cbHeuristic->addItem("Chebyshev distance");
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +80,16 @@ void MainWindow::on_cbAlgorithm_currentIndexChanged()
 {
     int index = ui->cbAlgorithm->currentIndex();
     ui->tilemapView->setAlgorithm(index);
+    // If the currently selected algorithm doesn't use an heuristic,
+    // disable the heuristic combo box
+    // TODO: Use better approach instead of depending on the index
+    ui->cbHeuristic->setEnabled(index == 0 || index == 3);
+}
+
+void MainWindow::on_cbHeuristic_currentIndexChanged()
+{
+    int index = ui->cbHeuristic->currentIndex();
+    ui->tilemapView->setHeuristic(index);
 }
 
 void MainWindow::on_etWeight_editingFinished()
