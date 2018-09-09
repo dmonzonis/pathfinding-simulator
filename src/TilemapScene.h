@@ -78,6 +78,14 @@ public:
      */
     void recomputePath();
 
+    /**
+     * @brief Sets whether or not the costs of explored tiles should be shown on top of
+     * the tiles.
+     *
+     * Also triggers a path recomputation.
+     */
+    void setShowCost(bool state);
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
@@ -90,6 +98,8 @@ protected:
 private:
     void paintPath(std::vector<Tile> path);
     void clearPath();
+    void paintTileCosts(std::map<Tile, double> &costs);
+    void clearText();
 
 private:
     bool painting;
@@ -100,6 +110,8 @@ private:
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
     std::vector<QGraphicsRectItem*> pathRects;
     Algorithm selectedAlgorithm;
+    std::vector<QGraphicsSimpleTextItem*> tileTexts;
+    bool showCost;
 };
 
 #endif // TILEMAPSCENE_H

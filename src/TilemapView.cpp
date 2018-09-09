@@ -99,3 +99,8 @@ void TilemapView::wheelEvent(QWheelEvent *ev)
         scale(0.8, 0.8);
     }
 }
+
+void TilemapView::setShowCost(bool state)
+{
+    tilemap->setShowCost(state);
+}

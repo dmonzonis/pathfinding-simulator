@@ -104,6 +104,13 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
+       <widget class="QCheckBox" name="checkShowCost">
+        <property name="text">
+         <string>Show cost to explored tiles</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="textAlgorithm">
         <property name="text">
          <string>Algorithm</string>
@@ -139,7 +146,7 @@
   </widget>
   <action name="actionControls">
    <property name="text">
-    <string>Controls</string>
+    <string>&amp;Controls</string>
    </property>
   </action>
  </widget>

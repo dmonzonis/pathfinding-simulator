@@ -109,3 +109,8 @@ void MainWindow::showErrorMessage(std::string msg) const
     errorMsg.critical(0, "Error", QString::fromStdString(msg));
     errorMsg.setFixedSize(500, 200);
 }
+
+void MainWindow::on_checkShowCost_stateChanged()
+{
+    ui->tilemapView->setShowCost(ui->checkShowCost->isChecked());
+}

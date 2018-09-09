@@ -32,6 +32,12 @@ public:
      */
     void recomputePath();
 
+    /**
+     * @brief Sets whether or not the costs of explored tiles should be shown on top of
+     * the tiles.
+     */
+    void setShowCost(bool state);
+
 protected:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);

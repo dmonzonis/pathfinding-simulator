@@ -106,9 +106,11 @@ void TilemapScene::setAlgorithm(int index)
 
 void TilemapScene::recomputePath()
 {
+    clearText();
     clearPath();
     std::map<Tile, Tile> previous;
     std::map<Tile, double> costToNode;
+
     // Use pertinent algorithm
     switch (selectedAlgorithm)
     {
@@ -125,12 +127,25 @@ void TilemapScene::recomputePath()
         greedyBestFirstSearch(graph, startTile, goalTile, previous, costToNode);
         break;
     }
+
     // Only paint the path if a solution exists
     if (previous.find(goalTile) != previous.end())
     {
         std::vector<Tile> path = reconstructPath(startTile, goalTile, previous);
         paintPath(path);
     }
+
+    // If the option is checked, paint tile costs
+    if (showCost)
+    {
+        paintTileCosts(costToNode);
+    }
+}
+
+void TilemapScene::setShowCost(bool state)
+{
+    showCost = state;
+    recomputePath();
 }
 
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
@@ -249,7 +264,7 @@ void TilemapScene::paintPath(std::vector<Tile> path)
         auto item = addRect(rect, QPen(PATH_COLOR), QBrush(PATH_COLOR));
         pathRects.push_back(item);
         // Set path tile on top of other tiles except start and goal pixmaps
-        item->setZValue(0.9);
+        item->setZValue(0.5);
     }
 }
 
@@ -258,8 +273,31 @@ void TilemapScene::clearPath()
     for (auto item : pathRects)
     {
         removeItem(item);
+        delete item;
     }
     pathRects.clear();
-    // Trigger redraw
+}
 
+void TilemapScene::paintTileCosts(std::map<Tile, double> &costs)
+{
+    for (auto it = costs.begin(); it != costs.end(); it++)
+    {
+        // Convert cost to graphics text and add it to the list
+        auto item = addSimpleText(QString::number(it->second));
+        tileTexts.push_back(item);
+        // Get tile and draw the text on it
+        QPoint pos = mapTileToRect(it->first, GRID_SIZE).topLeft();
+        item->setPos(pos);
+        item->setZValue(0.6);
+    }
+}
+
+void TilemapScene::clearText()
+{
+    for (auto item : tileTexts)
+    {
+        removeItem(item);
+        delete item;
+    }
+    tileTexts.clear();
 }
