@@ -90,6 +90,11 @@ public:
      */
     void setGoofyIcons(bool state);
 
+    /**
+     * @brief Sets whether or not the grid should be drawn.
+     */
+    void setShowGrid(bool state);
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
@@ -172,7 +177,7 @@ private:
     Algorithm selectedAlgorithm;
     Heuristic selectedHeuristic;
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
-    bool showCost;
+    bool showCost, showGrid;
 };
 
 #endif // TILEMAPSCENE_H

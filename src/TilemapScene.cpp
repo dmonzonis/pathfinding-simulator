@@ -58,7 +58,8 @@ TilemapScene::TilemapScene(QObject *parent, int size)
       graph(-size / 2, -size / 2, size, size),
       selectedAlgorithm(A_STAR),
       selectedHeuristic(MANHATTAN),
-      showCost(false)
+      showCost(false),
+      showGrid(true)
 {
     init();
 }
@@ -208,6 +209,12 @@ void TilemapScene::setGoofyIcons(bool state)
     goalPixmap->setPixmap(end);
 }
 
+void TilemapScene::setShowGrid(bool state)
+{
+    showGrid = state;
+    update();
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
@@ -300,6 +307,10 @@ void TilemapScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)
 {
+    if (!showGrid)
+    {
+        return;
+    }
     // Draws the grid
     int step = GRID_SIZE;
     painter->setPen(QPen(GRID_COLOR));

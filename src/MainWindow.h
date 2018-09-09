@@ -46,6 +46,7 @@ private slots:
     void on_checkCornerMovement_stateChanged();
     void on_actionReset_triggered();
     void on_actionGoofyIcons_triggered();
+    void on_actionShowGrid_triggered();
 
 private:
     /**

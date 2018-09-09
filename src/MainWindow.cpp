@@ -151,3 +151,8 @@ void MainWindow::on_actionGoofyIcons_triggered()
 {
     ui->tilemapView->setGoofyIcons(ui->actionGoofyIcons->isChecked());
 }
+
+void MainWindow::on_actionShowGrid_triggered()
+{
+    ui->tilemapView->setShowGrid(ui->actionShowGrid->isChecked());
+}

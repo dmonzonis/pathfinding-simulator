@@ -124,3 +124,8 @@ void TilemapView::setGoofyIcons(bool state)
 {
     tilemap->setGoofyIcons(state);
 }
+
+void TilemapView::setShowGrid(bool state)
+{
+    tilemap->setShowGrid(state);
+}

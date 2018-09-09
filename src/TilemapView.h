@@ -58,6 +58,11 @@ public:
     void setGoofyIcons(bool state);
 
     /**
+     * @brief Sets whether or not the grid should be drawn.
+     */
+    void setShowGrid(bool state);
+
+    /**
      * @brief Resets the state of the map.
      * @see TilemapScene
      */
