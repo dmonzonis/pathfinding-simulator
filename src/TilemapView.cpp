@@ -2,7 +2,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 
-const int TILE_COUNT = 500;  // Number of tiles in a row or column
+const int TILE_COUNT = 100;  // Number of tiles in a row or column
 
 TilemapView::TilemapView(QWidget *parent)
     : QGraphicsView(parent),
