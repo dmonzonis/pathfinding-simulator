@@ -41,11 +41,6 @@ void TilemapView::setAlgorithm(int index)
     tilemap->setAlgorithm(index);
 }
 
-void TilemapView::recomputePath()
-{
-    tilemap->recomputePath();
-}
-
 void TilemapView::mousePressEvent(QMouseEvent *ev)
 {
     QGraphicsView::mousePressEvent(ev);

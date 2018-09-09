@@ -235,11 +235,13 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
 
 void TilemapScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
+    // Paints the whole background white
     painter->fillRect(rect, QBrush(QColor(Qt::white)));
 }
 
 void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)
 {
+    // Draws the grid
     int step = GRID_SIZE;
     painter->setPen(QPen(GRID_COLOR));
     // Draw horizontal lines

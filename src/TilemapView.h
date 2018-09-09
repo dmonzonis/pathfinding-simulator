@@ -4,6 +4,10 @@
 #include <QGraphicsView>
 #include "TilemapScene.h"
 
+/**
+ * @brief The TilemapView class is a graphics view which has a TilemapScene as its scene,
+ * and also acts as a controller for modifying some of its data from the widget it's in.
+ */
 class TilemapView : public QGraphicsView
 {
 public:
@@ -25,12 +29,6 @@ public:
      * @see TilemapScene
      */
     void setAlgorithm(int index);
-
-    /**
-     * @brief Triggers a path recomputation in the TilemapScene.
-     * @see TilemapScene
-     */
-    void recomputePath();
 
     /**
      * @brief Sets whether or not the costs of explored tiles should be shown on top of

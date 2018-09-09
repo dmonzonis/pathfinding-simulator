@@ -34,14 +34,6 @@ public:
     TilemapScene(QObject *parent, int size);
 
     /**
-     * @brief Updates the cost of a tile in the grid with the currently active weight,
-     * and paints the visual representation of the tile with the given color.
-     * @param tile Tile in the grid graph to update.
-     * @param color Color to be used to paint the visual representation of the tile.
-     */
-    void paintTile(const Tile &tile, const QColor &color);
-
-    /**
      * @brief Updates the currently active weight and color for painting tiles.
      *
      * When the user paints a tile by clicking it, this color and weight will be used
@@ -54,29 +46,11 @@ public:
     void setSelectedTileType(QColor color, double weight);
 
     /**
-     * @brief Places a pixmap item on top of the visual representation of the given tile.
-     * @param item Pointer to the pixmap item to be placed.
-     * @param tile Tile in the grid graph where the pixmap should be placed.
-     *
-     * The placement of the pixmap tile will have no effect on the grid graph itself,
-     * only on the visual representation of the tile.
-     */
-    void movePixmapToTile(QGraphicsPixmapItem *item, Tile tile);
-
-    /**
      * @brief Sets the currently active algorithm to be used for the path computation.
      * @param index Index of the algorithm combo box in the main window, which maps to
      * an algorithm via the Algorithm enum.
      */
     void setAlgorithm(int index);
-
-    /**
-     * @brief Recomputes the path using the currently selected algorithm and draws it.
-     *
-     * Any old path representation is cleared first, and then the new path is computed
-     * using the pertinent algorithm and drawn on the screen.
-     */
-    void recomputePath();
 
     /**
      * @brief Sets whether or not the costs of explored tiles should be shown on top of
@@ -96,6 +70,32 @@ protected:
     void drawForeground(QPainter *painter, const QRectF &rect);
 
 private:
+    /**
+     * @brief Updates the cost of a tile in the grid with the currently active weight,
+     * and paints the visual representation of the tile with the given color.
+     * @param tile Tile in the grid graph to update.
+     * @param color Color to be used to paint the visual representation of the tile.
+     */
+    void paintTile(const Tile &tile, const QColor &color);
+
+    /**
+     * @brief Places a pixmap item on top of the visual representation of the given tile.
+     * @param item Pointer to the pixmap item to be placed.
+     * @param tile Tile in the grid graph where the pixmap should be placed.
+     *
+     * The placement of the pixmap tile will have no effect on the grid graph itself,
+     * only on the visual representation of the tile.
+     */
+    void movePixmapToTile(QGraphicsPixmapItem *item, Tile tile);
+
+    /**
+     * @brief Recomputes the path using the currently selected algorithm and draws it.
+     *
+     * Any old path representation is cleared first, and then the new path is computed
+     * using the pertinent algorithm and drawn on the screen.
+     */
+    void recomputePath();
+
     void paintPath(std::vector<Tile> path);
     void clearPath();
     void paintTileCosts(std::map<Tile, double> &costs);
