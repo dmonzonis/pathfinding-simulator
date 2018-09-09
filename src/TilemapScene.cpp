@@ -329,7 +329,7 @@ void TilemapScene::paintTileCosts(std::map<Tile, double> &costs)
         // Get tile and draw the text on it
         QPoint pos = mapTileToRect(it->first, GRID_SIZE).topLeft();
         item->setPos(pos);
-        item->setZValue(0.6);
+        item->setZValue(1);
     }
 }
 
@@ -355,9 +355,8 @@ void TilemapScene::init()
     goalPixmap = addPixmap(treasurePixmap);
     movePixmapToTile(startPixmap, startTile);
     movePixmapToTile(goalPixmap, goalTile);
-    // Always on top
-    startPixmap->setZValue(1);
-    goalPixmap->setZValue(1);
+    startPixmap->setZValue(0.9);
+    goalPixmap->setZValue(0.9);
     // Draw initial path
     recomputePath();
 }
