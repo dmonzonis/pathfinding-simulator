@@ -66,6 +66,11 @@ TilemapScene::TilemapScene(QObject *parent, int size)
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
+    // Only allow painting in tiles inside the grid graph's bounds
+    if (graph.isOutOfBounds(tile))
+    {
+        return;
+    }
     // Only paint if the tile has different weight than the selected one
     double tolerance = 1e-5;
     if (std::abs(graph.getCost(tile) - selectedWeight) < tolerance)
@@ -301,8 +306,10 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
 
 void TilemapScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    // Paints the whole background white
-    painter->fillRect(rect, QBrush(QColor(Qt::white)));
+    // First paint the whole background white
+    painter->fillRect(rect, QBrush(QColor(Qt::black)));
+    // Then paint the actual map rect white
+    painter->fillRect(sceneRect(), QBrush(QColor(Qt::white)));
 }
 
 void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)

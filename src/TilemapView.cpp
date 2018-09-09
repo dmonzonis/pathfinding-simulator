@@ -19,6 +19,7 @@ TilemapView::TilemapView(QWidget *parent)
                    tileSize * TILE_COUNT,
                    tileSize * TILE_COUNT);
     setSceneRect(viewRect);
+    tilemap->setSceneRect(viewRect);
     // Set anchor under mouse when rescaling
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     // Hide scrollbars
