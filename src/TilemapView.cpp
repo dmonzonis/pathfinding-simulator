@@ -2,29 +2,14 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 
-const int TILE_COUNT = 100;  // Number of tiles in a row or column
-
-TilemapView::TilemapView(QWidget *parent)
+TilemapView::TilemapView(QWidget *parent, int width, int height)
     : QGraphicsView(parent),
-      tilemap(new TilemapScene(this, TILE_COUNT)),
+      tilemap(nullptr),
       panning(false),
       panDeltaX(0),
       panDeltaY(0)
 {
-    setScene(tilemap);
-    // Set custom fixed scene rect, with origin at its center
-    int tileSize = GRID_SIZE;
-    QRect viewRect(-tileSize * TILE_COUNT / 2,
-                   -tileSize * TILE_COUNT / 2,
-                   tileSize * TILE_COUNT,
-                   tileSize * TILE_COUNT);
-    setSceneRect(viewRect);
-    tilemap->setSceneRect(viewRect);
-    // Set anchor under mouse when rescaling
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    // Hide scrollbars
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    init(width, height);
 }
 
 TilemapView::~TilemapView()
@@ -35,6 +20,29 @@ TilemapView::~TilemapView()
 TilemapScene* TilemapView::getTilemapScene()
 {
     return tilemap;
+}
+
+void TilemapView::init(int width, int height)
+{
+    if (tilemap)
+    {
+        delete tilemap;
+    }
+    tilemap = new TilemapScene(this, width, height);
+    setScene(tilemap);
+    // Set custom fixed scene rect, with origin at its center
+    int tileSize = GRID_SIZE;
+    QRect viewRect(-tileSize * width / 2,
+                   -tileSize * height / 2,
+                   tileSize * width,
+                   tileSize * height);
+    setSceneRect(viewRect);
+    tilemap->setSceneRect(viewRect);
+    // Set anchor under mouse when rescaling
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    // Hide scrollbars
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void TilemapView::mousePressEvent(QMouseEvent *ev)

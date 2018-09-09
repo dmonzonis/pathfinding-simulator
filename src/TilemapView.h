@@ -14,7 +14,7 @@ public:
      * @brief Constructs a custom graphics view, which has a TilemapScene as its
      * graphics scene.
      */
-    TilemapView(QWidget *parent);
+    TilemapView(QWidget *parent, int width = 100, int height = 100);
 
     ~TilemapView();
 
@@ -23,6 +23,11 @@ public:
      * @see TilemapScene
      */
     TilemapScene* getTilemapScene();
+
+    /**
+     * @brief Create a new view and scene with the given width and height.
+     */
+    void init(int width, int height);
 
 protected:
     void mousePressEvent(QMouseEvent *ev);

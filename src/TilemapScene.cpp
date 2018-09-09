@@ -51,11 +51,12 @@ QRect mapTileToRect(Tile tile, int gridSize)
     return QRect(left, top, gridSize, gridSize);
 }
 
-TilemapScene::TilemapScene(QObject *parent, int size)
+TilemapScene::TilemapScene(QObject *parent, int width, int height)
     : QGraphicsScene(parent),
-      size(size),
+      width(width),
+      height(height),
       painting(false),
-      graph(-size / 2, -size / 2, size, size),
+      graph(-width / 2, -height / 2, width, height),
       selectedAlgorithm(A_STAR),
       selectedHeuristic(MANHATTAN),
       showCost(false),
@@ -185,7 +186,7 @@ void TilemapScene::reset()
 {
     clearPath();
     clearText();
-    graph = GridGraph(-size / 2, -size / 2, size, size);
+    graph = GridGraph(-width / 2, -height / 2, width, height);
     clear();
     init();
 }

@@ -14,7 +14,8 @@ INCLUDEPATH += src
 
 FORMS += \
     ui/mainwindow.ui \
-    ui/helpdialog.ui
+    ui/helpdialog.ui \
+    ui/newmapdialog.ui
 
 HEADERS += \
     src/Graph.h \
@@ -22,7 +23,9 @@ HEADERS += \
     src/MainWindow.h \
     src/Algorithms.hpp \
     src/TilemapScene.h \
-    src/HelpDialog.h
+    src/HelpDialog.h \
+    src/NewMapDialog.h \
+    src/Utils.h
 
 
 SOURCES += \
@@ -31,7 +34,9 @@ SOURCES += \
     src/TilemapView.cpp \
     src/MainWindow.cpp \
     src/TilemapScene.cpp \
-    src/HelpDialog.cpp
+    src/HelpDialog.cpp \
+    src/NewMapDialog.cpp \
+    src/utils.cpp
 
 RESOURCES += \
     resources.qrc

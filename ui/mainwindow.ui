@@ -200,6 +200,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNewMap"/>
     <addaction name="actionReset"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -243,6 +244,11 @@
    </property>
    <property name="text">
     <string>&amp;Goofy icons</string>
+   </property>
+  </action>
+  <action name="actionNewMap">
+   <property name="text">
+    <string>New map</string>
    </property>
   </action>
  </widget>

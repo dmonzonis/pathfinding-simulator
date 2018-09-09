@@ -47,13 +47,7 @@ private slots:
     void on_actionReset_triggered();
     void on_actionGoofyIcons_triggered();
     void on_actionShowGrid_triggered();
-
-private:
-    /**
-     * @brief Shows a dialog with an error message.
-     * @param msg Text to show in the dialog.
-     */
-    void showErrorMessage(std::string msg) const;
+    void on_actionNewMap_triggered();
 
 private:
     Ui::MainWindow *ui;

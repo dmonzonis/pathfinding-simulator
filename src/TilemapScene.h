@@ -32,7 +32,7 @@ public:
      *
      * Initially, the start tile is set to (0, 0), and the goal tile to (3, 3).
      */
-    TilemapScene(QObject *parent, int size);
+    TilemapScene(QObject *parent, int width, int height);
 
     /**
      * @brief Updates the currently active weight and color for painting tiles.
@@ -166,7 +166,7 @@ private:
     void init();
 
 private:
-    int size;
+    int width, height;
     bool painting;
     QColor selectedColor;
     double selectedWeight;

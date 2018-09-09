@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "HelpDialog.h"
+#include "NewMapDialog.h"
+#include "Utils.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -120,13 +122,6 @@ void MainWindow::on_actionControls_triggered()
     helpDialog->show();
 }
 
-void MainWindow::showErrorMessage(std::string msg) const
-{
-    QMessageBox errorMsg;
-    errorMsg.critical(nullptr, "Error", QString::fromStdString(msg));
-    errorMsg.setFixedSize(500, 200);
-}
-
 void MainWindow::on_checkShowCost_stateChanged()
 {
     tilemap->setShowCost(ui->checkShowCost->isChecked());
@@ -158,4 +153,18 @@ void MainWindow::on_actionGoofyIcons_triggered()
 void MainWindow::on_actionShowGrid_triggered()
 {
     tilemap->setShowGrid(ui->actionShowGrid->isChecked());
+}
+
+void MainWindow::on_actionNewMap_triggered()
+{
+    NewMapDialog *newMapDialog = new NewMapDialog(this);
+    newMapDialog->exec();
+    if (newMapDialog->hasAccepted())
+    {
+        int width = newMapDialog->getWidth();
+        int height = newMapDialog->getHeight();
+        ui->tilemapView->init(width, height);
+    }
+    // Update reference to tilemap scene
+    tilemap = ui->tilemapView->getTilemapScene();
 }
