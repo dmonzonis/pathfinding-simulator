@@ -349,10 +349,10 @@ void TilemapScene::init()
     goalTile = Tile{3, 3};
     grabbedPixmap = nullptr;
     // Add start and goal points
-    QPixmap circlePixmap(":/res/circle.png");
-    QPixmap crossPixmap(":/res/cross.png");
-    startPixmap = addPixmap(circlePixmap);
-    goalPixmap = addPixmap(crossPixmap);
+    QPixmap heroPixmap(":/res/link.png");
+    QPixmap treasurePixmap(":/res/treasure.png");
+    startPixmap = addPixmap(heroPixmap);
+    goalPixmap = addPixmap(treasurePixmap);
     movePixmapToTile(startPixmap, startTile);
     movePixmapToTile(goalPixmap, goalTile);
     // Always on top
