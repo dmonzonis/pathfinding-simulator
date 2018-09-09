@@ -39,7 +39,7 @@ std::vector<Node> reconstructPath(Node start,
  * Compute the path between two nodes using Breadth-first search with early exit.
  */
 template <typename Node, typename Graph>
-void bfs(Graph graph,
+void bfs(Graph *graph,
          Node start,
          Node goal,
          std::map<Node, Node> &previous,
@@ -63,11 +63,11 @@ void bfs(Graph graph,
         }
 
         // Push unvisited neighbors to queue and update total cost to reach them
-        for (Node next : graph.neighbors(current))
+        for (Node next : graph->neighbors(current))
         {
             if (previous.find(next) == previous.end())
             {
-                double cost = costToNode[current] + graph.getCost(next);
+                double cost = costToNode[current] + graph->getCost(next);
                 costToNode[next] = cost;
                 previous[next] = current;
                 nodeQueue.push(next);
@@ -80,7 +80,7 @@ void bfs(Graph graph,
  * Compute the optimal path between two nodes using Dijkstra's algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void dijkstra(Graph graph,
+void dijkstra(Graph *graph,
               Node start,
               Node goal,
               std::map<Node, Node> &previous,
@@ -106,9 +106,9 @@ void dijkstra(Graph graph,
         }
 
         // Push unvisited neighbors to queue
-        for (Node next : graph.neighbors(current))
+        for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph.getCost(next);
+            double cost = costToNode[current] + graph->getCost(next);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end()
                     || cost < costToNode[next])
@@ -149,7 +149,7 @@ inline double chebyshevDistance(Tile a, Tile b)
  * Compute the optimal path between two nodes using the A* algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void aStar(Graph graph,
+void aStar(Graph *graph,
            Node start,
            Node goal,
            std::map<Node, Node> &previous,
@@ -177,9 +177,9 @@ void aStar(Graph graph,
         }
 
         // Push unvisited neighbors to queue
-        for (Node next : graph.neighbors(current))
+        for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph.getCost(next);
+            double cost = costToNode[current] + graph->getCost(next);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end()
                     || cost < costToNode[next])
@@ -197,7 +197,7 @@ void aStar(Graph graph,
  * Compute the path between two nodes using the greedy best-first search algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void greedyBestFirstSearch(Graph graph,
+void greedyBestFirstSearch(Graph *graph,
                            Node start,
                            Node goal,
                            std::map<Node, Node> &previous,
@@ -224,9 +224,9 @@ void greedyBestFirstSearch(Graph graph,
         }
 
         // Push unvisited neighbors to queue
-        for (Node next : graph.neighbors(current))
+        for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph.getCost(next);
+            double cost = costToNode[current] + graph->getCost(next);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end())
             {

@@ -170,7 +170,7 @@ private:
     bool painting;
     QColor selectedColor;
     double selectedWeight;
-    GridGraph graph;
+    GridGraph *graph;
     Tile startTile, goalTile;
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
     std::vector<QGraphicsLineItem*> pathLines;

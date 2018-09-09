@@ -52,6 +52,7 @@ void NewMapDialog::on_buttonBox_accepted()
     {
         // Invalid data, early close
         close();
+        return;
     }
     height = getNumber(ui->textHeight);
     if (height != -1)

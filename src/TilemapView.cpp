@@ -32,8 +32,20 @@ void TilemapView::init(int width, int height)
     setScene(tilemap);
     // Set custom fixed scene rect, with origin at its center
     int tileSize = GRID_SIZE;
-    QRect viewRect(-tileSize * width / 2,
-                   -tileSize * height / 2,
+    int left = -tileSize * width / 2,
+            top = -tileSize * height / 2;
+    // Make adjustments for odd widths and heights
+    if (width % 2 != 0)
+    {
+        left += tileSize / 2;
+    }
+    if (height % 2 != 0)
+    {
+        top += tileSize / 2;
+    }
+    // Create view rectangle
+    QRect viewRect(left,
+                   top,
                    tileSize * width,
                    tileSize * height);
     setSceneRect(viewRect);
