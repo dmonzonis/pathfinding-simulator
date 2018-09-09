@@ -123,10 +123,25 @@ public:
      */
     void setDiagonalAllowed(bool allowed);
 
+    /**
+     * @brief Sets whether or not corner movement is allowed.
+     */
+    void setCornerMovementAllowed(bool allowed);
+
+private:
+    /**
+     * @brief Tests whether moving in the given direction from a tile is a corner movement.
+     *
+     * A corner movement is defined by moving around a corner tile on one of the sides in a
+     * diagonal movement. For example, if moving NE, it would be considered a corner
+     * movement if there were a wall tile on the N or E directions.
+     */
+    bool isCornerMovement(Tile tile, Tile direction);
+
 private:
     int left, top, right, bottom;  // Bounds for x and y coordinates
     std::map<Tile, double> costs;
-    bool diagonalAllowed;
+    bool diagonalAllowed, cornerMovementAllowed;
 };
 
 #endif // GRAPH_H

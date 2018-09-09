@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>895</width>
-    <height>697</height>
+    <width>969</width>
+    <height>704</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -75,7 +75,23 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkCornerMovement">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Allow corner movement</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="textTileType">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
         </property>
@@ -92,6 +108,12 @@
       </item>
       <item>
        <widget class="QLabel" name="textWeight">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Tile cost</string>
         </property>
@@ -164,7 +186,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>895</width>
+     <width>969</width>
      <height>30</height>
     </rect>
    </property>

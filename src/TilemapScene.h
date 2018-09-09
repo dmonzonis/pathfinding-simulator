@@ -74,6 +74,11 @@ public:
     void setDiagonal(bool state);
 
     /**
+     * @brief Sets whether or not corner movement is allowed
+     */
+    void setCornerMovement(bool state);
+
+    /**
      * @brief Resets the map state to the initial one.
      *
      * Effectively removes all weights from the graph and resets the start and goal positions.

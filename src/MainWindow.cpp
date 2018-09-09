@@ -131,7 +131,14 @@ void MainWindow::on_checkShowCost_stateChanged()
 
 void MainWindow::on_checkDiagonal_stateChanged()
 {
-    ui->tilemapView->setDiagonal(ui->checkDiagonal->isChecked());
+    bool state = ui->checkDiagonal->isChecked();
+    ui->tilemapView->setDiagonal(state);
+    ui->checkCornerMovement->setEnabled(state);
+}
+
+void MainWindow::on_checkCornerMovement_stateChanged()
+{
+    ui->tilemapView->setCornerMovement(ui->checkCornerMovement->isChecked());
 }
 
 void MainWindow::on_actionReset_triggered()

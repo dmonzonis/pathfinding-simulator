@@ -48,6 +48,11 @@ public:
     void setDiagonal(bool state);
 
     /**
+     * @brief Sets whether or not corner movement is allowed.
+     */
+    void setCornerMovement(bool state);
+
+    /**
      * @brief Resets the state of the map.
      * @see TilemapScene
      */

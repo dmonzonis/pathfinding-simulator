@@ -20,7 +20,8 @@ GridGraph::GridGraph(int left, int top, int width, int height)
       top(top),
       right(left + width),
       bottom(top + height),
-      diagonalAllowed(false)
+      diagonalAllowed(false),
+      cornerMovementAllowed(false)
 {
 }
 
@@ -50,7 +51,9 @@ std::vector<Tile> GridGraph::neighbors(Tile tile)
     for (auto dir : dirs)
     {
         Tile adjacentTile{tile.x + dir.x, tile.y + dir.y};
-        if (!isOutOfBounds(adjacentTile) && !isWall(adjacentTile))
+        if (!isOutOfBounds(adjacentTile) && !isWall(adjacentTile)
+                && (!diagonalAllowed || cornerMovementAllowed
+                    || !isCornerMovement(tile, dir)))
         {
             // Walkable tile, add to neighbors vector
             result.push_back(adjacentTile);
@@ -79,6 +82,18 @@ void GridGraph::setCost(Tile tile, double cost)
 void GridGraph::setDiagonalAllowed(bool allowed)
 {
     diagonalAllowed = allowed;
+}
+
+void GridGraph::setCornerMovementAllowed(bool allowed)
+{
+    cornerMovementAllowed = allowed;
+}
+
+bool GridGraph::isCornerMovement(Tile tile, Tile direction)
+{
+    Tile corner1{tile.x + direction.x, tile.y};
+    Tile corner2{tile.x, tile.y + direction.y};
+    return isWall(corner1) || isWall(corner2);
 }
 
 std::vector<Tile> GridGraph::DIRS = {

@@ -114,3 +114,8 @@ void TilemapView::setDiagonal(bool state)
 {
     tilemap->setDiagonal(state);
 }
+
+void TilemapView::setCornerMovement(bool state)
+{
+    tilemap->setCornerMovement(state);
+}

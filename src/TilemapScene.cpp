@@ -169,6 +169,12 @@ void TilemapScene::setDiagonal(bool state)
     recomputePath();
 }
 
+void TilemapScene::setCornerMovement(bool state)
+{
+    graph.setCornerMovementAllowed(state);
+    recomputePath();
+}
+
 void TilemapScene::reset()
 {
     clearPath();
