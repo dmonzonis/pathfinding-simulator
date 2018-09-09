@@ -151,7 +151,7 @@ void TilemapScene::setShowCost(bool state)
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
-    if (ev->button() == Qt::LeftButton)
+    if (ev->button() == Qt::LeftButton && !grabbedPixmap)
     {
         painting = true;
         QPoint pos = ev->scenePos().toPoint();
@@ -217,7 +217,12 @@ void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
 void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mouseMoveEvent(ev);
-    if (painting)
+    if (grabbedPixmap)
+    {
+        // We are moving a pixmap around, set its center under the cursor
+        grabbedPixmap->setPos(ev->scenePos() - QPointF(GRID_SIZE / 2, GRID_SIZE / 2));
+    }
+    else if (painting)
     {
         // TODO: Only paint if the tile has different weight than the selected one
         QPoint pos = ev->scenePos().toPoint();
@@ -225,11 +230,6 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
         paintTile(tile, selectedColor);
         ev->accept();
         return;
-    }
-    else if (grabbedPixmap)
-    {
-        // We are moving a pixmap around, set its center under the cursor
-        grabbedPixmap->setPos(ev->scenePos() - QPointF(GRID_SIZE / 2, GRID_SIZE / 2));
     }
 }
 
