@@ -7,9 +7,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    customWeight(10)
+    customWeight(10),
+    tilemap(nullptr)
 {
     ui->setupUi(this);
+    // Get pointer to the tilemap scene
+    tilemap = ui->tilemapView->getTilemapScene();
     // Populate tile type combo box in the same order as the TileTypes enum
     ui->cbTileType->addItem("Wall", QColor(Qt::black));
     ui->cbTileType->addItem("Floor", QColor(Qt::white));
@@ -64,7 +67,7 @@ void MainWindow::updateSelectedTileType()
         ui->etWeight->setText(QString::number(weight));
     }
     // Set selected color and weight on graphics scene
-    ui->tilemapView->setSelectedTileType(selectedColor, weight);
+    tilemap->setSelectedTileType(selectedColor, weight);
 }
 
 void MainWindow::on_cbTileType_currentIndexChanged()
@@ -79,7 +82,7 @@ void MainWindow::on_cbTileType_currentIndexChanged()
 void MainWindow::on_cbAlgorithm_currentIndexChanged()
 {
     int index = ui->cbAlgorithm->currentIndex();
-    ui->tilemapView->setAlgorithm(index);
+    tilemap->setAlgorithm(index);
     // If the currently selected algorithm doesn't use an heuristic,
     // disable the heuristic combo box
     // TODO: Use better approach instead of depending on the index
@@ -89,7 +92,7 @@ void MainWindow::on_cbAlgorithm_currentIndexChanged()
 void MainWindow::on_cbHeuristic_currentIndexChanged()
 {
     int index = ui->cbHeuristic->currentIndex();
-    ui->tilemapView->setHeuristic(index);
+    tilemap->setHeuristic(index);
 }
 
 void MainWindow::on_etWeight_editingFinished()
@@ -126,33 +129,33 @@ void MainWindow::showErrorMessage(std::string msg) const
 
 void MainWindow::on_checkShowCost_stateChanged()
 {
-    ui->tilemapView->setShowCost(ui->checkShowCost->isChecked());
+    tilemap->setShowCost(ui->checkShowCost->isChecked());
 }
 
 void MainWindow::on_checkDiagonal_stateChanged()
 {
     bool state = ui->checkDiagonal->isChecked();
-    ui->tilemapView->setDiagonal(state);
+    tilemap->setDiagonal(state);
     ui->checkCornerMovement->setEnabled(state);
 }
 
 void MainWindow::on_checkCornerMovement_stateChanged()
 {
-    ui->tilemapView->setCornerMovement(ui->checkCornerMovement->isChecked());
+    tilemap->setCornerMovement(ui->checkCornerMovement->isChecked());
 }
 
 void MainWindow::on_actionReset_triggered()
 {
-    ui->tilemapView->reset();
-    ui->tilemapView->setDiagonal(ui->checkDiagonal->isChecked());
+    tilemap->reset();
+    tilemap->setDiagonal(ui->checkDiagonal->isChecked());
 }
 
 void MainWindow::on_actionGoofyIcons_triggered()
 {
-    ui->tilemapView->setGoofyIcons(ui->actionGoofyIcons->isChecked());
+    tilemap->setGoofyIcons(ui->actionGoofyIcons->isChecked());
 }
 
 void MainWindow::on_actionShowGrid_triggered()
 {
-    ui->tilemapView->setShowGrid(ui->actionShowGrid->isChecked());
+    tilemap->setShowGrid(ui->actionShowGrid->isChecked());
 }

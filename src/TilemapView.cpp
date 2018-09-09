@@ -31,24 +31,9 @@ TilemapView::~TilemapView()
     delete tilemap;
 }
 
-void TilemapView::setSelectedTileType(QColor color, double weight)
+TilemapScene* TilemapView::getTilemapScene()
 {
-    tilemap->setSelectedTileType(color, weight);
-}
-
-void TilemapView::setAlgorithm(int index)
-{
-    tilemap->setAlgorithm(index);
-}
-
-void TilemapView::setHeuristic(int index)
-{
-    tilemap->setHeuristic(index);
-}
-
-void TilemapView::reset()
-{
-    tilemap->reset();
+    return tilemap;
 }
 
 void TilemapView::mousePressEvent(QMouseEvent *ev)
@@ -103,29 +88,4 @@ void TilemapView::wheelEvent(QWheelEvent *ev)
     {
         scale(0.8, 0.8);
     }
-}
-
-void TilemapView::setShowCost(bool state)
-{
-    tilemap->setShowCost(state);
-}
-
-void TilemapView::setDiagonal(bool state)
-{
-    tilemap->setDiagonal(state);
-}
-
-void TilemapView::setCornerMovement(bool state)
-{
-    tilemap->setCornerMovement(state);
-}
-
-void TilemapView::setGoofyIcons(bool state)
-{
-    tilemap->setGoofyIcons(state);
-}
-
-void TilemapView::setShowGrid(bool state)
-{
-    tilemap->setShowGrid(state);
 }

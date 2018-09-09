@@ -58,6 +58,7 @@ private:
 private:
     Ui::MainWindow *ui;
     double customWeight;
+    TilemapScene *tilemap;
 };
 
 #endif // MAINWINDOW_H

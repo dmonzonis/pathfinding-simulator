@@ -5,8 +5,7 @@
 #include "TilemapScene.h"
 
 /**
- * @brief The TilemapView class is a graphics view which has a TilemapScene as its scene,
- * and also acts as a controller for modifying some of its data from the widget it's in.
+ * @brief The TilemapView class is a graphics view which has a TilemapScene as its scene.
  */
 class TilemapView : public QGraphicsView
 {
@@ -16,57 +15,14 @@ public:
      * graphics scene.
      */
     TilemapView(QWidget *parent);
+
     ~TilemapView();
 
     /**
-     * @brief Sets the selected color and weight on the TilemapScene.
+     * @return A pointer to the tilemap scene being used.
      * @see TilemapScene
      */
-    void setSelectedTileType(QColor color, double weight);
-
-    /**
-     * @brief Sets the selected algorithm on the TilemapScene.
-     * @see TilemapScene
-     */
-    void setAlgorithm(int index);
-
-    /**
-     * @brief Sets the selected heuristic on the TilemapScene.
-     * @see TilemapScene
-     */
-    void setHeuristic(int index);
-
-    /**
-     * @brief Sets whether or not the costs of explored tiles should be shown on top of
-     * the tiles.
-     */
-    void setShowCost(bool state);
-
-    /**
-     * @brief Sets whether or not diagonal tile movement is allowed.
-     */
-    void setDiagonal(bool state);
-
-    /**
-     * @brief Sets whether or not corner movement is allowed.
-     */
-    void setCornerMovement(bool state);
-
-    /**
-     * @brief Switch between boring and goofy icons.
-     */
-    void setGoofyIcons(bool state);
-
-    /**
-     * @brief Sets whether or not the grid should be drawn.
-     */
-    void setShowGrid(bool state);
-
-    /**
-     * @brief Resets the state of the map.
-     * @see TilemapScene
-     */
-    void reset();
+    TilemapScene* getTilemapScene();
 
 protected:
     void mousePressEvent(QMouseEvent *ev);
