@@ -144,6 +144,21 @@ void TilemapScene::setShowCost(bool state)
     recomputePath();
 }
 
+void TilemapScene::setDiagonal(bool state)
+{
+    graph.setDiagonalAllowed(state);
+    recomputePath();
+}
+
+void TilemapScene::reset()
+{
+    clearPath();
+    clearText();
+    graph = GridGraph(-size / 2, -size / 2, size, size);
+    clear();
+    init();
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
@@ -301,15 +316,6 @@ void TilemapScene::clearText()
         delete item;
     }
     tileTexts.clear();
-}
-
-void TilemapScene::reset()
-{
-    clearPath();
-    clearText();
-    graph = GridGraph(-size / 2, -size / 2, size, size);
-    clear();
-    init();
 }
 
 void TilemapScene::init()

@@ -104,3 +104,8 @@ void TilemapView::setShowCost(bool state)
 {
     tilemap->setShowCost(state);
 }
+
+void TilemapView::setDiagonal(bool state)
+{
+    tilemap->setDiagonal(state);
+}

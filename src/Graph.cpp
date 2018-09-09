@@ -19,7 +19,8 @@ GridGraph::GridGraph(int left, int top, int width, int height)
       left(left),
       top(top),
       right(left + width),
-      bottom(top + height)
+      bottom(top + height),
+      diagonalAllowed(false)
 {
 }
 
@@ -37,8 +38,16 @@ bool GridGraph::isWall(Tile tile)
 std::vector<Tile> GridGraph::neighbors(Tile tile)
 {
     std::vector<Tile> result;
+    std::vector<Tile> dirs{GridGraph::DIRS};
+    // If diagonal is allowed, add diagonal directions
+    if (diagonalAllowed)
+    {
+        dirs.insert(dirs.end(),
+                    GridGraph::DIAGONAL_DIRS.begin(),
+                    GridGraph::DIAGONAL_DIRS.end());
+    }
     // For each possible direction, check for adjacent walkable tiles
-    for (auto dir : GridGraph::DIRS)
+    for (auto dir : dirs)
     {
         Tile adjacentTile{tile.x + dir.x, tile.y + dir.y};
         if (!isOutOfBounds(adjacentTile) && !isWall(adjacentTile))
@@ -67,6 +76,15 @@ void GridGraph::setCost(Tile tile, double cost)
     costs[tile] = cost;
 }
 
-std::array<Tile, 4> GridGraph::DIRS = {
+void GridGraph::setDiagonalAllowed(bool allowed)
+{
+    diagonalAllowed = allowed;
+}
+
+std::vector<Tile> GridGraph::DIRS = {
     Tile{1, 0}, Tile{0, -1}, Tile{-1, 0}, Tile{0, 1}
+};
+
+std::vector<Tile> GridGraph::DIAGONAL_DIRS = {
+    Tile{1, 1}, Tile{-1, -1}, Tile{-1, 1}, Tile{1, -1}
 };

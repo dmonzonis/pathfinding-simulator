@@ -115,7 +115,13 @@ void MainWindow::on_checkShowCost_stateChanged()
     ui->tilemapView->setShowCost(ui->checkShowCost->isChecked());
 }
 
+void MainWindow::on_checkDiagonal_stateChanged()
+{
+    ui->tilemapView->setDiagonal(ui->checkDiagonal->isChecked());
+}
+
 void MainWindow::on_actionReset_triggered()
 {
     ui->tilemapView->reset();
+    ui->tilemapView->setDiagonal(ui->checkDiagonal->isChecked());
 }

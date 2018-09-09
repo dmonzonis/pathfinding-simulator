@@ -111,7 +111,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="checkDiagonal">
+        <property name="text">
+         <string>Allow diagonal movement</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="textAlgorithm">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Algorithm</string>
         </property>

@@ -61,6 +61,11 @@ public:
     void setShowCost(bool state);
 
     /**
+     * @brief Sets whether or not diagonal movement is allowed
+     */
+    void setDiagonal(bool state);
+
+    /**
      * @brief Resets the map state to the initial one.
      *
      * Effectively removes all weights from the graph and resets the start and goal positions.

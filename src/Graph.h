@@ -69,10 +69,12 @@ typedef struct Tile {
 class GridGraph : public Graph<Tile>
 {
 public:
-    static std::array<Tile, 4> DIRS;
+    static std::vector<Tile> DIRS;
+    static std::vector<Tile> DIAGONAL_DIRS;
 
 public:
     using Graph = Graph<Tile>;
+
     /**
      * @brief Constructs a grid graph with the given bounds.
      *
@@ -116,10 +118,15 @@ public:
      */
     void setCost(Tile tile, double cost);
 
+    /**
+     * @brief Sets whether or not diagonal tile movement is allowed.
+     */
+    void setDiagonalAllowed(bool allowed);
+
 private:
     int left, top, right, bottom;  // Bounds for x and y coordinates
     std::map<Tile, double> costs;
+    bool diagonalAllowed;
 };
-
 
 #endif // GRAPH_H

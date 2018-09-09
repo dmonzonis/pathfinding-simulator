@@ -41,6 +41,7 @@ private slots:
     void on_etWeight_editingFinished();
     void on_actionControls_triggered();
     void on_checkShowCost_stateChanged();
+    void on_checkDiagonal_stateChanged();
     void on_actionReset_triggered();
 
 private:

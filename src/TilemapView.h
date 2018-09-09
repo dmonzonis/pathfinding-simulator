@@ -37,6 +37,11 @@ public:
     void setShowCost(bool state);
 
     /**
+     * @brief Sets whether or not diagonal tile movement is allowed.
+     */
+    void setDiagonal(bool state);
+
+    /**
      * @brief Resets the state of the map.
      * @see TilemapScene
      */
