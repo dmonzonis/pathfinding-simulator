@@ -9,7 +9,7 @@ const int GRID_SIZE = 30;
 const QColor GRID_COLOR = QColor(200, 200, 255, 255);
 const double FOREST_WEIGHT = 2;
 const double WATER_WEIGHT = 5;
-const QColor PATH_COLOR = QColor(250, 240, 65, 150);
+const QColor PATH_COLOR = QColor(250, 240, 65, 255);
 
 /**
  * @brief The TilemapScene class is responsible for the visual representation of
@@ -145,7 +145,7 @@ private:
     GridGraph graph;
     Tile startTile, goalTile;
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
-    std::vector<QGraphicsRectItem*> pathRects;
+    std::vector<QGraphicsLineItem*> pathLines;
     Algorithm selectedAlgorithm;
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost;

@@ -255,11 +255,15 @@ void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)
 
 void TilemapScene::paintPath(std::vector<Tile> path)
 {
-    for (Tile tile : path)
+    for (int i = 0; i < int(path.size()) - 1; ++i)
     {
-        QRect rect = mapTileToRect(tile, GRID_SIZE);
-        auto item = addRect(rect, QPen(PATH_COLOR), QBrush(PATH_COLOR));
-        pathRects.push_back(item);
+        Tile current = path[i], next = path[i + 1];
+        QPoint currentCenter = mapTileToRect(current, GRID_SIZE).center(),
+                nextCenter = mapTileToRect(next, GRID_SIZE).center();
+        QPoint offset(1, 1);
+        QLine line(currentCenter + offset, nextCenter + offset);
+        auto item = addLine(line, QPen(PATH_COLOR, 5, Qt::SolidLine));
+        pathLines.push_back(item);
         // Set path tile on top of other tiles except start and goal pixmaps
         item->setZValue(0.5);
     }
@@ -267,12 +271,12 @@ void TilemapScene::paintPath(std::vector<Tile> path)
 
 void TilemapScene::clearPath()
 {
-    for (auto item : pathRects)
+    for (auto item : pathLines)
     {
         removeItem(item);
         delete item;
     }
-    pathRects.clear();
+    pathLines.clear();
 }
 
 void TilemapScene::paintTileCosts(std::map<Tile, double> &costs)
