@@ -76,14 +76,27 @@ bool TilemapScene::paintTile(const Tile &tile, const QColor &color)
     {
         return false;
     }
+
     // Only paint if the tile has different weight than the selected one
     double tolerance = 1e-5;
     if (std::abs(graph->getCost(tile) - selectedWeight) < tolerance)
     {
         return false;
     }
+
     // Update the tile's weight
     graph->setCost(tile, selectedWeight);
+
+    // Remove any rect graphics item that was there, if there was any
+    QPoint pos = mapTileToRect(tile, GRID_SIZE).topLeft()
+            + QPoint(GRID_SIZE / 2, GRID_SIZE / 2);
+    QGraphicsItem *item = itemAt(pos, QTransform());
+    // type 3 is the type of QGraphicsRectItem items
+    if (item && item->type() == 3)
+    {
+        removeItem(item);
+    }
+
     // Paint the visual representation
     QRect rect = mapTileToRect(tile, GRID_SIZE);
     addRect(rect, QPen(color), QBrush(color));
