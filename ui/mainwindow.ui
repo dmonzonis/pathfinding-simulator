@@ -309,6 +309,9 @@
    </property>
   </action>
   <action name="actionRect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/res/square.png</normaloff>:/res/square.png</iconset>
