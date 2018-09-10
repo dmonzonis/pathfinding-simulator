@@ -18,25 +18,25 @@ FORMS += \
     ui/newmapdialog.ui
 
 HEADERS += \
-    src/Graph.h \
-    src/TilemapView.h \
-    src/MainWindow.h \
-    src/Algorithms.hpp \
-    src/TilemapScene.h \
-    src/HelpDialog.h \
-    src/NewMapDialog.h \
-    src/Utils.h
+    src/algorithms.hpp \
+    src/graph.h \
+    src/helpdialog.h \
+    src/mainwindow.h \
+    src/newmapdialog.h \
+    src/tilemapscene.h \
+    src/tilemapview.h \
+    src/utils.h
 
 
 SOURCES += \
     src/main.cpp \
-    src/Graph.cpp \
-    src/TilemapView.cpp \
-    src/MainWindow.cpp \
-    src/TilemapScene.cpp \
-    src/HelpDialog.cpp \
-    src/NewMapDialog.cpp \
-    src/Utils.cpp
+    src/graph.cpp \
+    src/helpdialog.cpp \
+    src/mainwindow.cpp \
+    src/newmapdialog.cpp \
+    src/tilemapscene.cpp \
+    src/tilemapview.cpp \
+    src/utils.cpp
 
 RESOURCES += \
     resources.qrc

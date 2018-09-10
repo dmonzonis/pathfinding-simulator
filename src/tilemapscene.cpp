@@ -1,10 +1,10 @@
-#include "TilemapScene.h"
+#include "tilemapscene.h"
 #include <set>
 #include <QPainter>
 #include <QDebug>
 #include <QGraphicsPixmapItem>
-#include "Algorithms.hpp"
-#include "Graph.h"
+#include "algorithms.hpp"
+#include "graph.h"
 
 /**
  * @brief Rounds the value to the nearest multiple of step
@@ -468,10 +468,12 @@ void TilemapScene::init()
     {
         --top;
     }
+
     graph = new GridGraph(left, top, width, height),
     startTile = Tile{0, 0};
     goalTile = Tile{3, 3};
     grabbedPixmap = nullptr;
+
     // Add start and goal points
     QPixmap heroPixmap(":/res/link.png");
     QPixmap treasurePixmap(":/res/treasure.png");
@@ -481,7 +483,8 @@ void TilemapScene::init()
     movePixmapToTile(goalPixmap, goalTile);
     startPixmap->setZValue(0.9);
     goalPixmap->setZValue(0.9);
-    // Draw initial path
+
+    // Compute initial path
     recomputePath();
 }
 
@@ -489,11 +492,13 @@ void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
 {
     std::vector<Tile> tilesToPaint;
     double tolerance = 1e-5;
+
     // Find all similar tiles in an enclosed region by using BFS
     std::queue<Tile> toExplore;
     std::map<Tile, bool> explored;
     toExplore.push(tile);
     explored[tile] = true;
+
     while (!toExplore.empty())
     {
         Tile current = toExplore.front();
@@ -513,11 +518,13 @@ void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
             }
         }
     }
-    // Now paint every node we've explored
+
+    // Paint every node we've explored
     for (Tile toPaint : tilesToPaint)
     {
         paintTile(toPaint, color);
     }
+
     recomputePath();
 }
 
@@ -548,7 +555,7 @@ void TilemapScene::paintPreview(const QColor &color)
 
 void TilemapScene::previewLinePaint(const Tile &start, const Tile &end, const QColor &color)
 {
-    // Get line tiles to paint
+    // Use Bresenham's algorithm for getting the tiles we need to paint
     int x0 = start.x, y0 = start.y, x1 = end.x, y1 = end.y;
     int dx, dy, error, ystep;
     dx = x1 - x0;
@@ -600,6 +607,7 @@ void TilemapScene::previewRectPaint(const Tile &topLeft,
                                     const QColor &color)
 {
     int left = topLeft.x, top = topLeft.y, right = bottomRight.x, bottom = bottomRight.y;
+    // Rotate if necessary
     if (top > bottom)
     {
         std::swap(top, bottom);
@@ -608,6 +616,7 @@ void TilemapScene::previewRectPaint(const Tile &topLeft,
     {
         std::swap(left, right);
     }
+
     // Get all tiles within the rectangle, including borders
     for (int y = top; y <= bottom; ++y)
     {

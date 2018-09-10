@@ -2,7 +2,7 @@
 #define TILEMAPVIEW_H
 
 #include <QGraphicsView>
-#include "TilemapScene.h"
+#include "tilemapscene.h"
 
 /**
  * @brief The TilemapView class is a graphics view which has a TilemapScene as its scene.

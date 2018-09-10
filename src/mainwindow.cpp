@@ -1,10 +1,10 @@
-#include "MainWindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDebug>
-#include "HelpDialog.h"
-#include "NewMapDialog.h"
-#include "Utils.h"
+#include "helpdialog.h"
+#include "newmapdialog.h"
+#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

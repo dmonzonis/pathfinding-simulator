@@ -8,7 +8,7 @@
 #include <queue>
 #include <utility>
 #include <vector>
-#include "Graph.h"
+#include "graph.h"
 
 /**
  * Reconstructs the path to a vector with nodes going from start to goal.

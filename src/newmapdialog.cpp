@@ -1,6 +1,6 @@
-#include "NewMapDialog.h"
+#include "newmapdialog.h"
 #include "ui_newmapdialog.h"
-#include "Utils.h"
+#include "utils.h"
 
 NewMapDialog::NewMapDialog(QWidget *parent) :
     QDialog(parent),

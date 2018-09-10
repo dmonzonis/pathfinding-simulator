@@ -1,4 +1,4 @@
-#include "TilemapView.h"
+#include "tilemapview.h"
 #include <QMouseEvent>
 #include <QScrollBar>
 
