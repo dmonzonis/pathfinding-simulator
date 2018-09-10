@@ -20,7 +20,7 @@ class TilemapScene : public QGraphicsScene
 public:
     enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
     enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV};
-    enum PaintMode {PENCIL, BUCKET, LINE};
+    enum PaintMode {PENCIL, BUCKET, LINE, RECT};
 
 public:
     /**
@@ -180,24 +180,35 @@ private:
     void bucketPaint(const Tile &tile, const QColor &color);
 
     /**
-     * @brief Clears the current demo line, if it exists.
+     * @brief Clears the current tile painting preview from the screen and the buffer.
      */
-    void clearDemoLine();
+    void clearPreview();
+
+    /**
+     * @brief Paint the preview tiles in the buffer, without updating weights.
+     */
+    void paintPreview(const QColor &color);
 
     /**
      * @brief Paint a line from start to end using Bresenham's line algorithm, but don't
      * update the weights yet.
      */
-    void demoLinePaint(const Tile &start, const Tile &end, const QColor &color);
+    void previewLinePaint(const Tile &start, const Tile &end, const QColor &color);
 
     /**
-     * @brief Actually paints the current demo line, updating the weights.
+     * @brief Paint a rect with the given top-left and bottom-right corners, including them,
+     * but don't update the weights yet.
      */
-    void commitLinePaint();
+    void previewRectPaint(const Tile &topLeft, const Tile &bottomRight, const QColor &color);
+
+    /**
+     * @brief Actually paints the current preview, updating the weights.
+     */
+    void commitPreview();
 
 private:
     int width, height;
-    bool painting, paintingLine;
+    bool painting, paintingLine, paintingRect;
     QColor selectedColor;
     double selectedWeight;
     GridGraph *graph;
@@ -209,9 +220,9 @@ private:
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost, showGrid;
     PaintMode paintMode;
-    Tile lineOrigin;
-    std::vector<Tile> demoLineTiles;
-    std::vector<QGraphicsRectItem*> demoLineRects;
+    Tile previewOrigin;
+    std::vector<Tile> previewTiles;
+    std::vector<QGraphicsRectItem*> previewRects;
 };
 
 #endif // TILEMAPSCENE_H

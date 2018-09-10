@@ -7,5 +7,6 @@
         <file>res/bucket.png</file>
         <file>res/pencil.png</file>
         <file>res/line.png</file>
+        <file>res/square.png</file>
     </qresource>
 </RCC>

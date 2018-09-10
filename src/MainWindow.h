@@ -36,9 +36,9 @@ public:
     void updateSelectedTileType();
 
 private slots:
-    void on_cbTileType_currentIndexChanged();
-    void on_cbAlgorithm_currentIndexChanged();
-    void on_cbHeuristic_currentIndexChanged();
+    void on_cbTileType_currentIndexChanged(int index);
+    void on_cbAlgorithm_currentIndexChanged(int index);
+    void on_cbHeuristic_currentIndexChanged(int index);
     void on_etWeight_editingFinished();
     void on_actionControls_triggered();
     void on_checkShowCost_stateChanged();
@@ -51,6 +51,7 @@ private slots:
     void on_actionPencil_triggered();
     void on_actionBucket_triggered();
     void on_actionLine_triggered();
+    void on_actionRect_triggered();
 
 private:
     Ui::MainWindow *ui;

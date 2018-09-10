@@ -58,6 +58,7 @@ TilemapScene::TilemapScene(QObject *parent, int width, int height)
       height(height),
       painting(false),
       paintingLine(false),
+      paintingRect(false),
       graph(nullptr),
       selectedAlgorithm(A_STAR),
       selectedHeuristic(MANHATTAN),
@@ -249,8 +250,11 @@ void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
             break;
         case LINE:
             paintingLine = true;
-            lineOrigin = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
-            // TODO: Paint first tile before movement
+            previewOrigin = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+            break;
+        case RECT:
+            paintingRect = true;
+            previewOrigin = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
             break;
         }
         ev->accept();
@@ -288,10 +292,10 @@ void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
             ev->accept();
             return;
         }
-        else if (paintingLine)
+        else if (paintingLine || paintingRect)
         {
-            paintingLine = false;
-            commitLinePaint();
+            paintingLine = paintingRect = false;
+            commitPreview();
             ev->accept();
             return;
         }
@@ -342,10 +346,17 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     }
     else if (paintingLine)
     {
-        clearDemoLine();
+        clearPreview();
         QPoint pos = ev->scenePos().toPoint();
-        Tile lineEnd = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
-        demoLinePaint(lineOrigin, lineEnd, selectedColor);
+        Tile previewEnd = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+        previewLinePaint(previewOrigin, previewEnd, selectedColor);
+    }
+    else if (paintingRect)
+    {
+        clearPreview();
+        QPoint pos = ev->scenePos().toPoint();
+        Tile previewEnd = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+        previewRectPaint(previewOrigin, previewEnd, selectedColor);
     }
 }
 
@@ -497,18 +508,32 @@ void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
     recomputePath();
 }
 
-void TilemapScene::clearDemoLine()
+void TilemapScene::clearPreview()
 {
-    for (auto item : demoLineRects)
+    for (auto item : previewRects)
     {
         removeItem(item);
         delete item;
     }
-    demoLineRects.clear();
-    demoLineTiles.clear();
+    previewRects.clear();
+    previewTiles.clear();
 }
 
-void TilemapScene::demoLinePaint(const Tile &start, const Tile &end, const QColor &color)
+void TilemapScene::paintPreview(const QColor &color)
+{
+    for (Tile tile : previewTiles)
+    {
+        if (graph->isOutOfBounds(tile))
+        {
+            // Don't paint out of bound tiles
+            continue;
+        }
+        auto item = addRect(mapTileToRect(tile, GRID_SIZE), QPen(color), QBrush(color));
+        previewRects.push_back(item);
+    }
+}
+
+void TilemapScene::previewLinePaint(const Tile &start, const Tile &end, const QColor &color)
 {
     // FIXME: Algorithm only working from 0 to -45 degree lines
     // Get line tiles to paint
@@ -546,7 +571,7 @@ void TilemapScene::demoLinePaint(const Tile &start, const Tile &end, const QColo
     for (int x = x0; x <= x1; ++x)
     {
         Tile tile = isSteep ? Tile{y, x} : Tile{x, y};
-        demoLineTiles.push_back(tile);
+        previewTiles.push_back(tile);
         error -= std::abs(dy);
         if (error < 0)
         {
@@ -555,25 +580,46 @@ void TilemapScene::demoLinePaint(const Tile &start, const Tile &end, const QColo
         }
     }
 
-    // Actually paint the tiles, but don't update weights, only for show
-    for (Tile tile : demoLineTiles)
-    {
-        if (graph->isOutOfBounds(tile))
-        {
-            // Don't paint out of bound tiles
-            continue;
-        }
-        auto item = addRect(mapTileToRect(tile, GRID_SIZE), QPen(color), QBrush(color));
-        demoLineRects.push_back(item);
-    }
+    paintPreview(color);
 }
 
-void TilemapScene::commitLinePaint()
+void TilemapScene::previewRectPaint(const Tile &topLeft,
+                                    const Tile &bottomRight,
+                                    const QColor &color)
 {
-    for (Tile tile : demoLineTiles)
+    int left = topLeft.x, top = topLeft.y, right = bottomRight.x, bottom = bottomRight.y;
+    if (top > bottom)
+    {
+        std::swap(top, bottom);
+    }
+    if (left > right)
+    {
+        std::swap(left, right);
+    }
+    // Get all tiles within the rectangle, including borders
+    for (int y = top; y <= bottom; ++y)
+    {
+        for (int x = left; x <= right; ++x)
+        {
+            Tile tile{x, y};
+            if (graph->isOutOfBounds(tile))
+            {
+                // Don't paint out of bound tiles
+                continue;
+            }
+            previewTiles.push_back(tile);
+        }
+    }
+
+    paintPreview(color);
+}
+
+void TilemapScene::commitPreview()
+{
+    for (Tile tile : previewTiles)
     {
         paintTile(tile, selectedColor);
     }
-    clearDemoLine();
+    clearPreview();
     recomputePath();
 }

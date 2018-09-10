@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     paintToolsGroup->addAction(ui->actionPencil);
     paintToolsGroup->addAction(ui->actionBucket);
     paintToolsGroup->addAction(ui->actionLine);
+    paintToolsGroup->addAction(ui->actionRect);
     ui->actionPencil->setChecked(true);
 }
 
@@ -78,18 +79,16 @@ void MainWindow::updateSelectedTileType()
     tilemap->setSelectedTileType(selectedColor, weight);
 }
 
-void MainWindow::on_cbTileType_currentIndexChanged()
+void MainWindow::on_cbTileType_currentIndexChanged(int index)
 {
     // If custom type is selected, allow editing of weight line edit
-    int selectedIndex = ui->cbTileType->currentIndex();
-    ui->etWeight->setEnabled(selectedIndex == Custom);
+    ui->etWeight->setEnabled(index == Custom);
     // Change line edit text for current weight
     updateSelectedTileType();
 }
 
-void MainWindow::on_cbAlgorithm_currentIndexChanged()
+void MainWindow::on_cbAlgorithm_currentIndexChanged(int index)
 {
-    int index = ui->cbAlgorithm->currentIndex();
     tilemap->setAlgorithm(index);
     // If the currently selected algorithm doesn't use an heuristic,
     // disable the heuristic combo box
@@ -97,9 +96,8 @@ void MainWindow::on_cbAlgorithm_currentIndexChanged()
     ui->cbHeuristic->setEnabled(index == 0 || index == 3);
 }
 
-void MainWindow::on_cbHeuristic_currentIndexChanged()
+void MainWindow::on_cbHeuristic_currentIndexChanged(int index)
 {
-    int index = ui->cbHeuristic->currentIndex();
     tilemap->setHeuristic(index);
 }
 
@@ -188,4 +186,9 @@ void MainWindow::on_actionBucket_triggered()
 void MainWindow::on_actionLine_triggered()
 {
     tilemap->setPaintMode(TilemapScene::LINE);
+}
+
+void MainWindow::on_actionRect_triggered()
+{
+    tilemap->setPaintMode(TilemapScene::RECT);
 }
