@@ -548,7 +548,6 @@ void TilemapScene::paintPreview(const QColor &color)
 
 void TilemapScene::previewLinePaint(const Tile &start, const Tile &end, const QColor &color)
 {
-    // FIXME: Algorithm only working from 0 to -45 degree lines
     // Get line tiles to paint
     int x0 = start.x, y0 = start.y, x1 = end.x, y1 = end.y;
     int dx, dy, error, ystep;
