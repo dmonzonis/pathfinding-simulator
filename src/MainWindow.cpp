@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QActionGroup *paintToolsGroup = new QActionGroup(this);
     paintToolsGroup->addAction(ui->actionPencil);
     paintToolsGroup->addAction(ui->actionBucket);
+    paintToolsGroup->addAction(ui->actionLine);
     ui->actionPencil->setChecked(true);
 }
 
@@ -182,4 +183,9 @@ void MainWindow::on_actionPencil_triggered()
 void MainWindow::on_actionBucket_triggered()
 {
     tilemap->setPaintMode(TilemapScene::BUCKET);
+}
+
+void MainWindow::on_actionLine_triggered()
+{
+    tilemap->setPaintMode(TilemapScene::LINE);
 }

@@ -232,6 +232,7 @@
    </attribute>
    <addaction name="actionPencil"/>
    <addaction name="actionBucket"/>
+   <addaction name="actionLine"/>
   </widget>
   <action name="actionControls">
    <property name="text">
@@ -292,6 +293,18 @@
    </property>
    <property name="text">
     <string>Bucket</string>
+   </property>
+  </action>
+  <action name="actionLine">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/res/line.png</normaloff>:/res/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>Line</string>
    </property>
   </action>
  </widget>

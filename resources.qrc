@@ -6,5 +6,6 @@
         <file>res/treasure.png</file>
         <file>res/bucket.png</file>
         <file>res/pencil.png</file>
+        <file>res/line.png</file>
     </qresource>
 </RCC>

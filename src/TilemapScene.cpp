@@ -57,6 +57,7 @@ TilemapScene::TilemapScene(QObject *parent, int width, int height)
       width(width),
       height(height),
       painting(false),
+      paintingLine(false),
       graph(nullptr),
       selectedAlgorithm(A_STAR),
       selectedHeuristic(MANHATTAN),
@@ -246,6 +247,11 @@ void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
         case BUCKET:
             bucketPaint(tile, selectedColor);
             break;
+        case LINE:
+            paintingLine = true;
+            lineOrigin = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+            // TODO: Paint first tile before movement
+            break;
         }
         ev->accept();
         return;
@@ -276,9 +282,19 @@ void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
     QGraphicsScene::mouseReleaseEvent(ev);
     if (ev->button() == Qt::LeftButton)
     {
-        painting = false;
-        ev->accept();
-        return;
+        if (painting)
+        {
+            painting = false;
+            ev->accept();
+            return;
+        }
+        else if (paintingLine)
+        {
+            paintingLine = false;
+            commitLinePaint();
+            ev->accept();
+            return;
+        }
     }
     else if (ev->button() == Qt::RightButton)
     {
@@ -323,6 +339,13 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
         }
         ev->accept();
         return;
+    }
+    else if (paintingLine)
+    {
+        clearDemoLine();
+        QPoint pos = ev->scenePos().toPoint();
+        Tile lineEnd = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+        demoLinePaint(lineOrigin, lineEnd, selectedColor);
     }
 }
 
@@ -471,5 +494,86 @@ void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
     {
         paintTile(toPaint, color);
     }
+    recomputePath();
+}
+
+void TilemapScene::clearDemoLine()
+{
+    for (auto item : demoLineRects)
+    {
+        removeItem(item);
+        delete item;
+    }
+    demoLineRects.clear();
+    demoLineTiles.clear();
+}
+
+void TilemapScene::demoLinePaint(const Tile &start, const Tile &end, const QColor &color)
+{
+    // FIXME: Algorithm only working from 0 to -45 degree lines
+    // Get line tiles to paint
+    int x0 = start.x, y0 = start.y, x1 = end.x, y1 = end.y;
+    int dx, dy, error, ystep;
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    // Determine how steep the line is
+    bool isSteep = std::abs(dy) > std::abs(dx);
+    // If it is steep, rotate line
+    if (isSteep)
+    {
+        std::swap(x0, y0);
+        std::swap(x1, y1);
+    }
+
+    // Swap start and end points if necessary
+    // TODO: Unused swap state
+    if (x0 > x1)
+    {
+        std::swap(x0, x1);
+        std::swap(y0, y1);
+    }
+    // Recalculate differentials
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    // Calculate error
+    error = int(dx / 2.0);
+    ystep = y0 < y1 ? 1 : -1;
+
+    // Iterate over bounding box generating points between start and end
+    int y = y0;
+    for (int x = x0; x <= x1; ++x)
+    {
+        Tile tile = isSteep ? Tile{y, x} : Tile{x, y};
+        demoLineTiles.push_back(tile);
+        error -= std::abs(dy);
+        if (error < 0)
+        {
+            y += ystep;
+            error += dx;
+        }
+    }
+
+    // Actually paint the tiles, but don't update weights, only for show
+    for (Tile tile : demoLineTiles)
+    {
+        if (graph->isOutOfBounds(tile))
+        {
+            // Don't paint out of bound tiles
+            continue;
+        }
+        auto item = addRect(mapTileToRect(tile, GRID_SIZE), QPen(color), QBrush(color));
+        demoLineRects.push_back(item);
+    }
+}
+
+void TilemapScene::commitLinePaint()
+{
+    for (Tile tile : demoLineTiles)
+    {
+        paintTile(tile, selectedColor);
+    }
+    clearDemoLine();
     recomputePath();
 }

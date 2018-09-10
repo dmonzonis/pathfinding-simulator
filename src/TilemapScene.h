@@ -20,7 +20,7 @@ class TilemapScene : public QGraphicsScene
 public:
     enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
     enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV};
-    enum PaintMode {PENCIL, BUCKET};
+    enum PaintMode {PENCIL, BUCKET, LINE};
 
 public:
     /**
@@ -179,9 +179,25 @@ private:
      */
     void bucketPaint(const Tile &tile, const QColor &color);
 
+    /**
+     * @brief Clears the current demo line, if it exists.
+     */
+    void clearDemoLine();
+
+    /**
+     * @brief Paint a line from start to end using Bresenham's line algorithm, but don't
+     * update the weights yet.
+     */
+    void demoLinePaint(const Tile &start, const Tile &end, const QColor &color);
+
+    /**
+     * @brief Actually paints the current demo line, updating the weights.
+     */
+    void commitLinePaint();
+
 private:
     int width, height;
-    bool painting;
+    bool painting, paintingLine;
     QColor selectedColor;
     double selectedWeight;
     GridGraph *graph;
@@ -193,6 +209,9 @@ private:
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost, showGrid;
     PaintMode paintMode;
+    Tile lineOrigin;
+    std::vector<Tile> demoLineTiles;
+    std::vector<QGraphicsRectItem*> demoLineRects;
 };
 
 #endif // TILEMAPSCENE_H

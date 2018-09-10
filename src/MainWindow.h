@@ -50,6 +50,7 @@ private slots:
     void on_actionNewMap_triggered();
     void on_actionPencil_triggered();
     void on_actionBucket_triggered();
+    void on_actionLine_triggered();
 
 private:
     Ui::MainWindow *ui;

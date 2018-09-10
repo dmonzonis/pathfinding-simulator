@@ -36,7 +36,7 @@ SOURCES += \
     src/TilemapScene.cpp \
     src/HelpDialog.cpp \
     src/NewMapDialog.cpp \
-    src/utils.cpp
+    src/Utils.cpp
 
 RESOURCES += \
     resources.qrc
