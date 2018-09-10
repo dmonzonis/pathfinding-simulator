@@ -65,6 +65,9 @@
         <property name="text">
          <string>Show cost to explored tiles</string>
         </property>
+        <property name="tristate">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -271,6 +274,9 @@
    <property name="text">
     <string>&amp;New map</string>
    </property>
+   <property name="toolTip">
+    <string>Create new map with custom size</string>
+   </property>
   </action>
   <action name="actionPencil">
    <property name="checkable">
@@ -282,6 +288,9 @@
    </property>
    <property name="text">
     <string>Pencil</string>
+   </property>
+   <property name="toolTip">
+    <string>Paint tiles under cursor</string>
    </property>
   </action>
   <action name="actionBucket">
@@ -295,6 +304,9 @@
    <property name="text">
     <string>Bucket</string>
    </property>
+   <property name="toolTip">
+    <string>Paint all tiles in an enclosed region</string>
+   </property>
   </action>
   <action name="actionLine">
    <property name="checkable">
@@ -306,6 +318,9 @@
    </property>
    <property name="text">
     <string>Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Paint a line</string>
    </property>
   </action>
   <action name="actionRect">
@@ -319,13 +334,16 @@
    <property name="text">
     <string>Rectangle</string>
    </property>
+   <property name="toolTip">
+    <string>Paint a rectangle</string>
+   </property>
   </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>TilemapView</class>
    <extends>QGraphicsView</extends>
-   <header>TilemapView.h</header>
+   <header>tilemapview.h</header>
   </customwidget>
  </customwidgets>
  <resources>
