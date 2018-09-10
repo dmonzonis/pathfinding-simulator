@@ -30,6 +30,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cbHeuristic->addItem("Manhattan distance");
     ui->cbHeuristic->addItem("Euclidean distance");
     ui->cbHeuristic->addItem("Chebyshev distance");
+    // Create paint tools action group
+    QActionGroup *paintToolsGroup = new QActionGroup(this);
+    paintToolsGroup->addAction(ui->actionPencil);
+    paintToolsGroup->addAction(ui->actionBucket);
+    ui->actionPencil->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -167,4 +172,14 @@ void MainWindow::on_actionNewMap_triggered()
     }
     // Update reference to tilemap scene
     tilemap = ui->tilemapView->getTilemapScene();
+}
+
+void MainWindow::on_actionPencil_triggered()
+{
+    tilemap->setPaintMode(TilemapScene::PENCIL);
+}
+
+void MainWindow::on_actionBucket_triggered()
+{
+    tilemap->setPaintMode(TilemapScene::BUCKET);
 }

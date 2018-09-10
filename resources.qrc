@@ -4,5 +4,7 @@
         <file>res/cross.png</file>
         <file>res/link.png</file>
         <file>res/treasure.png</file>
+        <file>res/bucket.png</file>
+        <file>res/pencil.png</file>
     </qresource>
 </RCC>

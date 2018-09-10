@@ -62,6 +62,21 @@ std::vector<Tile> GridGraph::neighbors(Tile tile)
     return result;
 }
 
+std::vector<Tile> GridGraph::adjacentTiles(Tile tile)
+{
+    std::vector<Tile> result;
+    // For each possible direction, check for adjacent walkable tiles
+    for (auto dir : GridGraph::DIRS)
+    {
+        Tile adjacentTile{tile.x + dir.x, tile.y + dir.y};
+        if (!isOutOfBounds(adjacentTile))
+        {
+            result.push_back(adjacentTile);
+        }
+    }
+    return result;
+}
+
 double GridGraph::getCost(Tile tile)
 {
     // Use 1 as the default cost instead of 0

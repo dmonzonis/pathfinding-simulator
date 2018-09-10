@@ -20,6 +20,7 @@ class TilemapScene : public QGraphicsScene
 public:
     enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
     enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV};
+    enum PaintMode {PENCIL, BUCKET};
 
 public:
     /**
@@ -95,6 +96,12 @@ public:
      */
     void setShowGrid(bool state);
 
+    /**
+     * @brief Sets the currently active paint mode.
+     * @param mode Paint mode to be used when the user left-clicks a tile.
+     */
+    void setPaintMode(PaintMode mode);
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
@@ -110,8 +117,10 @@ private:
      * and paints the visual representation of the tile with the given color.
      * @param tile Tile in the grid graph to update.
      * @param color Color to be used to paint the visual representation of the tile.
+     * @return true if the tile was actually painted, false otherwise, for example, if
+     * the tile already had the selected weight/color.
      */
-    void paintTile(const Tile &tile, const QColor &color);
+    bool paintTile(const Tile &tile, const QColor &color);
 
     /**
      * @brief Places a pixmap item on top of the visual representation of the given tile.
@@ -165,6 +174,11 @@ private:
      */
     void init();
 
+    /**
+     * @brief Paint all similar tiles in an enclosed region.
+     */
+    void bucketPaint(const Tile &tile, const QColor &color);
+
 private:
     int width, height;
     bool painting;
@@ -178,6 +192,7 @@ private:
     Heuristic selectedHeuristic;
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost, showGrid;
+    PaintMode paintMode;
 };
 
 #endif // TILEMAPSCENE_H

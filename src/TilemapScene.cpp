@@ -1,4 +1,5 @@
 #include "TilemapScene.h"
+#include <set>
 #include <QPainter>
 #include <QDebug>
 #include <QGraphicsPixmapItem>
@@ -60,31 +61,31 @@ TilemapScene::TilemapScene(QObject *parent, int width, int height)
       selectedAlgorithm(A_STAR),
       selectedHeuristic(MANHATTAN),
       showCost(false),
-      showGrid(true)
+      showGrid(true),
+      paintMode(PENCIL)
 {
     init();
 }
 
-void TilemapScene::paintTile(const Tile &tile, const QColor &color)
+bool TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
     // Only allow painting in tiles inside the grid graph's bounds
     if (graph->isOutOfBounds(tile))
     {
-        return;
+        return false;
     }
     // Only paint if the tile has different weight than the selected one
     double tolerance = 1e-5;
     if (std::abs(graph->getCost(tile) - selectedWeight) < tolerance)
     {
-        return;
+        return false;
     }
     // Update the tile's weight
     graph->setCost(tile, selectedWeight);
     // Paint the visual representation
     QRect rect = mapTileToRect(tile, GRID_SIZE);
     addRect(rect, QPen(color), QBrush(color));
-    // Trigger recompute
-    recomputePath();
+    return true;
 }
 
 void TilemapScene::setSelectedTileType(QColor color, double weight)
@@ -220,15 +221,32 @@ void TilemapScene::setShowGrid(bool state)
     update();
 }
 
+void TilemapScene::setPaintMode(PaintMode mode)
+{
+    paintMode = mode;
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
     if (ev->button() == Qt::LeftButton && !grabbedPixmap)
     {
-        painting = true;
         QPoint pos = ev->scenePos().toPoint();
         Tile tile = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
-        paintTile(tile, selectedColor);
+        switch (paintMode)
+        {
+        case PENCIL:
+            painting = true;
+            if (paintTile(tile, selectedColor))
+            {
+                // If a tile was updated, trigger recompute
+                recomputePath();
+            }
+            break;
+        case BUCKET:
+            bucketPaint(tile, selectedColor);
+            break;
+        }
         ev->accept();
         return;
     }
@@ -298,7 +316,11 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     {
         QPoint pos = ev->scenePos().toPoint();
         Tile tile = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
-        paintTile(tile, selectedColor);
+        if (paintTile(tile, selectedColor))
+        {
+            // If a tile was updated, trigger recompute
+            recomputePath();
+        }
         ev->accept();
         return;
     }
@@ -413,5 +435,41 @@ void TilemapScene::init()
     startPixmap->setZValue(0.9);
     goalPixmap->setZValue(0.9);
     // Draw initial path
+    recomputePath();
+}
+
+void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
+{
+    std::vector<Tile> tilesToPaint;
+    double tolerance = 1e-5;
+    // Find all similar tiles in an enclosed region by using BFS
+    std::queue<Tile> toExplore;
+    std::map<Tile, bool> explored;
+    toExplore.push(tile);
+    explored[tile] = true;
+    while (!toExplore.empty())
+    {
+        Tile current = toExplore.front();
+        toExplore.pop();
+        tilesToPaint.push_back(current);
+
+        // Push unvisited neighbors only if they're of similar weight
+        double currentCost = graph->getCost(current);
+        for (Tile neighbor : graph->adjacentTiles(current))
+        {
+            double neighborCost = graph->getCost(neighbor);
+            if (!explored[neighbor]
+                    && std::abs(currentCost - neighborCost) < tolerance)
+            {
+                toExplore.push(neighbor);
+                explored[neighbor] = true;
+            }
+        }
+    }
+    // Now paint every node we've explored
+    for (Tile toPaint : tilesToPaint)
+    {
+        paintTile(toPaint, color);
+    }
     recomputePath();
 }

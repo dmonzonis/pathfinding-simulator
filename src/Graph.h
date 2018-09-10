@@ -108,6 +108,12 @@ public:
     std::vector<Tile> neighbors(Tile tile);
 
     /**
+     * @brief Similar to the neighbors method, but also returns wall tiles, and ignores
+     * diagonal movement.
+     */
+    std::vector<Tile> adjacentTiles(Tile tile);
+
+    /**
      * @return The cost or weight of a tile in the grid, which is the cost of moving
      * to that tile from an adjacent one.
      */
