@@ -6,3 +6,8 @@ The simulator supports several pathfinding algorithms, as well as different heur
 
 ![Preview](preview.png)
 
+### Controls
+- Left-click to use the currently selected drawing tool.
+- Right-click and drag on the start and end nodes to grab them and move them elsewhere.
+- Middle-click and drag to pan the view.
+- Mouse wheel to zoom in and out the view.
