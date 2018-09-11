@@ -80,6 +80,26 @@ void MainWindow::updateSelectedTileType()
     tilemap->setSelectedTileType(selectedColor, weight);
 }
 
+void MainWindow::updateSelectedAlgorithm()
+{
+    tilemap->setAlgorithm(ui->cbAlgorithm->currentIndex());
+    tilemap->setHeuristic(ui->cbHeuristic->currentIndex());
+}
+
+void MainWindow::updateCheckboxOptions()
+{
+    on_checkDiagonal_stateChanged();
+    on_checkShowCost_stateChanged();
+    on_checkCornerMovement_stateChanged();
+}
+
+void MainWindow::updateEverything()
+{
+    updateSelectedTileType();
+    updateSelectedAlgorithm();
+    updateCheckboxOptions();
+}
+
 void MainWindow::on_cbTileType_currentIndexChanged(int index)
 {
     // If custom type is selected, allow editing of weight line edit
@@ -148,7 +168,7 @@ void MainWindow::on_actionReset_triggered()
 {
     tilemap->reset();
     tilemap->setDiagonal(ui->checkDiagonal->isChecked());
-    updateSelectedTileType();
+    updateEverything();
 }
 
 void MainWindow::on_actionGoofyIcons_triggered()
@@ -173,7 +193,7 @@ void MainWindow::on_actionNewMap_triggered()
     }
     // Update reference to tilemap scene
     tilemap = ui->tilemapView->getTilemapScene();
-    updateSelectedTileType();
+    updateEverything();
 }
 
 void MainWindow::on_actionSaveMap_triggered()
@@ -188,7 +208,7 @@ void MainWindow::on_actionLoadMap_triggered()
     // TODO: Allow user to change map name
     std::string filename = "test.csv";
     ui->tilemapView->loadGraphFromFile(filename);
-    updateSelectedTileType();
+    updateEverything();
 }
 
 void MainWindow::on_actionPencil_triggered()

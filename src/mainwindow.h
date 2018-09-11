@@ -28,12 +28,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    /**
-     * @brief Gets the value of the current selected tile type from the corresponding
-     * combo box, and sets it on the tilemap scene, so that the next tiles are painted
-     * with the corresponding color and weight.
-     */
-    void updateSelectedTileType();
+
 
 private slots:
     void on_cbTileType_currentIndexChanged(int index);
@@ -54,6 +49,20 @@ private slots:
     void on_actionBucket_triggered();
     void on_actionLine_triggered();
     void on_actionRect_triggered();
+
+private:
+    /**
+     * @brief Gets the value of the current selected tile type from the corresponding
+     * combo box, and sets it on the tilemap scene, so that the next tiles are painted
+     * with the corresponding color and weight.
+     */
+    void updateSelectedTileType();
+
+    void updateSelectedAlgorithm();
+
+    void updateCheckboxOptions();
+
+    void updateEverything();
 
 private:
     Ui::MainWindow *ui;
