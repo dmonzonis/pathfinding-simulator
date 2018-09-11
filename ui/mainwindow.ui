@@ -250,7 +250,10 @@
   </action>
   <action name="actionReset">
    <property name="text">
-    <string>&amp;Reset map</string>
+    <string>&amp;Clear map</string>
+   </property>
+   <property name="toolTip">
+    <string>Clears every tile in the map</string>
    </property>
   </action>
   <action name="actionShowGrid">
