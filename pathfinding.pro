@@ -25,7 +25,8 @@ HEADERS += \
     src/newmapdialog.h \
     src/tilemapscene.h \
     src/tilemapview.h \
-    src/utils.h
+    src/utils.h \
+    src/csvencoder.h
 
 
 SOURCES += \
@@ -36,7 +37,8 @@ SOURCES += \
     src/newmapdialog.cpp \
     src/tilemapscene.cpp \
     src/tilemapview.cpp \
-    src/utils.cpp
+    src/utils.cpp \
+    src/csvencoder.cpp
 
 RESOURCES += \
     resources.qrc

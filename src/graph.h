@@ -134,6 +134,21 @@ public:
      */
     void setCornerMovementAllowed(bool allowed);
 
+    /**
+     * @brief Return the tile coordinates of the top-left tile.
+     */
+    std::pair<int, int> getTopLeft() const;
+
+    /**
+     * @return The width of the graph, in tiles.
+     */
+    int getWidth() const;
+
+    /**
+     * @return The height of the graph, in tiles.
+     */
+    int getHeight() const;
+
 private:
     /**
      * @brief Tests whether moving in the given direction from a tile is a corner movement.

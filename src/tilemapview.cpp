@@ -1,6 +1,7 @@
 #include "tilemapview.h"
 #include <QMouseEvent>
 #include <QScrollBar>
+#include "csvencoder.h"
 
 TilemapView::TilemapView(QWidget *parent, int width, int height)
     : QGraphicsView(parent),
@@ -29,32 +30,29 @@ void TilemapView::init(int width, int height)
         delete tilemap;
     }
     tilemap = new TilemapScene(this, width, height);
-    setScene(tilemap);
-    // Set custom fixed scene rect, with origin at its center
-    int tileSize = GRID_SIZE;
-    int left = -tileSize * width / 2,
-            top = -tileSize * height / 2;
-    // Make adjustments for odd widths and heights
-    if (width % 2 != 0)
+    setUpView(width, height);
+}
+
+void TilemapView::init(GridGraph *graph)
+{
+    if (tilemap)
     {
-        left += tileSize / 2;
+        delete tilemap;
     }
-    if (height % 2 != 0)
+    tilemap = new TilemapScene(this, graph);
+    int width = graph->getWidth();
+    int height = graph->getHeight();
+    setUpView(width, height);
+}
+
+void TilemapView::loadGraphFromFile(std::string filename)
+{
+    CSVEncoder encoder(filename);
+    GridGraph *newGraph = encoder.loadGridGraph();
+    if (newGraph)
     {
-        top += tileSize / 2;
+        init(newGraph);
     }
-    // Create view rectangle
-    QRect viewRect(left,
-                   top,
-                   tileSize * width,
-                   tileSize * height);
-    setSceneRect(viewRect);
-    tilemap->setSceneRect(viewRect);
-    // Set anchor under mouse when rescaling
-    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    // Hide scrollbars
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void TilemapView::mousePressEvent(QMouseEvent *ev)
@@ -109,4 +107,34 @@ void TilemapView::wheelEvent(QWheelEvent *ev)
     {
         scale(0.8, 0.8);
     }
+}
+
+void TilemapView::setUpView(int width, int height)
+{
+    setScene(tilemap);
+    // Set custom fixed scene rect, with origin at its center
+    int tileSize = GRID_SIZE;
+    int left = -tileSize * width / 2,
+            top = -tileSize * height / 2;
+    // Make adjustments for odd widths and heights
+    if (width % 2 != 0)
+    {
+        left += tileSize / 2;
+    }
+    if (height % 2 != 0)
+    {
+        top += tileSize / 2;
+    }
+    // Create view rectangle
+    QRect viewRect(left,
+                   top,
+                   tileSize * width,
+                   tileSize * height);
+    setSceneRect(viewRect);
+    tilemap->setSceneRect(viewRect);
+    // Set anchor under mouse when rescaling
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    // Hide scrollbars
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }

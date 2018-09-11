@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "helpdialog.h"
 #include "newmapdialog.h"
+#include "tilemapscene.h"
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,11 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // Get pointer to the tilemap scene
     tilemap = ui->tilemapView->getTilemapScene();
     // Populate tile type combo box in the same order as the TileTypes enum
-    ui->cbTileType->addItem("Wall", QColor(Qt::black));
-    ui->cbTileType->addItem("Floor", QColor(Qt::white));
-    ui->cbTileType->addItem("Forest", QColor(Qt::green));
-    ui->cbTileType->addItem("Water", QColor(Qt::blue));
-    ui->cbTileType->addItem("Custom cost", QColor(Qt::gray));
+    ui->cbTileType->addItem("Wall", WALL_COLOR);
+    ui->cbTileType->addItem("Floor", FLOOR_COLOR);
+    ui->cbTileType->addItem("Forest", FOREST_COLOR);
+    ui->cbTileType->addItem("Water", WATER_COLOR);
+    ui->cbTileType->addItem("Custom cost", CUSTOM_WEIGHT_COLOR);
     // Populate algorithm list
     ui->cbAlgorithm->addItem("A*");
     ui->cbAlgorithm->addItem("Dijkstra");
@@ -171,6 +172,20 @@ void MainWindow::on_actionNewMap_triggered()
     }
     // Update reference to tilemap scene
     tilemap = ui->tilemapView->getTilemapScene();
+}
+
+void MainWindow::on_actionSaveMap_triggered()
+{
+    // TODO: Allow user to change map name
+    std::string filename = "test.csv";
+    tilemap->saveGraphToFile(filename);
+}
+
+void MainWindow::on_actionLoadMap_triggered()
+{
+    // TODO: Allow user to change map name
+    std::string filename = "test.csv";
+    ui->tilemapView->loadGraphFromFile(filename);
 }
 
 void MainWindow::on_actionPencil_triggered()

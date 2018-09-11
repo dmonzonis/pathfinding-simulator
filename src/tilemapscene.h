@@ -7,8 +7,13 @@
 
 const int GRID_SIZE = 30;
 const QColor GRID_COLOR = QColor(200, 200, 255, 255);
+const QColor FLOOR_COLOR = QColor(Qt::white);
+const QColor WALL_COLOR = QColor(Qt::black);
 const double FOREST_WEIGHT = 2;
+const QColor FOREST_COLOR = QColor(Qt::green);
 const double WATER_WEIGHT = 5;
+const QColor WATER_COLOR = QColor(Qt::blue);
+const QColor CUSTOM_WEIGHT_COLOR = QColor(Qt::gray);
 const QColor PATH_COLOR = QColor(250, 240, 65, 255);
 
 /**
@@ -34,6 +39,11 @@ public:
      * Initially, the start tile is set to (0, 0), and the goal tile to (3, 3).
      */
     TilemapScene(QObject *parent, int width, int height);
+
+    /**
+     * @brief Constructs a new scene using the provided graph
+     */
+    TilemapScene(QObject *parent, GridGraph *newGraph);
 
     /**
      * @brief Updates the currently active weight and color for painting tiles.
@@ -102,6 +112,8 @@ public:
      */
     void setPaintMode(PaintMode mode);
 
+    void saveGraphToFile(std::string filename);
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);
@@ -120,7 +132,9 @@ private:
      * @return true if the tile was actually painted, false otherwise, for example, if
      * the tile already had the selected weight/color.
      */
-    bool paintTile(const Tile &tile, const QColor &color);
+    void paintTile(const Tile &tile, const QColor &color);
+
+    bool updateTileWeight(const Tile &tile);
 
     /**
      * @brief Places a pixmap item on top of the visual representation of the given tile.
@@ -175,9 +189,15 @@ private:
     void init();
 
     /**
+     * @brief Initializes the scene with the preset positions for start and goal points
+     * but using the given graph as the scene graph.
+     */
+    void init(GridGraph *newGraph);
+
+    /**
      * @brief Paint all similar tiles in an enclosed region.
      */
-    void bucketPaint(const Tile &tile, const QColor &color);
+    void bucketPaint(const Tile &tile);
 
     /**
      * @brief Clears the current tile painting preview from the screen and the buffer.
@@ -205,6 +225,17 @@ private:
      * @brief Actually paints the current preview, updating the weights.
      */
     void commitPreview();
+
+    /**
+     * @brief Sets up the pixmap on their default positions.
+     */
+    void setUpEndpoints();
+
+    /**
+     * @brief Clears the entire scene and repaints tiles that have weights on them, and resets
+     * pixmaps to their original positions.
+     */
+    void repaintScene();
 
 private:
     int width, height;

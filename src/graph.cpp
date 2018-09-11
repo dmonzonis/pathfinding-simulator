@@ -118,3 +118,18 @@ std::vector<Tile> GridGraph::DIRS = {
 std::vector<Tile> GridGraph::DIAGONAL_DIRS = {
     Tile{1, 1}, Tile{-1, -1}, Tile{-1, 1}, Tile{1, -1}
 };
+
+std::pair<int, int> GridGraph::getTopLeft() const
+{
+    return std::make_pair(left, top);
+}
+
+int GridGraph::getWidth() const
+{
+    return right - left;
+}
+
+int GridGraph::getHeight() const
+{
+    return bottom - top;
+}

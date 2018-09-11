@@ -4,7 +4,9 @@
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include "algorithms.hpp"
+#include "csvencoder.h"
 #include "graph.h"
+#include "utils.h"
 
 /**
  * @brief Rounds the value to the nearest multiple of step
@@ -69,24 +71,14 @@ TilemapScene::TilemapScene(QObject *parent, int width, int height)
     init();
 }
 
-bool TilemapScene::paintTile(const Tile &tile, const QColor &color)
+TilemapScene::TilemapScene(QObject *parent, GridGraph *newGraph)
+    : TilemapScene(parent, newGraph->getWidth(), newGraph->getHeight())
 {
-    // Only allow painting in tiles inside the grid graph's bounds
-    if (graph->isOutOfBounds(tile))
-    {
-        return false;
-    }
+    init(newGraph);
+}
 
-    // Only paint if the tile has different weight than the selected one
-    double tolerance = 1e-5;
-    if (std::abs(graph->getCost(tile) - selectedWeight) < tolerance)
-    {
-        return false;
-    }
-
-    // Update the tile's weight
-    graph->setCost(tile, selectedWeight);
-
+void TilemapScene::paintTile(const Tile &tile, const QColor &color)
+{
     // Remove any rect graphics item that was there, if there was any
     QPoint pos = mapTileToRect(tile, GRID_SIZE).topLeft()
             + QPoint(GRID_SIZE / 2, GRID_SIZE / 2);
@@ -100,6 +92,27 @@ bool TilemapScene::paintTile(const Tile &tile, const QColor &color)
     // Paint the visual representation
     QRect rect = mapTileToRect(tile, GRID_SIZE);
     addRect(rect, QPen(color), QBrush(color));
+}
+
+bool TilemapScene::updateTileWeight(const Tile &tile)
+{
+    // Only allow painting in tiles inside the grid graph's bounds
+    if (graph->isOutOfBounds(tile))
+    {
+        return false;
+    }
+
+    // Only paint if the tile has different weight than the selected one
+    if (approxEqual(graph->getCost(tile), selectedWeight))
+    {
+        return false;
+    }
+
+    // Update the tile's weight
+    graph->setCost(tile, selectedWeight);
+
+    // Paint the tile with the right color
+    paintTile(tile, selectedColor);
     return true;
 }
 
@@ -241,6 +254,12 @@ void TilemapScene::setPaintMode(PaintMode mode)
     paintMode = mode;
 }
 
+void TilemapScene::saveGraphToFile(std::string filename)
+{
+    CSVEncoder encoder(filename);
+    encoder.saveGridGraph(graph);
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);
@@ -252,14 +271,14 @@ void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
         {
         case PENCIL:
             painting = true;
-            if (paintTile(tile, selectedColor))
+            if (updateTileWeight(tile))
             {
                 // If a tile was updated, trigger recompute
                 recomputePath();
             }
             break;
         case BUCKET:
-            bucketPaint(tile, selectedColor);
+            bucketPaint(tile);
             break;
         case LINE:
             paintingLine = true;
@@ -349,7 +368,7 @@ void TilemapScene::mouseMoveEvent(QGraphicsSceneMouseEvent *ev)
     {
         QPoint pos = ev->scenePos().toPoint();
         Tile tile = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
-        if (paintTile(tile, selectedColor))
+        if (updateTileWeight(tile))
         {
             // If a tile was updated, trigger recompute
             recomputePath();
@@ -377,8 +396,8 @@ void TilemapScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     // First paint the whole background white
     painter->fillRect(rect, QBrush(QColor(Qt::black)));
-    // Then paint the actual map rect white
-    painter->fillRect(sceneRect(), QBrush(QColor(Qt::white)));
+    // Then paint the actual map rect with the floor color
+    painter->fillRect(sceneRect(), QBrush(FLOOR_COLOR));
 }
 
 void TilemapScene::drawForeground(QPainter *painter, const QRectF &rect)
@@ -469,26 +488,24 @@ void TilemapScene::init()
         --top;
     }
 
-    graph = new GridGraph(left, top, width, height),
-    startTile = Tile{0, 0};
-    goalTile = Tile{3, 3};
-    grabbedPixmap = nullptr;
-
-    // Add start and goal points
-    QPixmap heroPixmap(":/res/link.png");
-    QPixmap treasurePixmap(":/res/treasure.png");
-    startPixmap = addPixmap(heroPixmap);
-    goalPixmap = addPixmap(treasurePixmap);
-    movePixmapToTile(startPixmap, startTile);
-    movePixmapToTile(goalPixmap, goalTile);
-    startPixmap->setZValue(0.9);
-    goalPixmap->setZValue(0.9);
+    graph = new GridGraph(left, top, width, height);
+    setUpEndpoints();
 
     // Compute initial path
     recomputePath();
 }
 
-void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
+void TilemapScene::init(GridGraph *newGraph)
+{
+    delete graph;
+    graph = newGraph;
+    // The map may have weights, so we need to paint the tiles accordingly
+    repaintScene();
+    // Compute initial path
+    recomputePath();
+}
+
+void TilemapScene::bucketPaint(const Tile &tile)
 {
     std::vector<Tile> tilesToPaint;
     double tolerance = 1e-5;
@@ -522,7 +539,7 @@ void TilemapScene::bucketPaint(const Tile &tile, const QColor &color)
     // Paint every node we've explored
     for (Tile toPaint : tilesToPaint)
     {
-        paintTile(toPaint, color);
+        updateTileWeight(toPaint);
     }
 
     recomputePath();
@@ -555,6 +572,7 @@ void TilemapScene::paintPreview(const QColor &color)
 
 void TilemapScene::previewLinePaint(const Tile &start, const Tile &end, const QColor &color)
 {
+    // TODO: Refactor Bresenham's algorithm into its own function
     // Use Bresenham's algorithm for getting the tiles we need to paint
     int x0 = start.x, y0 = start.y, x1 = end.x, y1 = end.y;
     int dx, dy, error, ystep;
@@ -639,8 +657,67 @@ void TilemapScene::commitPreview()
 {
     for (Tile tile : previewTiles)
     {
-        paintTile(tile, selectedColor);
+        updateTileWeight(tile);
     }
     clearPreview();
     recomputePath();
+}
+
+void TilemapScene::setUpEndpoints()
+{
+    startTile = Tile{0, 0};
+    goalTile = Tile{3, 3};
+    grabbedPixmap = nullptr;
+
+    // Add start and goal points
+    QPixmap heroPixmap(":/res/link.png");
+    QPixmap treasurePixmap(":/res/treasure.png");
+    startPixmap = addPixmap(heroPixmap);
+    goalPixmap = addPixmap(treasurePixmap);
+    movePixmapToTile(startPixmap, startTile);
+    movePixmapToTile(goalPixmap, goalTile);
+    startPixmap->setZValue(0.9);
+    goalPixmap->setZValue(0.9);
+}
+
+void TilemapScene::repaintScene()
+{
+    // Clear the whole scene
+    clear();
+    // Go tile by tile, checking their weight and painting with the appropriate color
+    auto topLeft = graph->getTopLeft();
+    int left = topLeft.first,
+            top = topLeft.first,
+            width = graph->getWidth(),
+            height = graph->getHeight();
+    for (int y = top; y < top + height; ++y)
+    {
+        for (int x = left; x < left + width; ++x)
+        {
+            Tile tile{x, y};
+            double cost = graph->getCost(tile);
+            if (cost < 0)
+            {
+                paintTile(tile, WALL_COLOR);
+            }
+            else if (approxEqual(cost, 1.))
+            {
+                // No need to paint, the background is already white
+                continue;
+            }
+            else if (approxEqual(cost, FOREST_WEIGHT))
+            {
+                paintTile(tile, FOREST_COLOR);
+            }
+            else if (approxEqual(cost, WATER_WEIGHT))
+            {
+                paintTile(tile, WATER_COLOR);
+            }
+            else
+            {
+                paintTile(tile, CUSTOM_WEIGHT_COLOR);
+            }
+        }
+    }
+    setUpEndpoints();
 }

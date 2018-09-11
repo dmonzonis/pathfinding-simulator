@@ -48,6 +48,8 @@ private slots:
     void on_actionGoofyIcons_triggered();
     void on_actionShowGrid_triggered();
     void on_actionNewMap_triggered();
+    void on_actionSaveMap_triggered();
+    void on_actionLoadMap_triggered();
     void on_actionPencil_triggered();
     void on_actionBucket_triggered();
     void on_actionLine_triggered();

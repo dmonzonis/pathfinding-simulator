@@ -29,11 +29,25 @@ public:
      */
     void init(int width, int height);
 
-protected:
+    /**
+     * @brief Create a new view and scene using the provided graph.
+     */
+    void init(GridGraph *graph);
+
+    /**
+     * @brief Attempts to load a graph from a file, and reinitializes the view and scene using
+     * the loaded graph if successful.
+     * @param filename Filename where the encoded graph is written.
+     * @see CSVEncoder
+     */
+    void loadGraphFromFile(std::string filename);
+
+private:
     void mousePressEvent(QMouseEvent *ev);
     void mouseReleaseEvent(QMouseEvent *ev);
     void mouseMoveEvent(QMouseEvent *ev);
     void wheelEvent(QWheelEvent *ev);
+    void setUpView(int width, int height);
 
 private:
     TilemapScene *tilemap;
