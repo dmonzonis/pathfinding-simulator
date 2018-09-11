@@ -48,11 +48,17 @@ void TilemapView::init(GridGraph *graph)
 void TilemapView::loadGraphFromFile(std::string filename)
 {
     CSVEncoder encoder(filename);
-    GridGraph *newGraph = encoder.loadGridGraph();
-    if (newGraph)
+    GridGraph * newGraph;
+    try
     {
-        init(newGraph);
+        newGraph = encoder.loadGridGraph();
     }
+    catch (const std::exception &ex)
+    {
+        // There was a problem loading the file, so don't do anything
+        return;
+    }
+    init(newGraph);
 }
 
 void TilemapView::mousePressEvent(QMouseEvent *ev)
