@@ -11,14 +11,13 @@ CSVEncoder::CSVEncoder(std::string filename, std::string delimiter)
 void CSVEncoder::saveGridGraph(GridGraph *graph) const
 {
     std::ofstream file(filename);
-    std::vector<std::string> parts;
+    std::stringstream stream;
 
     // Write the dimensions in the first line
     int width = graph->getWidth();
     int height = graph->getHeight();
-    parts.push_back(std::to_string(width));
-    parts.push_back(std::to_string(height));
-    file << joinParts(parts) << "\n";
+    stream << width << delimiter << height << std::endl;
+    file << stream.rdbuf();
 
     // Write all the weights
     std::pair<int, int> topLeft = graph->getTopLeft();
@@ -26,12 +25,17 @@ void CSVEncoder::saveGridGraph(GridGraph *graph) const
     int top = topLeft.second;
     for (int y = top; y < top + height; ++y)
     {
-        parts.clear();
+        stream.str("");
         for (int x = left; x < left + width; ++x)
         {
-            parts.push_back(std::to_string(graph->getCost(Tile{x, y})));
+            if (x != left)
+            {
+                stream << delimiter;
+            }
+            stream << graph->getCost(Tile{x, y});
         }
-        file << joinParts(parts) << "\n";
+        stream << std::endl;
+        file << stream.rdbuf();
     }
 }
 
