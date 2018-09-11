@@ -494,7 +494,15 @@ void TilemapScene::init()
     delete graph;
     int left = -width / 2,
             top = -height / 2;
-
+    // Make adjustment for odd sized dimensions
+    if (width % 2 != 0)
+    {
+        --left;
+    }
+    if (height % 2 != 0)
+    {
+        --top;
+    }
     graph = new GridGraph(left, top, width, height);
     setUpEndpoints();
 

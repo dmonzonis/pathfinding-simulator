@@ -127,11 +127,11 @@ void TilemapView::setUpView(int width, int height)
     // Make adjustments for odd widths and heights
     if (width % 2 != 0)
     {
-        left += tileSize / 2;
+        left -= tileSize / 2;
     }
     if (height % 2 != 0)
     {
-        top += tileSize / 2;
+        top -= tileSize / 2;
     }
     // Create view rectangle
     QRect viewRect(left,
