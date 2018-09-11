@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QFileDialog>
 #include "helpdialog.h"
 #include "newmapdialog.h"
 #include "tilemapscene.h"
@@ -199,16 +200,19 @@ void MainWindow::on_actionNewMap_triggered()
 
 void MainWindow::on_actionSaveMap_triggered()
 {
-    // TODO: Allow user to change map name
-    std::string filename = "test.csv";
-    tilemap->saveGraphToFile(filename);
+    QString filename = QFileDialog::getSaveFileName(this, "Save map", QString(), "CSV Files (*.csv)");
+    // Append csv extension if user didn't provide it
+    if (QFileInfo(filename).suffix().isEmpty())
+    {
+        filename.append(".csv");
+    }
+    tilemap->saveGraphToFile(filename.toStdString());
 }
 
 void MainWindow::on_actionLoadMap_triggered()
 {
-    // TODO: Allow user to change map name
-    std::string filename = "test.csv";
-    ui->tilemapView->loadGraphFromFile(filename);
+    QString filename = QFileDialog::getOpenFileName(this, "Load map", QString(), "CSV Files (*.csv)");
+    ui->tilemapView->loadGraphFromFile(filename.toStdString());
     updateEverything();
 }
 
