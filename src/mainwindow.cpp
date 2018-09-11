@@ -95,6 +95,9 @@ void MainWindow::updateCheckboxOptions()
 
 void MainWindow::updateEverything()
 {
+    // Update reference to tilemap scene
+    tilemap = ui->tilemapView->getTilemapScene();
+
     updateSelectedTileType();
     updateSelectedAlgorithm();
     updateCheckboxOptions();
@@ -191,8 +194,6 @@ void MainWindow::on_actionNewMap_triggered()
         int height = newMapDialog->getHeight();
         ui->tilemapView->init(width, height);
     }
-    // Update reference to tilemap scene
-    tilemap = ui->tilemapView->getTilemapScene();
     updateEverything();
 }
 

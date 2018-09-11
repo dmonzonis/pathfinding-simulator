@@ -77,6 +77,13 @@ TilemapScene::TilemapScene(QObject *parent, GridGraph *newGraph)
     init(newGraph);
 }
 
+TilemapScene::~TilemapScene()
+{
+    clearPath();
+    clearText();
+    delete graph;
+}
+
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
     // Remove any rect graphics item that was there, if there was any

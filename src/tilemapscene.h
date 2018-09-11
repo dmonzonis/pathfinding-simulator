@@ -45,6 +45,8 @@ public:
      */
     TilemapScene(QObject *parent, GridGraph *newGraph);
 
+    ~TilemapScene();
+
     /**
      * @brief Updates the currently active weight and color for painting tiles.
      *
