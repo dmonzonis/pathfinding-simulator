@@ -27,8 +27,8 @@ GridGraph::GridGraph(int left, int top, int width, int height)
 
 bool GridGraph::isOutOfBounds(Tile tile)
 {
-    return tile.x < left || tile.x > right
-            || tile.y < top || tile.y > bottom;
+    return tile.x < left || tile.x >= right
+            || tile.y < top || tile.y >= bottom;
 }
 
 bool GridGraph::isWall(Tile tile)

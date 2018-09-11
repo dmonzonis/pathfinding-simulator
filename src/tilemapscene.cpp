@@ -86,9 +86,9 @@ TilemapScene::~TilemapScene()
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
 {
+    QRect rect = mapTileToRect(tile, GRID_SIZE);
     // Remove any rect graphics item that was there, if there was any
-    QPoint pos = mapTileToRect(tile, GRID_SIZE).topLeft()
-            + QPoint(GRID_SIZE / 2, GRID_SIZE / 2);
+    QPoint pos = rect.topLeft() + QPoint(GRID_SIZE / 2, GRID_SIZE / 2);
     QGraphicsItem *item = itemAt(pos, QTransform());
     // type 3 is the type of QGraphicsRectItem items
     if (item && item->type() == 3)
@@ -97,7 +97,6 @@ void TilemapScene::paintTile(const Tile &tile, const QColor &color)
     }
 
     // Paint the visual representation
-    QRect rect = mapTileToRect(tile, GRID_SIZE);
     addRect(rect, QPen(color), QBrush(color));
 }
 
@@ -495,15 +494,6 @@ void TilemapScene::init()
     delete graph;
     int left = -width / 2,
             top = -height / 2;
-    // Make adjustments for odd widths and heights
-    if (width % 2 != 0)
-    {
-        --left;
-    }
-    if (height % 2 != 0)
-    {
-        --top;
-    }
 
     graph = new GridGraph(left, top, width, height);
     setUpEndpoints();
