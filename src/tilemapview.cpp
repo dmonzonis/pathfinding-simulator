@@ -34,13 +34,13 @@ void TilemapView::init(int width, int height)
     setUpView(width, height);
 }
 
-void TilemapView::init(GridGraph *graph)
+void TilemapView::init(GridGraph *graph, Tile &start, Tile &goal)
 {
     if (tilemap)
     {
         delete tilemap;
     }
-    tilemap = new TilemapScene(this, graph);
+    tilemap = new TilemapScene(this, graph, start, goal);
     int width = graph->getWidth();
     int height = graph->getHeight();
     setUpView(width, height);
@@ -60,7 +60,9 @@ void TilemapView::loadGraphFromFile(std::string filename)
         showErrorMessage("Error parsing file.");
         return;
     }
-    init(newGraph);
+    Tile start = encoder.getStartTile();
+    Tile goal = encoder.getGoalTile();
+    init(newGraph, start, goal);
 }
 
 void TilemapView::mousePressEvent(QMouseEvent *ev)

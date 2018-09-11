@@ -71,10 +71,10 @@ TilemapScene::TilemapScene(QObject *parent, int width, int height)
     init();
 }
 
-TilemapScene::TilemapScene(QObject *parent, GridGraph *newGraph)
+TilemapScene::TilemapScene(QObject *parent, GridGraph *newGraph, Tile &start, Tile &goal)
     : TilemapScene(parent, newGraph->getWidth(), newGraph->getHeight())
 {
-    init(newGraph);
+    init(newGraph, start, goal);
 }
 
 TilemapScene::~TilemapScene()
@@ -263,7 +263,7 @@ void TilemapScene::setPaintMode(PaintMode mode)
 void TilemapScene::saveGraphToFile(std::string filename)
 {
     CSVEncoder encoder(filename);
-    encoder.saveGridGraph(graph);
+    encoder.saveGridGraph(graph, startTile, goalTile);
 }
 
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
@@ -510,12 +510,13 @@ void TilemapScene::init()
     recomputePath();
 }
 
-void TilemapScene::init(GridGraph *newGraph)
+void TilemapScene::init(GridGraph *newGraph, Tile &start, Tile &goal)
 {
     delete graph;
     graph = newGraph;
     // The map may have weights, so we need to paint the tiles accordingly
     repaintScene();
+    setUpEndpoints(start, goal);
     // Compute initial path
     recomputePath();
 }
@@ -678,12 +679,11 @@ void TilemapScene::commitPreview()
     recomputePath();
 }
 
-void TilemapScene::setUpEndpoints()
+void TilemapScene::setUpEndpoints(Tile start, Tile goal)
 {
-    startTile = Tile{0, 0};
-    goalTile = Tile{3, 3};
+    startTile = start;
+    goalTile = goal;
     grabbedPixmap = nullptr;
-
     // Add start and goal points
     QPixmap heroPixmap(":/res/link.png");
     QPixmap treasurePixmap(":/res/treasure.png");
@@ -734,5 +734,4 @@ void TilemapScene::repaintScene()
             }
         }
     }
-    setUpEndpoints();
 }

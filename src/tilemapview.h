@@ -32,7 +32,7 @@ public:
     /**
      * @brief Create a new view and scene using the provided graph.
      */
-    void init(GridGraph *graph);
+    void init(GridGraph *graph, Tile &start, Tile &goal);
 
     /**
      * @brief Attempts to load a graph from a file, and reinitializes the view and scene using

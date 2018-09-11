@@ -43,7 +43,7 @@ public:
     /**
      * @brief Constructs a new scene using the provided graph
      */
-    TilemapScene(QObject *parent, GridGraph *newGraph);
+    TilemapScene(QObject *parent, GridGraph *newGraph, Tile &start, Tile &goal);
 
     ~TilemapScene();
 
@@ -194,7 +194,7 @@ private:
      * @brief Initializes the scene with the preset positions for start and goal points
      * but using the given graph as the scene graph.
      */
-    void init(GridGraph *newGraph);
+    void init(GridGraph *newGraph, Tile &start, Tile &goal);
 
     /**
      * @brief Paint all similar tiles in an enclosed region.
@@ -231,7 +231,7 @@ private:
     /**
      * @brief Sets up the pixmap on their default positions.
      */
-    void setUpEndpoints();
+    void setUpEndpoints(Tile start = Tile{0, 0}, Tile goal = Tile{3, 3});
 
     /**
      * @brief Clears the entire scene and repaints tiles that have weights on them, and resets

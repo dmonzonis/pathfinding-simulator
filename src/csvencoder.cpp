@@ -8,7 +8,7 @@ CSVEncoder::CSVEncoder(std::string filename, std::string delimiter)
 {
 }
 
-void CSVEncoder::saveGridGraph(GridGraph *graph) const
+void CSVEncoder::saveGridGraph(GridGraph *graph, Tile start, Tile end) const
 {
     std::ofstream file(filename);
     std::stringstream stream;
@@ -18,6 +18,13 @@ void CSVEncoder::saveGridGraph(GridGraph *graph) const
     int height = graph->getHeight();
     stream << width << delimiter << height << std::endl;
     file << stream.rdbuf();
+    stream.str("");  // Clear stream
+
+    // Write start and goal tile coordinates on second line
+    stream << start.x << delimiter << start.y << delimiter;
+    stream << end.x << delimiter << end.y << std::endl;
+    file << stream.rdbuf();
+    stream.str("");
 
     // Write all the weights
     std::pair<int, int> topLeft = graph->getTopLeft();
@@ -39,7 +46,7 @@ void CSVEncoder::saveGridGraph(GridGraph *graph) const
     }
 }
 
-GridGraph* CSVEncoder::loadGridGraph() const
+GridGraph* CSVEncoder::loadGridGraph()
 {
     std::ifstream file(filename);
     if (!file)
@@ -52,13 +59,22 @@ GridGraph* CSVEncoder::loadGridGraph() const
     // First line is width, height of the graph
     std::getline(file, line);
     parts = splitLine(line);
-
     if (parts.size() != 2)
     {
         throw std::runtime_error("Error reading file");
     }
     int width = std::stoi(parts[0]);
     int height = std::stoi(parts[1]);
+
+    // Second line is start and goal tile coordinates
+    std::getline(file, line);
+    parts = splitLine(line);
+    if (parts.size() != 4)
+    {
+        throw std::runtime_error("Error reading file");
+    }
+    start = Tile{std::stoi(parts[0]), std::stoi(parts[1])};
+    goal = Tile{std::stoi(parts[2]), std::stoi(parts[3])};
 
     // Create an empty graph
     int left = -width / 2;
@@ -91,6 +107,16 @@ GridGraph* CSVEncoder::loadGridGraph() const
     }
 
     return graph;
+}
+
+Tile CSVEncoder::getStartTile() const
+{
+    return start;
+}
+
+Tile CSVEncoder::getGoalTile() const
+{
+    return goal;
 }
 
 std::vector<std::string> CSVEncoder::splitLine(std::string line) const

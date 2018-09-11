@@ -8,8 +8,10 @@ class CSVEncoder
 {
 public:
     CSVEncoder(std::string filename, std::string delimiter = ",");
-    void saveGridGraph(GridGraph *graph) const;
-    GridGraph* loadGridGraph() const;
+    void saveGridGraph(GridGraph *graph, Tile start, Tile end) const;
+    GridGraph* loadGridGraph();
+    Tile getStartTile() const;
+    Tile getGoalTile() const;
 
 private:
     std::vector<std::string> splitLine(std::string line) const;
@@ -17,6 +19,7 @@ private:
 
 private:
     std::string filename, delimiter;
+    Tile start, goal;
 };
 
 #endif // CSVENCODER_H
