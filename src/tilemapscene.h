@@ -243,7 +243,7 @@ private:
     QColor selectedColor;
     double selectedWeight;
     GridGraph *graph;
-    Tile startTile, goalTile;
+    Tile startTile, goalTile, previousPosition;
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
     std::vector<QGraphicsLineItem*> pathLines;
     Algorithm selectedAlgorithm;

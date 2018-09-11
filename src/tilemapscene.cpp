@@ -300,6 +300,8 @@ void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
         // Check if the goal or start points are in that tile
         if (goalTile == tileUnderCursor || startTile == tileUnderCursor)
         {
+            // Remember current position
+            previousPosition = tileUnderCursor;
             // Grab goal first if possible, start otherwise
             if (goalTile == tileUnderCursor)
             {
@@ -339,6 +341,14 @@ void TilemapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *ev)
         {
             QPoint pos = ev->scenePos().toPoint();
             Tile tileUnderCursor = mapCoordsToTile(pos.x(), pos.y(), GRID_SIZE);
+            // Don't allow placing the pixmap in an out of bounds tile
+            // If the user tries it, put it back where it was before he grabbed it
+            if (graph->isOutOfBounds(tileUnderCursor))
+            {
+                movePixmapToTile(grabbedPixmap, previousPosition);
+                grabbedPixmap = nullptr;
+                return;
+            }
             movePixmapToTile(grabbedPixmap, tileUnderCursor);
             // Check whether we are setting the start or goal points
             if (grabbedPixmap == startPixmap)
