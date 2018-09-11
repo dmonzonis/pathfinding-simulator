@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include "csvencoder.h"
+#include "utils.h"
 
 TilemapView::TilemapView(QWidget *parent, int width, int height)
     : QGraphicsView(parent),
@@ -55,7 +56,8 @@ void TilemapView::loadGraphFromFile(std::string filename)
     }
     catch (const std::exception &ex)
     {
-        // There was a problem loading the file, so don't do anything
+        // There was a problem loading the file, so show error message and don't do anything
+        showErrorMessage("Error parsing file.");
         return;
     }
     init(newGraph);

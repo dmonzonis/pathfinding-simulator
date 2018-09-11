@@ -45,10 +45,14 @@ GridGraph* CSVEncoder::loadGridGraph() const
     std::string line;
     std::vector<std::string> parts;
 
-    // TODO: Make more checks to validate input format
     // First line is width, height of the graph
     std::getline(file, line);
     parts = splitLine(line);
+
+    if (parts.size() != 2)
+    {
+        throw std::runtime_error("Error reading file");
+    }
     int width = std::stoi(parts[0]);
     int height = std::stoi(parts[1]);
 
@@ -71,6 +75,10 @@ GridGraph* CSVEncoder::loadGridGraph() const
     {
         std::getline(file, line);
         parts = splitLine(line);
+        if (parts.size() != width)
+        {
+            throw std::runtime_error("Error reading file");
+        }
         for (int x = left; x < left + width; ++x)
         {
             double cost = std::stod(parts[x - left]);
