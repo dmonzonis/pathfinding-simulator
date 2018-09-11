@@ -148,6 +148,7 @@ void MainWindow::on_actionReset_triggered()
 {
     tilemap->reset();
     tilemap->setDiagonal(ui->checkDiagonal->isChecked());
+    updateSelectedTileType();
 }
 
 void MainWindow::on_actionGoofyIcons_triggered()
@@ -172,6 +173,7 @@ void MainWindow::on_actionNewMap_triggered()
     }
     // Update reference to tilemap scene
     tilemap = ui->tilemapView->getTilemapScene();
+    updateSelectedTileType();
 }
 
 void MainWindow::on_actionSaveMap_triggered()
@@ -186,6 +188,7 @@ void MainWindow::on_actionLoadMap_triggered()
     // TODO: Allow user to change map name
     std::string filename = "test.csv";
     ui->tilemapView->loadGraphFromFile(filename);
+    updateSelectedTileType();
 }
 
 void MainWindow::on_actionPencil_triggered()
@@ -207,3 +210,4 @@ void MainWindow::on_actionRect_triggered()
 {
     tilemap->setPaintMode(TilemapScene::RECT);
 }
+
