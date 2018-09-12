@@ -248,7 +248,7 @@ void TilemapScene::setGoofyIcons(bool state)
     }
     else
     {
-        start = QPixmap(":/res/circle.png");
+        start = QPixmap(":/res/redcube.png");
         end = QPixmap(":/res/cross.png");
     }
     startPixmap->setPixmap(start);

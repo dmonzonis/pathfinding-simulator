@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/circle.png</file>
         <file>res/cross.png</file>
         <file>res/link.png</file>
         <file>res/treasure.png</file>
@@ -8,5 +7,6 @@
         <file>res/pencil.png</file>
         <file>res/line.png</file>
         <file>res/square.png</file>
+        <file>res/redcube.png</file>
     </qresource>
 </RCC>
