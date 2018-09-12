@@ -481,7 +481,7 @@ void TilemapScene::paintTileCosts(std::map<Tile, double> &costs)
     for (auto it = costs.begin(); it != costs.end(); it++)
     {
         // Convert cost to graphics text and add it to the list
-        auto item = addSimpleText(QString::number(it->second));
+        auto item = addSimpleText(QString::number(it->second, 'g', 3));
         tileTexts.push_back(item);
         // Get tile and draw the text on it
         QPoint pos = mapTileToRect(it->first, GRID_SIZE).topLeft();
