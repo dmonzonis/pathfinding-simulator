@@ -24,7 +24,7 @@ class TilemapScene : public QGraphicsScene
 {
 public:
     enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
-    enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV};
+    enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV, OCTILE};
     enum PaintMode {PENCIL, BUCKET, LINE, RECT};
 
 public:

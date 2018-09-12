@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cbHeuristic->addItem("Manhattan distance");
     ui->cbHeuristic->addItem("Euclidean distance");
     ui->cbHeuristic->addItem("Chebyshev distance");
+    ui->cbHeuristic->addItem("Octile distance");
     // Create paint tools action group
     QActionGroup *paintToolsGroup = new QActionGroup(this);
     paintToolsGroup->addAction(ui->actionPencil);

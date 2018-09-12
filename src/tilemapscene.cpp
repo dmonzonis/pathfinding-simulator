@@ -169,6 +169,9 @@ void TilemapScene::recomputePath()
     case CHEBYSHEV:
         heuristic = chebyshevDistance;
         break;
+    case OCTILE:
+        heuristic = octileDistance;
+        break;
     }
 
     // Use pertinent algorithm

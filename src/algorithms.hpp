@@ -146,6 +146,16 @@ inline double chebyshevDistance(Tile a, Tile b)
 }
 
 /**
+ * @brief Compute the Chebyshev distance between two tiles.
+ */
+inline double octileDistance(Tile a, Tile b)
+{
+    double dx = std::abs(a.x - b.x);
+    double dy = std::abs(a.y - b.y);
+    return std::sqrt(2) * std::min(dx, dy) + std::abs(dx - dy);
+}
+
+/**
  * Compute the optimal path between two nodes using the A* algorithm with early exit.
  */
 template <typename Node, typename Graph>
