@@ -14,12 +14,18 @@ public:
 };
 
 /**
- * @brief A SimpleGraph is a weighteddirected graph in which nodes are
+ * @brief A SimpleGraph is a positively weighted directed graph in which nodes are
  * identified by integers.
+ *
+ * The edges are unique, so there can't be more than one edge
+ * going from one node to another, but can be bidirectional and not necessarily have the
+ * same weight, so the edge from A to B can have one weight, and the node from B to A
+ * a different weight, or there can be an edge from A to B but not one from B to A.
  */
 class SimpleGraph : public Graph<int>
 {
 public:
+    typedef std::map<int, double> Edges;
     using Graph = Graph<int>;
 
     /**
@@ -33,11 +39,43 @@ public:
     /**
      * @brief Return a list of all the nodes that can be accessed from this node.
      */
-    std::vector<int> neighbors(int id);
+    std::vector<int> neighbors(int node);
+
+    /**
+     * @brief Checks if the node exists in the graph.
+     */
+    bool exists(int node);
+
+    /**
+     * @brief Checks if an edge from node1 to node2 exists in the graph.
+     */
+    bool exists(int node1, int node2);
+
+    /**
+     * @return The cost of the edge in the graph groing from node1 to node2.
+     *
+     * If there's no edge from the start to goal nodes, it returns -1, meaning an infinite
+     * cost.
+     */
+    double getCost(int node1, int node2);
+
+    /**
+     * @brief Adds a new node with no connections.
+     *
+     * If the node already exists, does nothing.
+     */
+    void addNode(int node);
+
+    /**
+     * @brief Adds a connection, or edge, between two nodes with the given cost.
+     *
+     * If any of the nodes don't exist in the graph, they're automatically added.
+     * If the edge already exists, it updates its cost.
+     */
+    void addEdge(int node1, int node2, double cost);
 
 private:
-    // TODO: Add weights to edges
-    std::map<int, std::vector<int>> edges;
+    std::map<int, Edges> _edges;
 };
 
 typedef struct Tile {
