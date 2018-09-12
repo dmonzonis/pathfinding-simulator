@@ -6,15 +6,15 @@ The simulator supports several pathfinding algorithms, as well as different heur
 
 ![Preview](preview.png)
 
-### Controls
+## Controls
 - Left-click to use the currently selected drawing tool.
 - Right-click and drag on the start and end nodes to grab them and move them elsewhere.
 - Middle-click and drag to pan the view.
 - Mouse wheel to zoom in and out the view.
 
-### Compiling
+## Compiling
 The only requisite to compile and run the program is Qt5.
-#### Linux
+### Linux
 If you don't have it already, you can get Qt5 from your package manager.
 
 In Debian/Ubuntu: `apt-get install qt5-default`
