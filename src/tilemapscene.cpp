@@ -269,6 +269,11 @@ void TilemapScene::saveGraphToFile(std::string filename)
     encoder.saveGridGraph(graph, startTile, goalTile);
 }
 
+QPoint TilemapScene::getStartPointPosition()
+{
+    return mapTileToRect(startTile, GRID_SIZE).topLeft();
+}
+
 void TilemapScene::mousePressEvent(QGraphicsSceneMouseEvent *ev)
 {
     QGraphicsScene::mousePressEvent(ev);

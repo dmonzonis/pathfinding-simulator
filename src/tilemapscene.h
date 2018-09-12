@@ -116,6 +116,8 @@ public:
 
     void saveGraphToFile(std::string filename);
 
+    QPoint getStartPointPosition();
+
 private slots:
     void mousePressEvent(QGraphicsSceneMouseEvent *ev);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *ev);

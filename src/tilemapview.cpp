@@ -147,4 +147,6 @@ void TilemapView::setUpView(int width, int height)
     // Hide scrollbars
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // Center view on start node
+    centerOn(tilemap->getStartPointPosition());
 }
