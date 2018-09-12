@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <cmath>
 
 void showErrorMessage(std::string msg)
 {
