@@ -82,6 +82,9 @@ TilemapScene::~TilemapScene()
     clearPath();
     clearText();
     delete graph;
+    delete startPixmap;
+    delete goalPixmap;
+    delete grabbedPixmap;
 }
 
 void TilemapScene::paintTile(const Tile &tile, const QColor &color)
@@ -698,6 +701,9 @@ void TilemapScene::setUpEndpoints(Tile start, Tile goal)
 void TilemapScene::repaintScene()
 {
     // Clear the whole scene
+    clearPath();
+    clearText();
+    clearPreview();
     clear();
     // Go tile by tile, checking their weight and painting with the appropriate color
     auto topLeft = graph->getTopLeft();
