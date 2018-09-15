@@ -243,6 +243,6 @@ void MainWindow::on_actionScreenshot_triggered()
                                                     "Save screenshot",
                                                     "screenshot",
                                                     "Image (*.png)");
-    QPixmap pixmap = QPixmap::grabWidget(ui->tilemapView);
+    QPixmap pixmap = ui->tilemapView->grab();
     pixmap.save(filename);
 }
