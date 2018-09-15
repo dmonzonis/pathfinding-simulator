@@ -49,6 +49,7 @@ private slots:
     void on_actionBucket_triggered();
     void on_actionLine_triggered();
     void on_actionRect_triggered();
+    void on_actionScreenshot_triggered();
 
 private:
     /**

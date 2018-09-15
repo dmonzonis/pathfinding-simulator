@@ -237,3 +237,12 @@ void MainWindow::on_actionRect_triggered()
     tilemap->setPaintMode(TilemapScene::RECT);
 }
 
+void MainWindow::on_actionScreenshot_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    "Save screenshot",
+                                                    "screenshot",
+                                                    "Image (*.png)");
+    QPixmap pixmap = QPixmap::grabWidget(ui->tilemapView);
+    pixmap.save(filename);
+}

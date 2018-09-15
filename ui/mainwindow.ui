@@ -214,6 +214,7 @@
     </property>
     <addaction name="actionShowGrid"/>
     <addaction name="actionGoofyIcons"/>
+    <addaction name="actionScreenshot"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -363,6 +364,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionScreenshot">
+   <property name="text">
+    <string>Take screenshot</string>
+   </property>
+   <property name="toolTip">
+    <string>Take a screenshot of the current view panel</string>
    </property>
   </action>
  </widget>
