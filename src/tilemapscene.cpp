@@ -696,8 +696,8 @@ void TilemapScene::setUpEndpoints(Tile start, Tile goal)
     goalTile = goal;
     grabbedPixmap = nullptr;
     // Add start and goal points
-    QPixmap heroPixmap(":/res/link.png");
-    QPixmap treasurePixmap(":/res/treasure.png");
+    QPixmap heroPixmap(":/res/redcube.png");
+    QPixmap treasurePixmap(":/res/cross.png");
     startPixmap = addPixmap(heroPixmap);
     goalPixmap = addPixmap(treasurePixmap);
     movePixmapToTile(startPixmap, startTile);

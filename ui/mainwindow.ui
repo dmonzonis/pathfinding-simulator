@@ -27,6 +27,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetNoConstraint</enum>
+    </property>
     <item>
      <widget class="TilemapView" name="tilemapView">
       <property name="enabled">
@@ -60,6 +63,9 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
       <item>
        <widget class="QCheckBox" name="checkShowCost">
         <property name="text">
@@ -142,6 +148,9 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
       <item>
        <widget class="QLabel" name="textAlgorithm">
         <property name="sizePolicy">
@@ -273,6 +282,9 @@
     <bool>true</bool>
    </property>
    <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="text">
@@ -368,7 +380,7 @@
   </action>
   <action name="actionScreenshot">
    <property name="text">
-    <string>Take screenshot</string>
+    <string>&amp;Take screenshot</string>
    </property>
    <property name="toolTip">
     <string>Take a screenshot of the current view panel</string>
