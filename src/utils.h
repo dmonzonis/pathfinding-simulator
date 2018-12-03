@@ -2,6 +2,8 @@
 #define UTILS_H
 
 #include <QMessageBox>
+#include <string>
+#include <vector>
 
 /**
  * @brief Shows a dialog with an error message.
@@ -16,5 +18,12 @@ void showErrorMessage(std::string msg);
  * of 0.0001
  */
 bool approxEqual(double a, double b, double tolerance = 1e-5);
+
+void printUsage();
+
+std::vector<std::string> splitLine(std::string line);
+
+std::string joinParts(std::vector<std::string> parts);
+
 
 #endif // UTILS_H

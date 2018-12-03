@@ -1,6 +1,7 @@
 #include "csvencoder.h"
 #include <fstream>
 #include <sstream>
+#include "utils.h"
 
 CSVEncoder::CSVEncoder(std::string filename, std::string delimiter)
     : filename(filename),
@@ -117,34 +118,4 @@ Tile CSVEncoder::getStartTile() const
 Tile CSVEncoder::getGoalTile() const
 {
     return goal;
-}
-
-std::vector<std::string> CSVEncoder::splitLine(std::string line) const
-{
-    std::vector<std::string> result;
-    // Split and add to the vector as long as the delimiter is found in the string
-    auto pos = line.find(delimiter);
-    while ((pos = line.find(delimiter)) != std::string::npos)
-    {
-        result.push_back(line.substr(0, pos));
-        line.erase(0, pos + delimiter.length());
-        pos = line.find(delimiter);
-    }
-    // Push the remains of the string
-    result.push_back(line);
-    return result;
-}
-
-std::string CSVEncoder::joinParts(std::vector<std::string> parts) const
-{
-    std::stringstream stream;
-    for (size_t i = 0; i < parts.size(); ++i)
-    {
-        if (i != 0)
-        {
-            stream << delimiter;
-        }
-        stream << parts[i];
-    }
-    return stream.str();
 }

@@ -14,10 +14,6 @@ public:
     Tile getGoalTile() const;
 
 private:
-    std::vector<std::string> splitLine(std::string line) const;
-    std::string joinParts(std::vector<std::string> parts) const;
-
-private:
     std::string filename, delimiter;
     Tile start, goal;
 };
