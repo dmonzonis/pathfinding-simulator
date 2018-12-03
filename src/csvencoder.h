@@ -10,8 +10,9 @@ public:
     CSVEncoder(std::string filename, std::string delimiter = ",");
     void saveGridGraph(GridGraph *graph, Tile start, Tile end) const;
     GridGraph* loadGridGraph();
-    Tile getStartTile() const;
-    Tile getGoalTile() const;
+
+    Tile getStartTile() const { return start; }
+    Tile getGoalTile() const { return goal; }
 
 private:
     std::string filename, delimiter;

@@ -21,9 +21,9 @@ bool approxEqual(double a, double b, double tolerance = 1e-5);
 
 void printUsage();
 
-std::vector<std::string> splitLine(std::string line);
+std::vector<std::string> splitLine(std::string line, std::string delimiter=",");
 
-std::string joinParts(std::vector<std::string> parts);
+std::string joinParts(std::vector<std::string> parts, std::string delimiter=",");
 
 
 #endif // UTILS_H

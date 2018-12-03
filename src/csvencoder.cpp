@@ -59,7 +59,7 @@ GridGraph* CSVEncoder::loadGridGraph()
 
     // First line is width, height of the graph
     std::getline(file, line);
-    parts = splitLine(line);
+    parts = splitLine(line, delimiter);
     if (parts.size() != 2)
     {
         throw std::runtime_error("Error reading file");
@@ -69,7 +69,7 @@ GridGraph* CSVEncoder::loadGridGraph()
 
     // Second line is start and goal tile coordinates
     std::getline(file, line);
-    parts = splitLine(line);
+    parts = splitLine(line, delimiter);
     if (parts.size() != 4)
     {
         throw std::runtime_error("Error reading file");
@@ -95,7 +95,7 @@ GridGraph* CSVEncoder::loadGridGraph()
     for (int y = top; y < top + height; ++y)
     {
         std::getline(file, line);
-        parts = splitLine(line);
+        parts = splitLine(line, delimiter);
         if (parts.size() != width)
         {
             throw std::runtime_error("Error reading file");
@@ -108,14 +108,4 @@ GridGraph* CSVEncoder::loadGridGraph()
     }
 
     return graph;
-}
-
-Tile CSVEncoder::getStartTile() const
-{
-    return start;
-}
-
-Tile CSVEncoder::getGoalTile() const
-{
-    return goal;
 }

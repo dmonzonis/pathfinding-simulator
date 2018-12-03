@@ -1,6 +1,8 @@
 #include "utils.h"
 #include <cmath>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 void showErrorMessage(std::string msg)
 {
@@ -22,7 +24,7 @@ void printUsage()
     std::cout << "-b FILENAME START GOAL\t\tRun benchmark using the graph and coordinates from DIMACS with the given filename from the START node to the GOAL node" << std::endl;
 }
 
-std::vector<std::string> splitLine(std::string line) const
+std::vector<std::string> splitLine(std::string line, std::string delimiter)
 {
     std::vector<std::string> result;
     // Split and add to the vector as long as the delimiter is found in the string
@@ -38,7 +40,7 @@ std::vector<std::string> splitLine(std::string line) const
     return result;
 }
 
-std::string joinParts(std::vector<std::string> parts) const
+std::string joinParts(std::vector<std::string> parts, std::string delimiter)
 {
     std::stringstream stream;
     for (size_t i = 0; i < parts.size(); ++i)
