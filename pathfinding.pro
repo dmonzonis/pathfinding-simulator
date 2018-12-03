@@ -26,7 +26,8 @@ HEADERS += \
     src/tilemapscene.h \
     src/tilemapview.h \
     src/utils.h \
-    src/csvencoder.h
+    src/csvencoder.h \
+    src/benchmark.h
 
 
 SOURCES += \
@@ -38,7 +39,8 @@ SOURCES += \
     src/tilemapscene.cpp \
     src/tilemapview.cpp \
     src/utils.cpp \
-    src/csvencoder.cpp
+    src/csvencoder.cpp \
+    src/benchmark.cpp
 
 RESOURCES += \
     resources.qrc
