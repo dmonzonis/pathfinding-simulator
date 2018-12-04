@@ -139,13 +139,13 @@ void TilemapScene::movePixmapToTile(QGraphicsPixmapItem *item, Tile tile)
 
 void TilemapScene::setAlgorithm(int index)
 {
-    selectedAlgorithm = static_cast<Algorithm>(index);
+    selectedAlgorithm = static_cast<eAlgorithm>(index);
     recomputePath();
 }
 
 void TilemapScene::setHeuristic(int index)
 {
-    selectedHeuristic = static_cast<Heuristic>(index);
+    selectedHeuristic = static_cast<eHeuristic>(index);
     recomputePath();
 }
 
@@ -157,7 +157,7 @@ void TilemapScene::recomputePath()
     std::map<Tile, double> costToNode;
 
     // Use pertinent heuristic function
-    std::function<double(Tile, Tile)> heuristic;
+    Heuristic<Tile> heuristic;
     switch (selectedHeuristic)
     {
     case MANHATTAN:
@@ -261,7 +261,7 @@ void TilemapScene::setShowGrid(bool state)
     update();
 }
 
-void TilemapScene::setPaintMode(PaintMode mode)
+void TilemapScene::setPaintMode(ePaintMode mode)
 {
     paintMode = mode;
 }

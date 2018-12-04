@@ -16,7 +16,7 @@ private:
     void buildCoordsMap();
     void buildGraph();
     double euclideanDistance(int first, int second);
-    //double sphericalDistance(int a, int b);
+    // double sphericalDistance(int a, int b);
 
 private:
     std::string filename;

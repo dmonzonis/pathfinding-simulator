@@ -23,9 +23,9 @@ const QColor PATH_COLOR = QColor(250, 240, 65, 255);
 class TilemapScene : public QGraphicsScene
 {
 public:
-    enum Algorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
-    enum Heuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV, OCTILE};
-    enum PaintMode {PENCIL, BUCKET, LINE, RECT};
+    enum eAlgorithm {A_STAR, DIJKSTRA, BFS, GREEDY_BEST_FIRST};
+    enum eHeuristic {MANHATTAN, EUCLIDEAN, CHEBYSHEV, OCTILE};
+    enum ePaintMode {PENCIL, BUCKET, LINE, RECT};
 
 public:
     /**
@@ -112,7 +112,7 @@ public:
      * @brief Sets the currently active paint mode.
      * @param mode Paint mode to be used when the user left-clicks a tile.
      */
-    void setPaintMode(PaintMode mode);
+    void setPaintMode(ePaintMode mode);
 
     void saveGraphToFile(std::string filename);
 
@@ -250,11 +250,11 @@ private:
     Tile startTile, goalTile, previousPosition;
     QGraphicsPixmapItem *startPixmap, *goalPixmap, *grabbedPixmap;
     std::vector<QGraphicsLineItem*> pathLines;
-    Algorithm selectedAlgorithm;
-    Heuristic selectedHeuristic;
+    eAlgorithm selectedAlgorithm;
+    eHeuristic selectedHeuristic;
     std::vector<QGraphicsSimpleTextItem*> tileTexts;
     bool showCost, showGrid;
-    PaintMode paintMode;
+    ePaintMode paintMode;
     Tile previewOrigin;
     std::vector<Tile> previewTiles;
     std::vector<QGraphicsRectItem*> previewRects;

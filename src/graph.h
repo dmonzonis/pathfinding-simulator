@@ -155,7 +155,7 @@ public:
      * @return The cost or weight of a tile in the grid, which is the cost of moving
      * to that tile from an adjacent one.
      */
-    double getCost(Tile tile);
+    double getCost(Tile tile, Tile previous=Tile{0, 0});
 
     /**
      * @brief Sets the cost of a given tile in the grid.

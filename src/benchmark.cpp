@@ -1,8 +1,11 @@
 #include "benchmark.h"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <cassert>
 #include <cmath>
+#include <ctime>
+#include "algorithms.hpp"
 #include "utils.h"
 
 Benchmark::Benchmark(std::string filename, int startNode, int goalNode)
@@ -16,7 +19,42 @@ Benchmark::Benchmark(std::string filename, int startNode, int goalNode)
 
 void Benchmark::run()
 {
-    // TODO: Implement
+    unsigned long aStarExpandedNodes, dijkstraExpandedNodes;
+    double aStarTime, dijkstraTime;
+    std::clock_t timeBegin, timeEnd;
+    std::map<int, int> previous;
+    std::map<int, double> costToNode;
+
+    // Run Dijkstra benchmark
+    timeBegin = std::clock();
+    dijkstra(&graph, startNode, goalNode, previous, costToNode);
+    timeEnd = std::clock();
+    dijkstraExpandedNodes = costToNode.size();
+    dijkstraTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+
+    // Reset structures
+    costToNode.clear();
+    previous.clear();
+
+    // Run A* benchmark
+    // TODO: Do the same with spherical distance heuristic
+
+    Heuristic<int> heuristic = std::bind(&Benchmark::euclideanDistance,
+                                         this,
+                                         std::placeholders::_1,
+                                         std::placeholders::_2);
+    timeBegin = std::clock();
+    aStar(&graph, startNode, goalNode, previous, costToNode, heuristic);
+    timeEnd = std::clock();
+    aStarExpandedNodes = costToNode.size();
+    aStarTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+
+    // Show results
+    std::cout << "Dijkstra\n----------\nExpanded nodes: " << dijkstraExpandedNodes
+              << "\nTime elapsed: " << dijkstraTime << std::endl;
+    std::cout << std::endl;
+    std::cout << "A*\n----------\nExpanded nodes: " << aStarExpandedNodes
+              << "\nTime elapsed: " << aStarTime << std::endl;
 }
 
 void Benchmark::buildCoordsMap()

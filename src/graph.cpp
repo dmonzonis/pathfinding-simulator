@@ -38,7 +38,7 @@ bool SimpleGraph::exists(int node1, int node2)
     return it != node1Edges.end();
 }
 
-double SimpleGraph::getCost(int node1, int node2)
+double SimpleGraph::getCost(int node2, int node1)
 {
     // If the start node doesn't exist, don't bother continuing
     if (!exists(node1))
@@ -141,7 +141,7 @@ std::vector<Tile> GridGraph::adjacentTiles(Tile tile)
     return result;
 }
 
-double GridGraph::getCost(Tile tile)
+double GridGraph::getCost(Tile tile, Tile previous)
 {
     // Use 1 as the default cost instead of 0
     auto it = costs.find(tile);

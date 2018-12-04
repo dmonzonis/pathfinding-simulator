@@ -10,6 +10,9 @@
 #include <vector>
 #include "graph.h"
 
+template <class Node>
+using Heuristic = typename std::function<double(Node, Node)>;
+
 /**
  * Reconstructs the path to a vector with nodes going from start to goal.
  *
@@ -67,7 +70,7 @@ void bfs(Graph *graph,
         {
             if (previous.find(next) == previous.end())
             {
-                double cost = costToNode[current] + graph->getCost(next);
+                double cost = costToNode[current] + graph->getCost(next, current);
                 costToNode[next] = cost;
                 previous[next] = current;
                 nodeQueue.push(next);
@@ -108,7 +111,7 @@ void dijkstra(Graph *graph,
         // Push unvisited neighbors to queue
         for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph->getCost(next);
+            double cost = costToNode[current] + graph->getCost(next, current);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end()
                     || cost < costToNode[next])
@@ -164,7 +167,7 @@ void aStar(Graph *graph,
            Node goal,
            std::map<Node, Node> &previous,
            std::map<Node, double> &costToNode,
-           std::function<double(Node a, Node b)> heuristic)
+           Heuristic<Node> heuristic)
 
 {
     typedef std::pair<double, Node> queuePair;
@@ -189,7 +192,7 @@ void aStar(Graph *graph,
         // Push unvisited neighbors to queue
         for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph->getCost(next);
+            double cost = costToNode[current] + graph->getCost(next, current);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end()
                     || cost < costToNode[next])
@@ -212,7 +215,7 @@ void greedyBestFirstSearch(Graph *graph,
                            Node goal,
                            std::map<Node, Node> &previous,
                            std::map<Node, double> &costToNode,
-                           std::function<double(Node a, Node b)> heuristic)
+                           Heuristic<Node> heuristic)
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
@@ -236,7 +239,7 @@ void greedyBestFirstSearch(Graph *graph,
         // Push unvisited neighbors to queue
         for (Node next : graph->neighbors(current))
         {
-            double cost = costToNode[current] + graph->getCost(next);
+            double cost = costToNode[current] + graph->getCost(next, current);
             // Also consider visited nodes which would have a lesser cost from this new path
             if (previous.find(next) == previous.end())
             {
