@@ -26,9 +26,4 @@ std::vector<std::string> splitLine(std::string line, std::string delimiter=",");
 
 std::string joinParts(std::vector<std::string> parts, std::string delimiter=",");
 
-/**
- * @brief Find the distance along a sphere between two points on it using the Haversine formula.
- */
-double haversineDistance(double lat1, double long1, double lat2, double long2, double radius);
-
 #endif // UTILS_H

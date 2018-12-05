@@ -3,7 +3,6 @@
 
 void Geolocation::computeCartesianCoordinates()
 {
-    const double radius = 6.357e6;  // in meters
     // Theta and Phi angles must be in radians
     double theta = (90 - (latitude / 1e6)) * M_PI / 180;
     double phi = (longitude / 1e6) * M_PI / 180;

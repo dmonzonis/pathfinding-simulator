@@ -80,11 +80,6 @@ public:
      */
     virtual double getCost(T node2, T node1)
     {
-        // If the start node doesn't exist, don't bother continuing
-        if (!exists(node1))
-        {
-            return -1;
-        }
         // Get edges coming out of node1
         Edges nodeEdges = _edges[node1];
         // If there's no connection to node2, return -1

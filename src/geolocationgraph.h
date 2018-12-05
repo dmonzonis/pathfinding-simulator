@@ -7,6 +7,7 @@ typedef struct Geolocation
 {
     int id, latitude, longitude;  // latitude and longitude in microdegrees
     double x, y, z;  // in meters, with origin at the center of the Earth
+    static constexpr double radius = 6.357e6;  // in meters
 
     void computeCartesianCoordinates();
 

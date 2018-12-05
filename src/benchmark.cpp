@@ -39,7 +39,6 @@ void Benchmark::run()
     previous.clear();
 
     heuristic = euclideanDistance3D;
-//    std::cout << "2->48 (linear) = " << heuristic(2, 48) << std::endl;
     timeBegin = std::clock();
     aStar(&graph, startNode, goalNode, previous, costToNode, heuristic);
     timeEnd = std::clock();
@@ -50,6 +49,13 @@ void Benchmark::run()
     costToNode.clear();
     previous.clear();
 
+    heuristic = haversineDistance;
+    timeBegin = std::clock();
+    aStar(&graph, startNode, goalNode, previous, costToNode, heuristic);
+    timeEnd = std::clock();
+    aStarSphericalExpandedNodes = costToNode.size();
+    aStarSphericalTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+
     // Show results
     std::cout << "Dijkstra\n----------\nExpanded nodes: " << dijkstraExpandedNodes
               << "\nTime elapsed: " << dijkstraTime << std::endl;
@@ -57,6 +63,8 @@ void Benchmark::run()
     std::cout << "A* (Linear distance)\n----------\nExpanded nodes: " << aStarExpandedNodes
               << "\nTime elapsed: " << aStarTime << std::endl;
     std::cout << std::endl;
+    std::cout << "A* (Spherical distance)\n----------\nExpanded nodes: " << aStarSphericalExpandedNodes
+              << "\nTime elapsed: " << aStarSphericalTime << std::endl;
 }
 
 void Benchmark::buildCoordsMap()

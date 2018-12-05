@@ -168,6 +168,23 @@ inline double euclideanDistance3D(Geolocation a, Geolocation b)
 }
 
 /**
+ * @brief Find the distance along a sphere between two points on it using the Haversine formula.
+ */
+inline double haversineDistance(Geolocation a, Geolocation b)
+{
+    double lat1 = (a.latitude / 1e6) * M_PI / 180,
+            lat2 = (b.latitude / 1e6) * M_PI / 180,
+            long1 = (a.longitude / 1e6) * M_PI / 180,
+            long2 = (b.longitude / 1e6) * M_PI / 180;
+    double sinLat = std::sin((lat2 - lat1) / 2);
+    double sinLong = std::sin((long2 - long1) / 2);
+    double asinArgument = std::sqrt(
+                sinLat * sinLat + std::cos(lat1) * std::cos(lat2) * sinLong * sinLong
+                );
+    return 2 * a.radius * std::asin(asinArgument);
+}
+
+/**
  * Compute the optimal path between two nodes using the A* algorithm with early exit.
  */
 template <typename Node, typename Graph>

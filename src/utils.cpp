@@ -53,13 +53,3 @@ std::string joinParts(std::vector<std::string> parts, std::string delimiter)
     }
     return stream.str();
 }
-
-double haversineDistance(double lat1, double long1, double lat2, double long2, double radius)
-{
-    double sinLat = std::sin((lat2 - lat1) / 2);
-    double sinLong = std::sin((long2 - long1) / 2);
-    double asinArgument = std::sqrt(
-                sinLat * sinLat + std::cos(lat1) * std::cos(lat2) * sinLong * sinLong
-                );
-    return 2 * radius * std::asin(asinArgument);
-}
