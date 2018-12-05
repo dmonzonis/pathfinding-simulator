@@ -8,7 +8,7 @@
 #include <queue>
 #include <utility>
 #include <vector>
-#include "graph.h"
+#include "gridgraph.h"
 
 template <class Node>
 using Heuristic = typename std::function<double(Node, Node)>;

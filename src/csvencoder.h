@@ -2,7 +2,7 @@
 #define CSVENCODER_H
 
 #include <string>
-#include "graph.h"
+#include "gridgraph.h"
 
 class CSVEncoder
 {

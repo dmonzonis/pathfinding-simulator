@@ -4,7 +4,7 @@
 #include <exception>
 #include <map>
 #include <string>
-#include "graph.h"
+#include "geolocationgraph.h"
 #include "utils.h"
 
 class Benchmark
@@ -21,12 +21,11 @@ private:
 
 private:
     // Information about the problem to benchmark
-    double totalTimeLookup = 0, totalTimeCalc = 0;
     const double earthRadius = 6.357e6 /* m */;
     std::string filename;
     int startNode, goalNode;
     std::map<int, Coord> nodeToCoords;
-    SimpleGraph graph;
+    GeolocationGraph graph;
     int numNodes;
 };
 

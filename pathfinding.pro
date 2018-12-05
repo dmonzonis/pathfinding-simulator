@@ -19,7 +19,6 @@ FORMS += \
 
 HEADERS += \
     src/algorithms.hpp \
-    src/graph.h \
     src/helpdialog.h \
     src/mainwindow.h \
     src/newmapdialog.h \
@@ -27,12 +26,14 @@ HEADERS += \
     src/tilemapview.h \
     src/utils.h \
     src/csvencoder.h \
-    src/benchmark.h
+    src/benchmark.h \
+    src/graph.hpp \
+    src/geolocationgraph.h \
+    src/gridgraph.h
 
 
 SOURCES += \
     src/main.cpp \
-    src/graph.cpp \
     src/helpdialog.cpp \
     src/mainwindow.cpp \
     src/newmapdialog.cpp \
@@ -40,7 +41,9 @@ SOURCES += \
     src/tilemapview.cpp \
     src/utils.cpp \
     src/csvencoder.cpp \
-    src/benchmark.cpp
+    src/benchmark.cpp \
+    src/geolocationgraph.cpp \
+    src/gridgraph.cpp
 
 RESOURCES += \
     resources.qrc

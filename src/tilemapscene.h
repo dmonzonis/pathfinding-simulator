@@ -3,7 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include "graph.h"
+#include "gridgraph.h"
 
 const int GRID_SIZE = 30;
 const QColor GRID_COLOR = QColor(200, 200, 255, 255);

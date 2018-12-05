@@ -70,8 +70,6 @@ void Benchmark::run()
     std::cout << std::endl;
     std::cout << "A* (Linear distance)\n----------\nExpanded nodes: " << aStarExpandedNodes
               << "\nTime elapsed: " << aStarTime << std::endl;
-    std::cout << "Total time lookup: " << totalTimeLookup << std::endl;
-    std::cout << "Total time calc: " << totalTimeCalc << std::endl;
     std::cout << std::endl;
     std::cout << "A* (Spherical distance)\n----------\nExpanded nodes: " << aStarSphericalExpandedNodes
               << "\nTime elapsed: " << aStarSphericalTime << std::endl;

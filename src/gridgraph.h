@@ -1,5 +1,5 @@
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef GRIDGRAPH_H
+#define GRIDGRAPH_H
 
 #include "graph.hpp"
 
@@ -128,4 +128,4 @@ private:
     bool diagonalAllowed, cornerMovementAllowed;
 };
 
-#endif // GRAPH_H
+#endif // GRIDGRAPH_H
