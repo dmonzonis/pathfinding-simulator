@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 #include "gridgraph.h"
+#include "geolocationgraph.h"
 
 template <class Node>
 using Heuristic = typename std::function<double(Node, Node)>;
@@ -156,6 +157,14 @@ inline double octileDistance(Tile a, Tile b)
     double dx = std::abs(a.x - b.x);
     double dy = std::abs(a.y - b.y);
     return std::sqrt(2) * std::min(dx, dy) + std::abs(dx - dy);
+}
+
+inline double euclideanDistance3D(Geolocation a, Geolocation b)
+{
+    double dx = a.x - b.x,
+            dy = a.y - b.y,
+            dz = a.z - b.z;
+    return std::sqrt(dx * dx + dy * dy + dz * dz);
 }
 
 /**

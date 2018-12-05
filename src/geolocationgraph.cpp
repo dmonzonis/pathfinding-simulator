@@ -1,9 +1,7 @@
 #include "geolocationgraph.h"
 #include <cmath>
 
-Geolocation::Geolocation(int latitude, int longitude)
-    : latitude(latitude),
-      longitude(longitude)
+void Geolocation::computeCartesianCoordinates()
 {
     const double radius = 6.357e6;  // in meters
     // Theta and Phi angles must be in radians
@@ -14,4 +12,3 @@ Geolocation::Geolocation(int latitude, int longitude)
     y = radius * std::sin(theta) * std::sin(phi);
     z = radius * std::cos(theta);
 }
-

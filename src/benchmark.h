@@ -16,15 +16,12 @@ public:
 private:
     void buildCoordsMap();
     void buildGraph();
-    double linearDistance(int a, int b);
-    double sphericalDistance(int a, int b);
 
 private:
     // Information about the problem to benchmark
-    const double earthRadius = 6.357e6 /* m */;
     std::string filename;
-    int startNode, goalNode;
-    std::map<int, Coord> nodeToCoords;
+    int startNodeId, goalNodeId;
+    std::map<int, Geolocation> mapIdToGeolocation;
     GeolocationGraph graph;
     int numNodes;
 };

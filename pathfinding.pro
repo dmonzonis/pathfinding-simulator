@@ -42,8 +42,8 @@ SOURCES += \
     src/utils.cpp \
     src/csvencoder.cpp \
     src/benchmark.cpp \
-    src/geolocationgraph.cpp \
-    src/gridgraph.cpp
+    src/gridgraph.cpp \
+    src/geolocationgraph.cpp
 
 RESOURCES += \
     resources.qrc

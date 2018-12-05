@@ -5,24 +5,25 @@
 
 typedef struct Geolocation
 {
-    Geolocation(int latitude, int longitude);
-    int latitude, longitude;  // in microdegrees
+    int id, latitude, longitude;  // latitude and longitude in microdegrees
     double x, y, z;  // in meters, with origin at the center of the Earth
 
-    // Overload some operators so that tiles can be used as map keys
-    bool operator==(const Geolocation &other) const
-    {
-        return latitude == other.latitude && longitude == other.longitude;
-    }
+    void computeCartesianCoordinates();
 
+    // Overload some operators so that tiles can be used as map keys
     bool operator<(const Geolocation &other) const
     {
-        return latitude < other.latitude || (latitude == other.latitude && longitude < other.longitude);
+        return id < other.id;
+    }
+
+    bool operator==(const Geolocation &other) const
+    {
+        return id == other.id;
     }
 
     bool operator!=(const Geolocation &other) const
     {
-        return latitude != other.latitude || longitude != other.longitude;
+        return id != other.id;
     }
 } Geolocation;
 

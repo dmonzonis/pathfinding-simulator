@@ -37,7 +37,7 @@ public:
     /**
      * @brief Return a list of all the nodes that can be accessed from this node.
      */
-    std::vector<T> neighbors(T node)
+    virtual std::vector<T> neighbors(T node)
     {
         std::vector<T> result;
         Edges nodeEdges = _edges[node];
@@ -52,7 +52,7 @@ public:
     /**
      * @brief Checks if the node exists in the graph.
      */
-    bool exists(T node)
+    virtual bool exists(T node)
     {
         auto it = _edges.find(node);
         return it != _edges.end();
@@ -61,7 +61,7 @@ public:
     /**
      * @brief Checks if an edge from node1 to node2 exists in the graph.
      */
-    bool exists(T node1, T node2)
+    virtual bool exists(T node1, T node2)
     {
         if (!exists(node1) || !exists(node2))
         {
@@ -78,7 +78,7 @@ public:
      * If there's no edge from the start to goal nodes, it returns -1, meaning an infinite
      * cost.
      */
-    double getCost(T node2, T node1)
+    virtual double getCost(T node2, T node1)
     {
         // If the start node doesn't exist, don't bother continuing
         if (!exists(node1))
@@ -101,7 +101,7 @@ public:
      *
      * If the node already exists, does nothing.
      */
-    void addNode(T node)
+    virtual void addNode(T node)
     {
         // Add an empty Edges map
         _edges[node] = Edges();
@@ -113,7 +113,7 @@ public:
      * If any of the nodes don't exist in the graph, they're automatically added.
      * If the edge already exists, it updates its cost.
      */
-    void addEdge(T node1, T node2, double cost)
+    virtual void addEdge(T node1, T node2, double cost)
     {
         // First see if any of the nodes don't exist, and add them if they don't
         if (!exists(node1))
