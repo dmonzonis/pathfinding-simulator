@@ -6,7 +6,6 @@
 #include <cmath>
 #include <ctime>
 #include "algorithms.hpp"
-#include "utils.h"
 
 Benchmark::Benchmark(std::string filename, int startNode, int goalNode)
     : filename(filename)
@@ -19,11 +18,12 @@ Benchmark::Benchmark(std::string filename, int startNode, int goalNode)
 
 void Benchmark::run()
 {
-    unsigned long aStarExpandedNodes, dijkstraExpandedNodes;
-    double aStarTime, dijkstraTime;
+    unsigned long aStarExpandedNodes, dijkstraExpandedNodes, aStarSphericalExpandedNodes;
+    double aStarTime, dijkstraTime, aStarSphericalTime;
     std::clock_t timeBegin, timeEnd;
     std::map<int, int> previous;
     std::map<int, double> costToNode;
+    Heuristic<int> heuristic;
 
     // Run Dijkstra benchmark
     timeBegin = std::clock();
@@ -36,29 +36,50 @@ void Benchmark::run()
     costToNode.clear();
     previous.clear();
 
-    // Run A* benchmark
-    // TODO: Do the same with spherical distance heuristic
-
-    Heuristic<int> heuristic = std::bind(&Benchmark::euclideanDistance,
+    // Run A* benchmark with euclidean distance
+    heuristic = std::bind(&Benchmark::linearDistance,
                                          this,
                                          std::placeholders::_1,
                                          std::placeholders::_2);
+    std::cout << "2->48 (linear) = " << heuristic(2, 48) << std::endl;
     timeBegin = std::clock();
     aStar(&graph, startNode, goalNode, previous, costToNode, heuristic);
     timeEnd = std::clock();
     aStarExpandedNodes = costToNode.size();
     aStarTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
 
+    // Reset structures
+    costToNode.clear();
+    previous.clear();
+
+    // Run A* benchmark with spherical distance
+    heuristic = std::bind(&Benchmark::sphericalDistance,
+                                         this,
+                                         std::placeholders::_1,
+                                         std::placeholders::_2);
+    std::cout << "2->48 (spherical) = " << heuristic(2, 48) << std::endl;
+    timeBegin = std::clock();
+    aStar(&graph, startNode, goalNode, previous, costToNode, heuristic);
+    timeEnd = std::clock();
+    aStarSphericalExpandedNodes = costToNode.size();
+    aStarSphericalTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+
     // Show results
     std::cout << "Dijkstra\n----------\nExpanded nodes: " << dijkstraExpandedNodes
               << "\nTime elapsed: " << dijkstraTime << std::endl;
     std::cout << std::endl;
-    std::cout << "A*\n----------\nExpanded nodes: " << aStarExpandedNodes
+    std::cout << "A* (Linear distance)\n----------\nExpanded nodes: " << aStarExpandedNodes
               << "\nTime elapsed: " << aStarTime << std::endl;
+    std::cout << "Total time lookup: " << totalTimeLookup << std::endl;
+    std::cout << "Total time calc: " << totalTimeCalc << std::endl;
+    std::cout << std::endl;
+    std::cout << "A* (Spherical distance)\n----------\nExpanded nodes: " << aStarSphericalExpandedNodes
+              << "\nTime elapsed: " << aStarSphericalTime << std::endl;
 }
 
 void Benchmark::buildCoordsMap()
 {
+    std::cout << "Building coordinate map..." << std::endl;
     try
     {
         const std::string delimiter = " ";
@@ -77,21 +98,24 @@ void Benchmark::buildCoordsMap()
             parts = splitLine(line, delimiter);
         }
         // Get number of nodes
-        int nodeCount = std::stoi(parts[4]);
+        numNodes = std::stoi(parts[4]);
         // Discard next two lines as they are comments
         std::getline(file, line);
         std::getline(file, line);
         // Build the map
-        std::pair<int, int> coords;
-        for (int i = 0; i < nodeCount; ++i)
+        Coord coord;
+        for (int i = 0; i < numNodes; ++i)
         {
             std::getline(file, line);
             parts = splitLine(line, delimiter);
             int node = std::stoi(parts[1]);
-            coords = std::make_pair(std::stoi(parts[2]),
-                                    std::stoi(parts[3]));
+            double latitude = std::stoi(parts[2]),
+                    longitude = std::stoi(parts[3]);
+            double latRads = (latitude / 1e6) * M_PI / 180,
+                    longRads = (longitude / 1e6) * M_PI / 180;
+            coord = std::make_pair(latRads, longRads);
             // Add node coords to the map
-            nodeToCoords[node] = coords;
+            nodeToCoords[node] = coord;
         }
     }
     catch (std::exception &ex)
@@ -102,6 +126,7 @@ void Benchmark::buildCoordsMap()
 
 void Benchmark::buildGraph()
 {
+    std::cout << "Building graph..." << std::endl;
     try
     {
         const std::string delimiter = " ";
@@ -142,11 +167,21 @@ void Benchmark::buildGraph()
     }
 }
 
-double Benchmark::euclideanDistance(int first, int second)
+double Benchmark::linearDistance(int first, int second)
 {
-    std::pair<int, int> coordFirst = nodeToCoords[first],
+    Coord coordFirst = nodeToCoords[first],
             coordSecond = nodeToCoords[second];
     double latDif = coordFirst.first - coordSecond.first,
             longDif = coordFirst.second - coordSecond.second;
-    return std::sqrt(latDif * latDif + longDif * longDif);
+    double cosLatMidpoint = std::cos(0.5 * (coordFirst.first + coordSecond.first));
+    return earthRadius * std::sqrt(
+                latDif * latDif + cosLatMidpoint * cosLatMidpoint * longDif * longDif
+                );
+}
+
+double Benchmark::sphericalDistance(int first, int second)
+{
+    Coord coordFirst = nodeToCoords[first],
+            coordSecond = nodeToCoords[second];
+    return haversineDistance(coordFirst, coordSecond, earthRadius);
 }

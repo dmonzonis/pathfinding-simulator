@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include "graph.h"
+#include "utils.h"
 
 class Benchmark
 {
@@ -15,14 +16,18 @@ public:
 private:
     void buildCoordsMap();
     void buildGraph();
-    double euclideanDistance(int first, int second);
-    // double sphericalDistance(int a, int b);
+    double linearDistance(int a, int b);
+    double sphericalDistance(int a, int b);
 
 private:
+    // Information about the problem to benchmark
+    double totalTimeLookup = 0, totalTimeCalc = 0;
+    const double earthRadius = 6.357e6 /* m */;
     std::string filename;
     int startNode, goalNode;
-    std::map<int, std::pair<int, int>> nodeToCoords;
+    std::map<int, Coord> nodeToCoords;
     SimpleGraph graph;
+    int numNodes;
 };
 
 #endif // BENCHMARK_H
