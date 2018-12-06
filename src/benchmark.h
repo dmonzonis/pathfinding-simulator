@@ -46,6 +46,7 @@ private:
     GridGraph *gridGraph;
     GeolocationGraph geolocationGraph;
     int numNodes;
+    std::vector<double> distDijkstra, distAstar, distAstarAlt, distGreedy;
     std::vector<double> timesDijkstra, timesAstar, timesAstarAlt, timesGreedy;
     std::vector<unsigned long> expandedDijkstra, expandedAstar, expandedAstarAlt, expandedGreedy;
 };

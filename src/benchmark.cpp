@@ -33,6 +33,10 @@ void Benchmark::run(int count)
     expandedDijkstra.clear();
     expandedAstar.clear();
     expandedAstarAlt.clear();
+    distDijkstra.clear();
+    distAstar.clear();
+    distAstarAlt.clear();
+    distGreedy.clear();
 
 //    runRoadBenchmark(count);
 }
@@ -43,6 +47,11 @@ void Benchmark::runGridBenchmark(int count)
     std::cout << "Loading grid graph..." << std::endl;
     CSVEncoder encoder("randomgrid.csv");
     gridGraph = encoder.loadGridGraph();
+
+    // Write header of benchmark results CSV file
+    std::ofstream file("benchmark_grid.csv");
+    file << "dijDist,dijNodes,dijTime,A*Dist,A*Nodes,A*Time,A*altDist,A*altNodes,A*altTime,greedyDist,greedyNodes,greedyTime"
+         << std::endl;
 
     Tile startTile, goalTile;
     srand(time(nullptr));
@@ -80,8 +89,8 @@ void Benchmark::runRoadBenchmark(int count)
     buildGeolocationGraph();
 
     // Write header of benchmark results CSV file
-    std::ofstream file("benchmark.csv");
-    file << "dist,dijNodes,dijTime,A*Nodes,A*Time,A*altNodes,A*altTime,greedyNodes,greedyTime"
+    std::ofstream file("benchmark_road.csv");
+    file << "dijDist,dijNodes,dijTime,A*Dist,A*Nodes,A*Time,A*altDist,A*altNodes,A*altTime,greedyDist,greedyNodes,greedyTime"
          << std::endl;
 
     int startId, goalId;
@@ -120,6 +129,7 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
         std::cout << "No path found. Repeating with different start/goal tiles." << std::endl;
         return false;
     }
+    distDijkstra.push_back(optimalDistance);
 
     // Reset structures
     costToNode.clear();
@@ -131,6 +141,7 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           gridGraph, startTile, goalTile,
                           std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
+    distAstar.push_back(costToNode[goalTile]);
 
     // Reset structures
     costToNode.clear();
@@ -142,6 +153,7 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           gridGraph, startTile, goalTile,
                           std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
+    distAstarAlt.push_back(costToNode[goalTile]);
 
     // Reset structures
     costToNode.clear();
@@ -153,13 +165,29 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           gridGraph, startTile, goalTile,
                           std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
+    distGreedy.push_back(costToNode[goalTile]);
+
+    // Write partial results to CSV file
+    std::ofstream file("benchmark_grid.csv", std::ios_base::app);
+    file << distDijkstra.back() << ","
+         << expandedDijkstra.back() << ","
+         << timesDijkstra.back() << ","
+         << distAstar.back() << ","
+         << expandedAstar.back() << ","
+         << timesAstar.back() << ","
+         << distAstarAlt.back() << ","
+         << expandedAstarAlt.back() << ","
+         << timesAstarAlt.back() << ","
+         << distGreedy.back() << ","
+         << expandedGreedy.back() << ","
+         << timesGreedy.back()
+         << std::endl;
 
     return true;
 }
 
 void Benchmark::runRoadSingle(int startId, int goalId)
 {
-    double optimalDistance;
     std::map<Geolocation, Geolocation> previous;
     std::map<Geolocation, double> costToNode;
     Algorithm algorithm;
@@ -172,7 +200,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
                           &geolocationGraph, startNode, goalNode,
                           previous, costToNode);
     evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
-    optimalDistance = costToNode[goalNode];
+    distDijkstra.push_back(costToNode[goalNode]);
 
     // Reset structures
     costToNode.clear();
@@ -184,6 +212,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
                           &geolocationGraph, startNode, goalNode,
                           previous, costToNode, heuristic);
     evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
+    distAstar.push_back(costToNode[goalNode]);
 
     // Reset structures
     costToNode.clear();
@@ -195,6 +224,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
                           &geolocationGraph, startNode, goalNode,
                           previous, costToNode, heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
+    distAstarAlt.push_back(costToNode[goalNode]);
 
     // Reset structures
     costToNode.clear();
@@ -206,19 +236,23 @@ void Benchmark::runRoadSingle(int startId, int goalId)
                           &geolocationGraph, startNode, goalNode,
                           previous, costToNode, heuristic);
     evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
+    distGreedy.push_back(costToNode[goalNode]);
 
     // Write partial results to CSV file
-    std::ofstream file("benchmark.csv", std::ios_base::app);
-    file << optimalDistance << ","
+    std::ofstream file("benchmark_road.csv", std::ios_base::app);
+    file << distDijkstra.back() << ","
          << expandedDijkstra.back() << ","
          << timesDijkstra.back() << ","
+         << distAstar.back() << ","
          << expandedAstar.back() << ","
          << timesAstar.back() << ","
+         << distAstarAlt.back() << ","
          << expandedAstarAlt.back() << ","
          << timesAstarAlt.back() << ","
+         << distGreedy.back() << ","
          << expandedGreedy.back() << ","
          << timesGreedy.back()
-         << std::endl;;
+         << std::endl;
 }
 
 void Benchmark::buildCoordsMap()
