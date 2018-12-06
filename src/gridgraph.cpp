@@ -1,5 +1,6 @@
 #include "gridgraph.h"
 #include "graph.hpp"
+#include <limits>
 
 GridGraph::GridGraph(int left, int top, int width, int height)
     : Graph(),
@@ -72,6 +73,10 @@ double GridGraph::getCost(Tile tile, Tile previous)
     {
         return 1;
     }
+    double cost = costs[tile];
+    // If it has a negative weight (wall) return infinity
+    if (cost < 0)
+        return std::numeric_limits<double>::infinity();
     return costs[tile];
 }
 
