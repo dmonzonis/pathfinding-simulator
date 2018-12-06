@@ -34,17 +34,14 @@ int main(int argc, char *argv[])
             try
             {
                 // Make sure we have the right amount of arguments
-                if (argc != 5)
+                if (argc != 4)
                 {
                     throw std::runtime_error("Incorrect number of arguments.");
                 }
                 std::string filename = argv[2];
-                std::string startNodeString = argv[3];
-                std::string goalNodeString = argv[4];
-                int startNode = std::stoi(argv[3]);
-                int goalNode = std::stoi(argv[4]);
-                Benchmark benchmark(filename, startNode, goalNode);
-                benchmark.run();
+                int count = std::stoi(argv[3]);
+                Benchmark benchmark(filename);
+                benchmark.run(count);
             }
             catch (std::exception &ex)
             {

@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <QMessageBox>
+#include <numeric>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -25,5 +26,12 @@ void printUsage();
 std::vector<std::string> splitLine(std::string line, std::string delimiter=",");
 
 std::string joinParts(std::vector<std::string> parts, std::string delimiter=",");
+
+template <typename T>
+double avgVec(std::vector<T> v)
+{
+    double sum = std::accumulate(v.begin(), v.end(), 0.);
+    return sum / v.size();
+}
 
 #endif // UTILS_H

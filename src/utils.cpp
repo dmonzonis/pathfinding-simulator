@@ -21,7 +21,7 @@ void printUsage()
     std::cout << "Usage:" << std::endl;
     std::cout << "pathfinding [command] [option]" << std::endl;
     std::cout << "Available commands:" << std::endl;
-    std::cout << "-b FILENAME START GOAL\t\tRun benchmark using the graph and coordinates from DIMACS with the given filename from the START node to the GOAL node" << std::endl;
+    std::cout << "-b FILENAME COUNT\t\tRun randomized benchmark using the graph and coordinates from DIMACS COUNT times." << std::endl;
 }
 
 std::vector<std::string> splitLine(std::string line, std::string delimiter)
