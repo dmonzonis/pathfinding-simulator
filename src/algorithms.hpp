@@ -43,12 +43,13 @@ std::vector<Node> reconstructPath(Node start,
  * Compute the path between two nodes using Breadth-first search with early exit.
  */
 template <typename Node, typename Graph>
-void bfs(Graph *graph,
-         Node start,
-         Node goal,
-         std::map<Node, Node> &previous,
-         std::map<Node, double> &costToNode)
+unsigned long bfs(Graph *graph,
+                  Node start,
+                  Node goal,
+                  std::map<Node, Node> &previous,
+                  std::map<Node, double> &costToNode)
 {
+    unsigned long expandedNodes = 0;
     std::queue<Node> nodeQueue;
     nodeQueue.push(start);
 
@@ -59,11 +60,12 @@ void bfs(Graph *graph,
         // Get next node to examine
         Node current = nodeQueue.front();
         nodeQueue.pop();
+        ++expandedNodes;
 
         // Early exit condition
         if (current == goal)
         {
-            return;
+            return expandedNodes;
         }
 
         // Push unvisited neighbors to queue and update total cost to reach them
@@ -84,16 +86,17 @@ void bfs(Graph *graph,
  * Compute the optimal path between two nodes using Dijkstra's algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void dijkstra(Graph *graph,
-              Node start,
-              Node goal,
-              std::map<Node, Node> &previous,
-              std::map<Node, double> &costToNode)
+unsigned long dijkstra(Graph *graph,
+                       Node start,
+                       Node goal,
+                       std::map<Node, Node> &previous,
+                       std::map<Node, double> &costToNode)
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
             std::greater<queuePair>> nodeQueue;
     nodeQueue.emplace(0, start);
+    unsigned long expandedNodes = 0;
 
     previous[start] = start;
 
@@ -102,11 +105,12 @@ void dijkstra(Graph *graph,
         // Get next node to examine
         Node current = nodeQueue.top().second;
         nodeQueue.pop();
+        ++expandedNodes;
 
         // Early exit condition
         if (current == goal)
         {
-            return;
+            return expandedNodes;
         }
 
         // Push unvisited neighbors to queue
@@ -188,18 +192,19 @@ inline double haversineDistance(Geolocation a, Geolocation b)
  * Compute the optimal path between two nodes using the A* algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void aStar(Graph *graph,
-           Node start,
-           Node goal,
-           std::map<Node, Node> &previous,
-           std::map<Node, double> &costToNode,
-           Heuristic<Node> heuristic)
+unsigned long aStar(Graph *graph,
+                    Node start,
+                    Node goal,
+                    std::map<Node, Node> &previous,
+                    std::map<Node, double> &costToNode,
+                    Heuristic<Node> heuristic)
 
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
             std::greater<queuePair>> nodeQueue;
     nodeQueue.emplace(0, start);
+    unsigned long expandedNodes = 0;
 
     previous[start] = start;
 
@@ -208,11 +213,12 @@ void aStar(Graph *graph,
         // Get next node to examine
         Node current = nodeQueue.top().second;
         nodeQueue.pop();
+        ++expandedNodes;
 
         // Early exit condition
         if (current == goal)
         {
-            return;
+            return expandedNodes;
         }
 
         // Push unvisited neighbors to queue
@@ -236,17 +242,18 @@ void aStar(Graph *graph,
  * Compute the path between two nodes using the greedy best-first search algorithm with early exit.
  */
 template <typename Node, typename Graph>
-void greedyBestFirstSearch(Graph *graph,
-                           Node start,
-                           Node goal,
-                           std::map<Node, Node> &previous,
-                           std::map<Node, double> &costToNode,
-                           Heuristic<Node> heuristic)
+unsigned long greedyBestFirstSearch(Graph *graph,
+                                    Node start,
+                                    Node goal,
+                                    std::map<Node, Node> &previous,
+                                    std::map<Node, double> &costToNode,
+                                    Heuristic<Node> heuristic)
 {
     typedef std::pair<double, Node> queuePair;
     std::priority_queue<queuePair, std::vector<queuePair>,
             std::greater<queuePair>> nodeQueue;
     nodeQueue.emplace(0, start);
+    unsigned long expandedNodes = 0;
 
     previous[start] = start;
 
@@ -255,11 +262,12 @@ void greedyBestFirstSearch(Graph *graph,
         // Get next node to examine
         Node current = nodeQueue.top().second;
         nodeQueue.pop();
+        ++expandedNodes;
 
         // Early exit condition
         if (current == goal)
         {
-            return;
+            return expandedNodes;
         }
 
         // Push unvisited neighbors to queue

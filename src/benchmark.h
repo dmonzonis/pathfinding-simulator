@@ -4,6 +4,7 @@
 #include <exception>
 #include <map>
 #include <string>
+#include <functional>
 #include "gridgraph.h"
 #include "geolocationgraph.h"
 #include "utils.h"
@@ -24,6 +25,9 @@ public:
     void run(int count);
 
 private:
+    typedef std::function<unsigned long(void)> Algorithm;
+
+private:
     void buildCoordsMap();
     void buildGeolocationGraph();
     bool runGridSingle(Tile startTile, Tile goalTile);
@@ -31,6 +35,9 @@ private:
     void runSummary();
     void runGridBenchmark(int count);
     void runRoadBenchmark(int count);
+    void evaluateAlgorithm(std::function<unsigned long(void)> alg,
+                           std::vector<double> &timeVec,
+                           std::vector<unsigned long> &nodeVec);
 
 private:
     // Information about the problem to benchmark
@@ -39,8 +46,8 @@ private:
     GridGraph *gridGraph;
     GeolocationGraph geolocationGraph;
     int numNodes;
-    std::vector<double> timesDijkstra, timesAstar, timesAstarSpherical;
-    std::vector<unsigned long> expandedDijkstra, expandedAstar, expandedAstarSpherical;
+    std::vector<double> timesDijkstra, timesAstar, timesAstarAlt;
+    std::vector<unsigned long> expandedDijkstra, expandedAstar, expandedAstarAlt;
 };
 
 #endif // BENCHMARK_H

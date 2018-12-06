@@ -100,22 +100,20 @@ void Benchmark::runRoadBenchmark(int count)
 
 bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
 {
-    unsigned long aStarExpandedNodes, dijkstraExpandedNodes;
-    double aStarTime, dijkstraTime;
     double optimalDistance;
-    std::clock_t timeBegin, timeEnd;
     std::map<Tile, Tile> previous;
     std::map<Tile, double> costToNode;
+    Algorithm algorithm;
     Heuristic<Tile> heuristic;
 
-    // Run Dijkstra benchmark
-    timeBegin = std::clock();
-    dijkstra(gridGraph, startTile, goalTile, previous, costToNode);
-    timeEnd = std::clock();
-    dijkstraExpandedNodes = costToNode.size();
-    dijkstraTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+    // Dijkstra
+    algorithm = std::bind(&dijkstra<Tile, GridGraph>,
+                          gridGraph, startTile, goalTile,
+                          std::ref(previous), std::ref(costToNode));
+    evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
     optimalDistance = costToNode[goalTile];
-    std::cout << "Optimal distance: " << optimalDistance << std::endl;
+    std::cout << "optimal distance = " << optimalDistance << std::endl;
+    std::cout << "previous.size() = " << previous.size() << std::endl;
     if (previous.find(goalTile) == previous.end()
             || optimalDistance == std::numeric_limits<double>::infinity())
     {
@@ -128,84 +126,66 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
     costToNode.clear();
     previous.clear();
 
-    // Run A* benchmark with Manhattan distance
+    // A* with Manhattan distance
     heuristic = manhattanDistance;
-    timeBegin = std::clock();
-    aStar(gridGraph, startTile, goalTile, previous, costToNode, heuristic);
-    timeEnd = std::clock();
-    aStarExpandedNodes = costToNode.size();
-    aStarTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
-
-    // Save partial results
-    timesDijkstra.push_back(dijkstraTime);
-    timesAstar.push_back(aStarTime);
-    expandedDijkstra.push_back(dijkstraExpandedNodes);
-    expandedAstar.push_back(aStarExpandedNodes);
+    algorithm = std::bind(&aStar<Tile, GridGraph>,
+                          gridGraph, startTile, goalTile,
+                          std::ref(previous), std::ref(costToNode), heuristic);
+    evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
 
     return true;
 }
 
 void Benchmark::runRoadSingle(int startId, int goalId)
 {
-    unsigned long aStarExpandedNodes, dijkstraExpandedNodes, aStarAltExpandedNodes;
-    double aStarTime, dijkstraTime, aStarAltTime;
     double optimalDistance;
-    std::clock_t timeBegin, timeEnd;
     std::map<Geolocation, Geolocation> previous;
     std::map<Geolocation, double> costToNode;
+    Algorithm algorithm;
     Heuristic<Geolocation> heuristic;
     Geolocation startNode = mapIdToGeolocation[startId];
     Geolocation goalNode = mapIdToGeolocation[goalId];
 
-    // Run Dijkstra benchmark
-    timeBegin = std::clock();
-    dijkstra(&geolocationGraph, startNode, goalNode, previous, costToNode);
-    timeEnd = std::clock();
-    dijkstraExpandedNodes = costToNode.size();
-    dijkstraTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+    // Dijkstra
+    algorithm = std::bind(&dijkstra<Geolocation, GeolocationGraph>,
+                          &geolocationGraph, startNode, goalNode,
+                          previous, costToNode);
+    evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
     optimalDistance = costToNode[goalNode];
 
     // Reset structures
     costToNode.clear();
     previous.clear();
 
-    // Run A* benchmark with linear distance
+    // A* with linear distance
     heuristic = euclideanDistance3D;
-    timeBegin = std::clock();
-    aStar(&geolocationGraph, startNode, goalNode, previous, costToNode, heuristic);
-    timeEnd = std::clock();
-    aStarExpandedNodes = costToNode.size();
-    aStarTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+    algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
+                          &geolocationGraph, startNode, goalNode,
+                          previous, costToNode, heuristic);
+    evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
 
     // Reset structures
     costToNode.clear();
     previous.clear();
 
-    // Run A* benchmark with Haversine distance
+    // A* with spherical distance
     heuristic = haversineDistance;
-    timeBegin = std::clock();
-    aStar(&geolocationGraph, startNode, goalNode, previous, costToNode, heuristic);
-    timeEnd = std::clock();
-    aStarAltExpandedNodes = costToNode.size();
-    aStarAltTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+    algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
+                          &geolocationGraph, startNode, goalNode,
+                          previous, costToNode, heuristic);
+    evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
 
-    // Save partial results
-    timesDijkstra.push_back(dijkstraTime);
-    timesAstar.push_back(aStarTime);
-    timesAstarAlt.push_back(aStarAltTime);
-    expandedDijkstra.push_back(dijkstraExpandedNodes);
-    expandedAstar.push_back(aStarExpandedNodes);
-    expandedAstarAlt.push_back(aStarAltExpandedNodes);
+    // TODO: Greedy Best-First search with linear distance
 
     // Write partial results to CSV file
     std::ofstream file("benchmark.csv", std::ios_base::app);
     file << optimalDistance << ","
-         << dijkstraExpandedNodes << ","
-         << dijkstraTime << ","
-         << aStarExpandedNodes << ","
-         << aStarTime << ","
-         << aStarAltExpandedNodes << ","
-         << aStarAltTime << std::endl;;
+         << expandedDijkstra.back() << ","
+         << timesDijkstra.back() << ","
+         << expandedAstar.back() << ","
+         << timesAstar.back() << ","
+         << expandedAstarAlt.back() << ","
+         << timesAstarAlt.back() << std::endl;;
 }
 
 void Benchmark::buildCoordsMap()
@@ -324,3 +304,16 @@ void Benchmark::runSummary()
               << aStarAltTotalTime << std::endl;
 }
 
+void Benchmark::evaluateAlgorithm(std::function<unsigned long(void)> alg,
+                                  std::vector<double> &timeVec,
+                                  std::vector<unsigned long> &nodeVec)
+{
+    double timeBegin, timeEnd, elapsedTime;
+    timeBegin = std::clock();
+    unsigned long expandedNodes = alg();
+    timeEnd = std::clock();
+    elapsedTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+
+    timeVec.push_back(elapsedTime);
+    nodeVec.push_back(expandedNodes);
+}
