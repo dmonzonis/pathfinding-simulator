@@ -81,7 +81,8 @@ void Benchmark::runRoadBenchmark(int count)
 
     // Write header of benchmark results CSV file
     std::ofstream file("benchmark.csv");
-    file << "dist,dijNodes,dijTime,A*Nodes,A*Time,A*sphNodes,A*sphTime" << std::endl;
+    file << "dist,dijNodes,dijTime,A*Nodes,A*Time,A*altNodes,A*altTime,greedyNodes,greedyTime"
+         << std::endl;
 
     int startId, goalId;
     srand(time(nullptr));
@@ -112,8 +113,6 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           std::ref(previous), std::ref(costToNode));
     evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
     optimalDistance = costToNode[goalTile];
-    std::cout << "optimal distance = " << optimalDistance << std::endl;
-    std::cout << "previous.size() = " << previous.size() << std::endl;
     if (previous.find(goalTile) == previous.end()
             || optimalDistance == std::numeric_limits<double>::infinity())
     {
@@ -143,6 +142,17 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           gridGraph, startTile, goalTile,
                           std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
+
+    // Reset structures
+    costToNode.clear();
+    previous.clear();
+
+    // Greedy with Manhattan distance
+    heuristic = manhattanDistance;
+    algorithm = std::bind(&greedyBestFirstSearch<Tile, GridGraph>,
+                          gridGraph, startTile, goalTile,
+                          std::ref(previous), std::ref(costToNode), heuristic);
+    evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
 
     return true;
 }
@@ -186,7 +196,16 @@ void Benchmark::runRoadSingle(int startId, int goalId)
                           previous, costToNode, heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
 
-    // TODO: Greedy Best-First search with linear distance
+    // Reset structures
+    costToNode.clear();
+    previous.clear();
+
+    // Greedy with linear distance
+    heuristic = euclideanDistance3D;
+    algorithm = std::bind(&greedyBestFirstSearch<Geolocation, GeolocationGraph>,
+                          &geolocationGraph, startNode, goalNode,
+                          previous, costToNode, heuristic);
+    evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
 
     // Write partial results to CSV file
     std::ofstream file("benchmark.csv", std::ios_base::app);
@@ -196,7 +215,10 @@ void Benchmark::runRoadSingle(int startId, int goalId)
          << expandedAstar.back() << ","
          << timesAstar.back() << ","
          << expandedAstarAlt.back() << ","
-         << timesAstarAlt.back() << std::endl;;
+         << timesAstarAlt.back() << ","
+         << expandedGreedy.back() << ","
+         << timesGreedy.back()
+         << std::endl;;
 }
 
 void Benchmark::buildCoordsMap()
@@ -291,8 +313,8 @@ void Benchmark::buildGeolocationGraph()
 
 void Benchmark::runSummary()
 {
-    double dijkstraTotalNodes, aStarTotalNodes, aStarAltTotalNodes;
-    double dijkstraTotalTime, aStarTotalTime, aStarAltTotalTime;
+    double dijkstraTotalNodes, aStarTotalNodes, aStarAltTotalNodes, greedyTotalNodes;
+    double dijkstraTotalTime, aStarTotalTime, aStarAltTotalTime, greedyTotalTime;
 
     // Compute totals
     dijkstraTotalNodes = std::accumulate(expandedDijkstra.begin(), expandedDijkstra.end(), 0);
@@ -300,11 +322,14 @@ void Benchmark::runSummary()
     aStarAltTotalNodes = std::accumulate(expandedAstarAlt.begin(),
                                                expandedAstarAlt.end(),
                                                0);
+    greedyTotalNodes = std::accumulate(expandedGreedy.begin(), expandedGreedy.end(), 0);
+
     dijkstraTotalTime = std::accumulate(timesDijkstra.begin(), timesDijkstra.end(), 0.);
     aStarTotalTime = std::accumulate(timesAstar.begin(), timesAstar.end(), 0.);
     aStarAltTotalTime = std::accumulate(timesAstarAlt.begin(),
                                                timesAstarAlt.end(),
                                                0.);
+    greedyTotalTime = std::accumulate(timesGreedy.begin(), timesGreedy.end(), 0.);
 
     // Report summary
     std::cout << "\n###############\nSummary\n###############\n";
@@ -313,6 +338,7 @@ void Benchmark::runSummary()
     std::cout << "A*\t\t" << aStarTotalNodes << "\t\t" << aStarTotalTime << std::endl;
     std::cout << "A*(alt)\t\t" << aStarAltTotalNodes << "\t\t"
               << aStarAltTotalTime << std::endl;
+    std::cout << "Greedy\t\t" << greedyTotalNodes << "\t\t" << greedyTotalTime << std::endl;
 }
 
 void Benchmark::evaluateAlgorithm(std::function<unsigned long(void)> alg,

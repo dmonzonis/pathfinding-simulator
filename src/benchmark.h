@@ -46,8 +46,8 @@ private:
     GridGraph *gridGraph;
     GeolocationGraph geolocationGraph;
     int numNodes;
-    std::vector<double> timesDijkstra, timesAstar, timesAstarAlt;
-    std::vector<unsigned long> expandedDijkstra, expandedAstar, expandedAstarAlt;
+    std::vector<double> timesDijkstra, timesAstar, timesAstarAlt, timesGreedy;
+    std::vector<unsigned long> expandedDijkstra, expandedAstar, expandedAstarAlt, expandedGreedy;
 };
 
 #endif // BENCHMARK_H
