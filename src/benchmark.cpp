@@ -24,6 +24,7 @@ Benchmark::~Benchmark()
 
 void Benchmark::run(int count)
 {
+    std::cout << "### Running grid graph benchmark ###" << std::endl;
     runGridBenchmark(count);
 
     // Reset result structures
@@ -38,6 +39,7 @@ void Benchmark::run(int count)
     distAstarAlt.clear();
     distGreedy.clear();
 
+    std::cout << "### Running geolocation graph benchmark ###" << std::endl;
     runRoadBenchmark(count);
 }
 
