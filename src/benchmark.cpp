@@ -38,7 +38,7 @@ void Benchmark::run(int count)
     distAstarAlt.clear();
     distGreedy.clear();
 
-//    runRoadBenchmark(count);
+    runRoadBenchmark(count);
 }
 
 void Benchmark::runGridBenchmark(int count)
