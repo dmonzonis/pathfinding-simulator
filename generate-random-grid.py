@@ -1,7 +1,7 @@
 import csv
 from random import choice
 
-DIMENSIONS = 10000
+DIMENSIONS = 1000
 
 
 def generate_grid():
