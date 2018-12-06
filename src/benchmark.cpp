@@ -133,6 +133,17 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
                           std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
 
+    // Reset structures
+    costToNode.clear();
+    previous.clear();
+
+    // A* with Euclidean distance
+    heuristic = euclideanDistance;
+    algorithm = std::bind(&aStar<Tile, GridGraph>,
+                          gridGraph, startTile, goalTile,
+                          std::ref(previous), std::ref(costToNode), heuristic);
+    evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
+
     return true;
 }
 
@@ -299,8 +310,8 @@ void Benchmark::runSummary()
     std::cout << "\n###############\nSummary\n###############\n";
     std::cout << "Algorithm\t\tTotal nodes\t\tTotal time\n";
     std::cout << "Dijkstra\t\t" << dijkstraTotalNodes << "\t\t" << dijkstraTotalTime << std::endl;
-    std::cout << "A*lin\t\t" << aStarTotalNodes << "\t\t" << aStarTotalTime << std::endl;
-    std::cout << "A*sph\t\t" << aStarAltTotalNodes << "\t\t"
+    std::cout << "A*\t\t" << aStarTotalNodes << "\t\t" << aStarTotalTime << std::endl;
+    std::cout << "A*(alt)\t\t" << aStarAltTotalNodes << "\t\t"
               << aStarAltTotalTime << std::endl;
 }
 
