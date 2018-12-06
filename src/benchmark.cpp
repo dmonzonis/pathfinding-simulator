@@ -200,7 +200,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     // Dijkstra
     algorithm = std::bind(&dijkstra<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          previous, costToNode);
+                          std::ref(previous), std::ref(costToNode));
     evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
     distDijkstra.push_back(costToNode[goalNode]);
 
@@ -212,7 +212,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     heuristic = euclideanDistance3D;
     algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          previous, costToNode, heuristic);
+                          std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
     distAstar.push_back(costToNode[goalNode]);
 
@@ -224,7 +224,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     heuristic = haversineDistance;
     algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          previous, costToNode, heuristic);
+                          std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
     distAstarAlt.push_back(costToNode[goalNode]);
 
@@ -236,7 +236,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     heuristic = euclideanDistance3D;
     algorithm = std::bind(&greedyBestFirstSearch<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          previous, costToNode, heuristic);
+                          std::ref(previous), std::ref(costToNode), heuristic);
     evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
     distGreedy.push_back(costToNode[goalNode]);
 
