@@ -17,9 +17,9 @@ Benchmark::Benchmark(std::string filename)
 
 void Benchmark::run(int count)
 {
-    // Write header of benchmark file
-    std::ofstream file("benchmark.txt");
-    file << "Result tables: ALGORITHM NODES TIME\n\n";
+    // Write header of benchmark results CSV file
+    std::ofstream file("benchmark.csv");
+    file << "dist,dijNodes,dijTime,A*Nodes,A*Time,A*sphNodes,A*sphTime" << std::endl;
 
     int startId, goalId;
     srand(time(nullptr));
@@ -40,6 +40,7 @@ void Benchmark::runSingle(int startId, int goalId)
 {
     unsigned long aStarExpandedNodes, dijkstraExpandedNodes, aStarSphericalExpandedNodes;
     double aStarTime, dijkstraTime, aStarSphericalTime;
+    double optimalDistance;
     std::clock_t timeBegin, timeEnd;
     std::map<Geolocation, Geolocation> previous;
     std::map<Geolocation, double> costToNode;
@@ -53,6 +54,7 @@ void Benchmark::runSingle(int startId, int goalId)
     timeEnd = std::clock();
     dijkstraExpandedNodes = costToNode.size();
     dijkstraTime = double(timeEnd - timeBegin) / CLOCKS_PER_SEC;
+    optimalDistance = costToNode[goalNode];
 
     // Reset structures
     costToNode.clear();
@@ -84,13 +86,15 @@ void Benchmark::runSingle(int startId, int goalId)
     expandedAstar.push_back(aStarExpandedNodes);
     expandedAstarSpherical.push_back(aStarSphericalExpandedNodes);
 
-    // Write partial results to file
-    std::ofstream file("benchmark.txt", std::ios_base::app);
-    file << "--------------------------\n"
-         << "Benchmark with start=" << startId << ", goal=" << goalId << std::endl
-         << "Dijkstra " << dijkstraExpandedNodes << " " << dijkstraTime << std::endl
-         << "A* (linear distance) " << aStarExpandedNodes << " " << aStarTime << std::endl
-         << "A* (spherical distance) " << aStarSphericalExpandedNodes << " " << aStarSphericalTime << std::endl;
+    // Write partial results to CSV file
+    std::ofstream file("benchmark.csv", std::ios_base::app);
+    file << optimalDistance << ","
+         << dijkstraExpandedNodes << ","
+         << dijkstraTime << ","
+         << aStarExpandedNodes << ","
+         << aStarTime << ","
+         << aStarSphericalExpandedNodes << ","
+         << aStarSphericalTime << std::endl;;
 }
 
 void Benchmark::buildCoordsMap()
@@ -202,11 +206,10 @@ void Benchmark::runSummary()
 
     // Report summary
     std::cout << "\n###############\nSummary\n###############\n";
-    std::cout << "Algorithm\tTotal nodes expanded\tTotal time\n";
-    std::cout << "Dijkstra " << dijkstraTotalNodes << " " << dijkstraTotalTime << std::endl;
-    std::cout << "A* (linear distance) " << aStarTotalNodes << " " << aStarTotalTime << std::endl;
-    std::cout << "A* (spherical distance) " << aStarSphericalTotalNodes << " "
+    std::cout << "Algorithm\t\tTotal nodes\t\tTotal time\n";
+    std::cout << "Dijkstra\t\t" << dijkstraTotalNodes << "\t\t" << dijkstraTotalTime << std::endl;
+    std::cout << "A*lin\t\t" << aStarTotalNodes << "\t\t" << aStarTotalTime << std::endl;
+    std::cout << "A*sph\t\t" << aStarSphericalTotalNodes << "\t\t"
               << aStarSphericalTotalTime << std::endl;
-    // TODO: Add summary to file
 }
 
