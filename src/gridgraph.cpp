@@ -21,7 +21,7 @@ bool GridGraph::isOutOfBounds(Tile tile)
 
 bool GridGraph::isWall(Tile tile)
 {
-    return getCost(tile) < 0;
+    return costs[tile]< 0;
 }
 
 std::vector<Tile> GridGraph::neighbors(Tile tile)
