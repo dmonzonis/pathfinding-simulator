@@ -229,7 +229,7 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     costToNode.clear();
     previous.clear();
 
-    // A* with spherical distance
+    // A* with Haversine distance
     heuristic = haversineDistance;
     algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
@@ -341,12 +341,11 @@ void Benchmark::buildGeolocationGraph()
         {
             std::getline(file, line);
             parts = splitLine(line, delimiter);
-            int id1 = std::stoi(parts[1]);
-            int id2 = std::stoi(parts[2]);
-            double weight = std::stod(parts[3]);
+            Geolocation node1 = mapIdToGeolocation[std::stoi(parts[1])];
+            Geolocation node2 = mapIdToGeolocation[std::stoi(parts[2])];
+            // Calculate weight using Haversine distance formula
+            double weight = haversineDistance(node1, node2);
             // Add node to the graph
-            Geolocation node1 = mapIdToGeolocation[id1];
-            Geolocation node2 = mapIdToGeolocation[id2];
             geolocationGraph.addEdge(node1, node2, weight);
         }
     }
