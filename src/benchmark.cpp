@@ -118,74 +118,83 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
     Algorithm algorithm;
     Heuristic<Tile> heuristic;
 
-    // Dijkstra
-    algorithm = std::bind(&dijkstra<Tile, GridGraph>,
-                          gridGraph, startTile, goalTile,
-                          std::ref(previous), std::ref(costToNode));
-    evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
-    optimalDistance = costToNode[goalTile];
-    if (previous.find(goalTile) == previous.end()
-            || optimalDistance == std::numeric_limits<double>::infinity())
+    try
     {
-        // There doesn't exist a path
-        std::cout << "No path found. Repeating with different start/goal tiles." << std::endl;
+        // Dijkstra
+        algorithm = std::bind(&dijkstra<Tile, GridGraph>,
+                              gridGraph, startTile, goalTile,
+                              std::ref(previous), std::ref(costToNode));
+        evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
+        optimalDistance = costToNode[goalTile];
+        if (previous.find(goalTile) == previous.end()
+                || optimalDistance == std::numeric_limits<double>::infinity())
+        {
+            // There doesn't exist a path
+            std::cout << "No path found. Repeating with different start/goal tiles." << std::endl;
+            return false;
+        }
+        distDijkstra.push_back(optimalDistance);
+
+        // Reset structures
+        costToNode.clear();
+        previous.clear();
+
+        // A* with Manhattan distance
+        heuristic = manhattanDistance;
+        algorithm = std::bind(&aStar<Tile, GridGraph>,
+                              gridGraph, startTile, goalTile,
+                              std::ref(previous), std::ref(costToNode), heuristic);
+        evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
+        distAstar.push_back(costToNode[goalTile]);
+
+        // Reset structures
+        costToNode.clear();
+        previous.clear();
+
+        // A* with Euclidean distance
+        heuristic = euclideanDistance;
+        algorithm = std::bind(&aStar<Tile, GridGraph>,
+                              gridGraph, startTile, goalTile,
+                              std::ref(previous), std::ref(costToNode), heuristic);
+        evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
+        distAstarAlt.push_back(costToNode[goalTile]);
+
+        // Reset structures
+        costToNode.clear();
+        previous.clear();
+
+        // Greedy with Manhattan distance
+        heuristic = manhattanDistance;
+        algorithm = std::bind(&greedyBestFirstSearch<Tile, GridGraph>,
+                              gridGraph, startTile, goalTile,
+                              std::ref(previous), std::ref(costToNode), heuristic);
+        evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
+        distGreedy.push_back(costToNode[goalTile]);
+
+        // Write partial results to CSV file
+        std::ofstream file("benchmark_grid.csv", std::ios_base::app);
+        file << distDijkstra.back() << ","
+             << expandedDijkstra.back() << ","
+             << timesDijkstra.back() << ","
+             << distAstar.back() << ","
+             << expandedAstar.back() << ","
+             << timesAstar.back() << ","
+             << distAstarAlt.back() << ","
+             << expandedAstarAlt.back() << ","
+             << timesAstarAlt.back() << ","
+             << distGreedy.back() << ","
+             << expandedGreedy.back() << ","
+             << timesGreedy.back()
+             << std::endl;
+
+        return true;
+    }
+    catch (std::exception &ex)
+    {
+        std::cout << "There was an error: " << ex.what() << std::endl;
+        std::cout << "Repeating the benchmark." << std::endl;
         return false;
     }
-    distDijkstra.push_back(optimalDistance);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
-
-    // A* with Manhattan distance
-    heuristic = manhattanDistance;
-    algorithm = std::bind(&aStar<Tile, GridGraph>,
-                          gridGraph, startTile, goalTile,
-                          std::ref(previous), std::ref(costToNode), heuristic);
-    evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
-    distAstar.push_back(costToNode[goalTile]);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
-
-    // A* with Euclidean distance
-    heuristic = euclideanDistance;
-    algorithm = std::bind(&aStar<Tile, GridGraph>,
-                          gridGraph, startTile, goalTile,
-                          std::ref(previous), std::ref(costToNode), heuristic);
-    evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
-    distAstarAlt.push_back(costToNode[goalTile]);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
-
-    // Greedy with Manhattan distance
-    heuristic = manhattanDistance;
-    algorithm = std::bind(&greedyBestFirstSearch<Tile, GridGraph>,
-                          gridGraph, startTile, goalTile,
-                          std::ref(previous), std::ref(costToNode), heuristic);
-    evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
-    distGreedy.push_back(costToNode[goalTile]);
-
-    // Write partial results to CSV file
-    std::ofstream file("benchmark_grid.csv", std::ios_base::app);
-    file << distDijkstra.back() << ","
-         << expandedDijkstra.back() << ","
-         << timesDijkstra.back() << ","
-         << distAstar.back() << ","
-         << expandedAstar.back() << ","
-         << timesAstar.back() << ","
-         << distAstarAlt.back() << ","
-         << expandedAstarAlt.back() << ","
-         << timesAstarAlt.back() << ","
-         << distGreedy.back() << ","
-         << expandedGreedy.back() << ","
-         << timesGreedy.back()
-         << std::endl;
-
-    return true;
 }
 
 void Benchmark::runRoadSingle(int startId, int goalId)
