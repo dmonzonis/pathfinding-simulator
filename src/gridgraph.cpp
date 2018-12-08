@@ -21,7 +21,7 @@ bool GridGraph::isOutOfBounds(Tile tile)
 
 bool GridGraph::isWall(Tile tile)
 {
-    return costs[tile] < 0;
+    return getCost(tile, tile) < 0;
 }
 
 std::vector<Tile> GridGraph::neighbors(Tile tile)
@@ -73,10 +73,6 @@ double GridGraph::getCost(Tile tile, Tile previous)
     {
         return 1;
     }
-    double cost = costs[tile];
-    // If it has a negative weight (wall) return infinity
-    if (cost < 0)
-        return std::numeric_limits<double>::infinity();
     return costs[tile];
 }
 
