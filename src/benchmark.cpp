@@ -199,8 +199,10 @@ bool Benchmark::runGridSingle(Tile startTile, Tile goalTile)
 
 void Benchmark::runRoadSingle(int startId, int goalId)
 {
-    std::map<Geolocation, Geolocation> previous;
-    std::map<Geolocation, double> costToNode;
+    // Use 4 different map of each cus apparently clearing a map does not
+    // delete the memory and performance will be slower after
+    std::map<Geolocation, Geolocation> previous1, previous2, previous3, previous4;
+    std::map<Geolocation, double> costToNode1, costToNode2, costToNode3, costToNode4;
     Algorithm algorithm;
     Heuristic<Geolocation> heuristic;
     Geolocation startNode = mapIdToGeolocation[startId];
@@ -209,45 +211,33 @@ void Benchmark::runRoadSingle(int startId, int goalId)
     // Dijkstra
     algorithm = std::bind(&dijkstra<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          std::ref(previous), std::ref(costToNode));
+                          std::ref(previous1), std::ref(costToNode1));
     evaluateAlgorithm(algorithm, timesDijkstra, expandedDijkstra);
-    distDijkstra.push_back(costToNode[goalNode]);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
+    distDijkstra.push_back(costToNode1[goalNode]);
 
     // A* with linear distance
     heuristic = euclideanDistance3D;
     algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          std::ref(previous), std::ref(costToNode), heuristic);
+                          std::ref(previous2), std::ref(costToNode2), heuristic);
     evaluateAlgorithm(algorithm, timesAstar, expandedAstar);
-    distAstar.push_back(costToNode[goalNode]);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
+    distAstar.push_back(costToNode2[goalNode]);
 
     // A* with Haversine distance
     heuristic = haversineDistance;
     algorithm = std::bind(&aStar<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          std::ref(previous), std::ref(costToNode), heuristic);
+                          std::ref(previous3), std::ref(costToNode3), heuristic);
     evaluateAlgorithm(algorithm, timesAstarAlt, expandedAstarAlt);
-    distAstarAlt.push_back(costToNode[goalNode]);
-
-    // Reset structures
-    costToNode.clear();
-    previous.clear();
+    distAstarAlt.push_back(costToNode3[goalNode]);
 
     // Greedy with linear distance
     heuristic = euclideanDistance3D;
     algorithm = std::bind(&greedyBestFirstSearch<Geolocation, GeolocationGraph>,
                           &geolocationGraph, startNode, goalNode,
-                          std::ref(previous), std::ref(costToNode), heuristic);
+                          std::ref(previous4), std::ref(costToNode4), heuristic);
     evaluateAlgorithm(algorithm, timesGreedy, expandedGreedy);
-    distGreedy.push_back(costToNode[goalNode]);
+    distGreedy.push_back(costToNode4[goalNode]);
 
     // Write partial results to CSV file
     std::ofstream file("benchmark_road.csv", std::ios_base::app);
