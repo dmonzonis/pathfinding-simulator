@@ -21,7 +21,7 @@ bool GridGraph::isOutOfBounds(Tile tile)
 
 bool GridGraph::isWall(Tile tile)
 {
-    return getCost(tile, tile) < 0;
+    return costs[tile] < 0;
 }
 
 std::vector<Tile> GridGraph::neighbors(Tile tile)
@@ -67,13 +67,11 @@ std::vector<Tile> GridGraph::adjacentTiles(Tile tile)
 
 double GridGraph::getCost(Tile tile, Tile previous)
 {
-    // Use 1 as the default cost instead of 0
-    auto it = costs.find(tile);
-    if (it == costs.end())
-    {
-        return 1;
-    }
-    return costs[tile];
+    // If cost is 0 or less, use 1 as default
+    double cost = costs[tile];
+    if (cost <= 0)
+        cost = 1;
+    return cost;
 }
 
 void GridGraph::setCost(Tile tile, double cost)
