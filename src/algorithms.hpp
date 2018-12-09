@@ -144,7 +144,9 @@ inline double manhattanDistance(Tile a, Tile b)
  */
 inline double euclideanDistance(Tile a, Tile b)
 {
-    return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
+    int dx = a.x - b.x,
+        dy = a.y - b.y;
+    return std::sqrt(dx * dx + dy * dy);
 }
 
 /**
@@ -168,8 +170,8 @@ inline double octileDistance(Tile a, Tile b)
 inline double euclideanDistance3D(Geolocation a, Geolocation b)
 {
     double dx = a.x - b.x,
-            dy = a.y - b.y,
-            dz = a.z - b.z;
+           dy = a.y - b.y,
+           dz = a.z - b.z;
     return std::sqrt(dx * dx + dy * dy + dz * dz);
 }
 
