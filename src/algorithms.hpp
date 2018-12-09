@@ -80,6 +80,7 @@ unsigned long bfs(Graph *graph,
             }
         }
     }
+    return expandedNodes;
 }
 
 /**
@@ -127,6 +128,7 @@ unsigned long dijkstra(Graph *graph,
             }
         }
     }
+    return expandedNodes;
 }
 
 /**
@@ -236,6 +238,7 @@ unsigned long aStar(Graph *graph,
             }
         }
     }
+    return expandedNodes;
 }
 
 /**
@@ -284,6 +287,7 @@ unsigned long greedyBestFirstSearch(Graph *graph,
             }
         }
     }
+    return expandedNodes;
 }
 
 #endif // ALGORITMS_H
