@@ -124,6 +124,7 @@ private:
 
 private:
     int left, top, right, bottom;  // Bounds for x and y coordinates
+    // TODO: Use array for improved efficiency
     std::map<Tile, double> costs;
     bool diagonalAllowed, cornerMovementAllowed;
 };

@@ -1,5 +1,6 @@
 #include "gridgraph.h"
 #include "graph.hpp"
+#include "utils.h"
 #include <limits>
 
 GridGraph::GridGraph(int left, int top, int width, int height)
@@ -67,9 +68,9 @@ std::vector<Tile> GridGraph::adjacentTiles(Tile tile)
 
 double GridGraph::getCost(Tile tile, Tile previous)
 {
-    // If cost is 0 or less, use 1 as default
+    // If cost is 0 (the map's default), use 1 as default
     double cost = costs[tile];
-    if (cost <= 0)
+    if (approxEqual(cost, 0))
         cost = 1;
     return cost;
 }
